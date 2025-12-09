@@ -7,7 +7,7 @@ Reddixia est la boîte à outils d'Idexia dédiée au soutien de la reddition de
 ## Contexte : idexia-xpm-pantheon
 
 `idexia-xpm-pantheon` est le projet de référence qui héberge la famille d'agents Reddixia (ATLAS-CTRL, HERMES-PROJ, ATHENA-PORTF, THEMIS-GOV, COSMOS-HUB, IRIS-RISK, GAIA-DATA, APOLLO-CHANGE, etc.).  
-Il définit le modèle **xPM (eXtended Project Management)** d'Idexia, où la gestion de projet et de portefeuille est augmentée par une constellation d'agents spécialisés, coordonnés par **COSMOS-HUB**.
+Il définit le modèle **xPM (eXtended Project Management)** d'Idexia, où la gestion de projet et de portefeuille est augmentée par une constellation d'agents spécialisés, coordonnés par **Idexios**.
 
 ---
 
@@ -28,7 +28,7 @@ Il définit le modèle **xPM (eXtended Project Management)** d'Idexia, où la ge
 | IA-TPG-002 | HERMES-PROJ   | Compagnon des chefs de projet                                        | Générer MOP, comptes rendus, registres et plans d'action à partir des données TPG et des gabarits.        | En cours    |
 | IA-TPG-003 | ATHENA-PORTF  | Conseiller portefeuille (scénarios, priorisation)                    | Analyser le portefeuille, préparer les synthèses pour comités et proposer des scénarios de priorisation.  | En essais   |
 | IA-TPG-004 | THEMIS-GOV    | Auditeur de conformité & qualité solution                            | Surveiller paramètres, configurations et qualité des données TPG pour soutenir la gouvernance.            | En cours    |
-| IA-TPG-005 | COSMOS-HUB    | Hub / méta-orchestrateur                                             | Router les questions vers les bons agents et assembler une vue intégrée du portefeuille et de la solution.| En cours    |
+| IA-TPG-005 | Idexios       | Hub / méta-orchestrateur                                             | Router les questions vers les bons agents et assembler une vue intégrée du portefeuille et de la solution.| En cours    |
 | IA-TPG-006 | IRIS-RISK     | Analyste et gardien du registre des risques                          | Structurer et exploiter les registres de risques, croiser signaux et produire des synthèses risques.      | Non démarré |
 | IA-TPG-007 | GAIA-DATA     | Gardienne des données de référence et du modèle d'information        | Veiller à la qualité, cohérence et stabilité des données maîtres entre TPG et systèmes connexes.          | Non démarré |
 | IA-TPG-008 | APOLLO-CHANGE | Conseiller adoption et gestion du changement autour de la solution   | Traduire les décisions techniques en plans de communication, formation et accompagnement concrets.        | Non démarré |
@@ -49,7 +49,7 @@ Reddixia/
 │  ├─ hermes-proj/
 │  ├─ athena-portf/
 │  ├─ themis-gov/
-│  ├─ cosmos-hub/
+│  ├─ idexios/
 │  ├─ iris-risk/
 │  ├─ gaia-data/
 │  └─ apollo-change/
@@ -72,7 +72,7 @@ Reddixia/
 
 ## Roadmap (indicative)
 
-- Stabilisation des agents de base : ATLAS-CTRL, HERMES-PROJ, ATHENA-PORTF, THEMIS-GOV, COSMOS-HUB.  
+- Stabilisation des agents de base : ATLAS-CTRL, HERMES-PROJ, ATHENA-PORTF, THEMIS-GOV, Idexios.  
 - Ajout progressif des agents IRIS-RISK, GAIA-DATA et APOLLO-CHANGE.  
 - Publication de scénarios de référence (démonstrations TPG, ateliers, guides d'implantation).  
 
