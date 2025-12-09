@@ -8,7 +8,7 @@ Les agents interagissent par l'intermédiaire de l'orchestrateur Idexios. Nommé
 
 ## Contexte : idexia-xpm-pantheon
 
-`idexia-xpm-pantheon` est le projet de référence qui héberge la famille d'agents Reddixia (ATLAS-CTRL, HERMES-PROJ, ATHENA-PORTF, THEMIS-GOV, COSMOS-HUB, IRIS-RISK, GAIA-DATA, APOLLO-CHANGE, etc.).  
+`idexia-xpm-pantheon` est le projet de référence qui héberge la famille d'agents Reddixia (Idexios : ATLAS-CTRL, HERMES-PROJ, ATHENA-PORTF, THEMIS-GOV, IRIS-RISK, GAIA-DATA, APOLLO-CHANGE, etc.).  
 Il définit le modèle **xPM (eXtended Project Management)** d'Idexia, où la gestion de projet et de portefeuille est augmentée par une constellation d'agents spécialisés, coordonnés par **Idexios**.
 
 ---
