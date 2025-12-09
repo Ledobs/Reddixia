@@ -1,6 +1,8 @@
 # Reddixia
 
-Reddixia est la boîte à outils d'Idexia dédiée au soutien de la reddition de comptes, de la reddition contractuelle et de la reddition de projets. Elle regroupe une famille d'agents spécialisés construits dans le projet **idexia-xpm-pantheon**, chacun inspiré des mythologies grecque et romaine, pour accompagner la gestion de projet, de portefeuille, des risques, des données et de l'adoption autour de TPG.
+Reddixia est la boîte à outils d'Idexia dédiée au soutien de la reddition de comptes, de la reddition contractuelle et de la reddition de projets. Elle regroupe une famille d'agents spécialisés construits dans le projet idexia-xpm-pantheon, chacun inspiré des mythologies grecque et romaine, pour accompagner la gestion de projet, de portefeuille, des risques, des données et de l'adoption autour de TPG.
+
+Les agents interagissent par l'intermédiaire de l'orchestrateur Idexios. Nommé en référence à son étymologie (ce qui extrait et déploie les concepts), Idexios est l'agent orchestrateur central qui transforme les intentions stratégiques en actions coordonnées, servant de hub intelligent pour l'ensemble de l'écosystème d'agents de gestion de projet.
 
 ---
 
