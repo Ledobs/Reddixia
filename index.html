@@ -1,0 +1,650 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Architecture Idexios - Visualisation Interactive</title>
+    <script type="module">
+        import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+        mermaid.initialize({
+            startOnLoad: true,
+            theme: 'base',
+            themeVariables: {
+                primaryColor: '#3b82f6',
+                primaryTextColor: '#1e293b',
+                primaryBorderColor: '#2563eb',
+                lineColor: '#64748b',
+                secondaryColor: '#06b6d4',
+                tertiaryColor: '#10b981',
+                background: '#ffffff',
+                mainBkg: '#f1f5f9',
+                secondBkg: '#e0f2fe',
+                border1: '#cbd5e1',
+                border2: '#94a3b8',
+                fontSize: '16px',
+                fontFamily: 'system-ui, -apple-system, sans-serif'
+            },
+            flowchart: {
+                useMaxWidth: true,
+                htmlLabels: true,
+                curve: 'basis'
+            }
+        });
+    </script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+            color: #1e293b;
+            line-height: 1.6;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%);
+            color: white;
+            padding: 2rem 2rem 3rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        .header-content {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .subtitle {
+            font-size: 1.1rem;
+            opacity: 0.9;
+            font-weight: 300;
+        }
+
+        .agent-info {
+            display: flex;
+            gap: 2rem;
+            margin-top: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .info-badge {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            backdrop-filter: blur(10px);
+        }
+
+        .info-label {
+            font-weight: 600;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .info-value {
+            font-weight: 400;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: -2rem auto 2rem;
+            padding: 0 2rem;
+        }
+
+        .tabs {
+            display: flex;
+            gap: 0.5rem;
+            background: white;
+            padding: 0.5rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            margin-bottom: 2rem;
+            overflow-x: auto;
+        }
+
+        .tab {
+            flex: 1;
+            min-width: 200px;
+            padding: 1rem 1.5rem;
+            background: transparent;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            color: #64748b;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+        }
+
+        .tab:hover {
+            background: #f1f5f9;
+            color: #3b82f6;
+        }
+
+        .tab.active {
+            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+            color: white;
+            box-shadow: 0 4px 6px -1px rgba(59, 130, 246, 0.3);
+        }
+
+        .diagram-section {
+            display: none;
+            background: white;
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            margin-bottom: 2rem;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .diagram-section.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .section-header {
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid #e2e8f0;
+        }
+
+        .section-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #1e293b;
+            margin-bottom: 0.5rem;
+        }
+
+        .section-description {
+            color: #64748b;
+            font-size: 1rem;
+            line-height: 1.8;
+        }
+
+        .mermaid {
+            display: flex;
+            justify-content: center;
+            margin: 2rem 0;
+            background: #fafafa;
+            padding: 2rem;
+            border-radius: 8px;
+            border: 1px solid #e2e8f0;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+            padding: 1.5rem;
+            border-radius: 8px;
+            border-left: 4px solid #3b82f6;
+        }
+
+        .stat-label {
+            font-size: 0.875rem;
+            color: #64748b;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #1e293b;
+        }
+
+        .features-list {
+            list-style: none;
+            margin-top: 1.5rem;
+        }
+
+        .features-list li {
+            padding: 0.75rem 0;
+            padding-left: 2rem;
+            position: relative;
+            color: #475569;
+        }
+
+        .features-list li:before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: #10b981;
+            font-weight: 700;
+            font-size: 1.2rem;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 2rem;
+            color: #64748b;
+            font-size: 0.875rem;
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 1.8rem;
+            }
+
+            .tabs {
+                flex-direction: column;
+            }
+
+            .tab {
+                min-width: auto;
+            }
+
+            .agent-info {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="header-content">
+            <h1>Idexios - Orchestrateur Central</h1>
+            <p class="subtitle">Agent orchestrateur de la solution Reddixia pour la gestion de projet augmentée</p>
+            <div class="agent-info">
+                <div class="info-badge">
+                    <span class="info-label">Code:</span>
+                    <span class="info-value">IA-TPG-005</span>
+                </div>
+                <div class="info-badge">
+                    <span class="info-label">Modèle:</span>
+                    <span class="info-value">GPT-5 Auto (Preview)</span>
+                </div>
+                <div class="info-badge">
+                    <span class="info-label">Statut:</span>
+                    <span class="info-value">En cours</span>
+                </div>
+                <div class="info-badge">
+                    <span class="info-label">Plateforme:</span>
+                    <span class="info-value">Microsoft Copilot Studio</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="tabs">
+            <button class="tab active" data-section="architecture">Architecture Globale</button>
+            <button class="tab" data-section="flux">Flux des Rubriques</button>
+            <button class="tab" data-section="composantes">Composantes Système</button>
+            <button class="tab" data-section="overview">Vue d'ensemble</button>
+        </div>
+
+        <div class="diagram-section active" id="architecture">
+            <div class="section-header">
+                <h2 class="section-title">Architecture Globale</h2>
+                <p class="section-description">
+                    Idexios au centre de l'écosystème, connecté à 7 sources de données Dataverse préfixées tpg_.
+                    Chaque source alimente l'orchestrateur pour une vue intégrée du portefeuille de projets.
+                </p>
+            </div>
+            <div class="mermaid">
+graph TB
+    subgraph Core["Orchestrateur Central"]
+        IDEXIOS["🎯 IDEXIOS<br/>Hub Intelligent<br/>GPT-5 Auto"]
+    end
+
+    subgraph Sources["Sources de Données Dataverse (tpg_)"]
+        PRIME["📚 Idexios-Prime<br/>Documentation<br/>Procédures"]
+        PIPELINE["📋 Pipeline<br/>Demandes<br/>Flux d'approbation"]
+        CAPACITY["👥 Capacity<br/>Affectations<br/>Temps saisi"]
+        PORTFOLIO["📊 Portfolio<br/>Projets<br/>Programmes<br/>Bénéfices"]
+        CONTROLS["⚠️ Controls<br/>Risques<br/>Enjeux<br/>Décisions"]
+        TASK["✅ Task<br/>Tâches<br/>Dépendances<br/>Baselines"]
+        FINANCES["💰 Finances<br/>Budgets<br/>Coûts<br/>Périodes"]
+    end
+
+    PRIME --> IDEXIOS
+    PIPELINE --> IDEXIOS
+    CAPACITY --> IDEXIOS
+    PORTFOLIO --> IDEXIOS
+    CONTROLS --> IDEXIOS
+    TASK --> IDEXIOS
+    FINANCES --> IDEXIOS
+
+    IDEXIOS --> OUTPUT["📤 Réponses Orchestrées<br/>Analyses<br/>Recommandations"]
+
+    style IDEXIOS fill:#3b82f6,stroke:#1e40af,stroke-width:4px,color:#fff
+    style PRIME fill:#06b6d4,stroke:#0891b2,stroke-width:2px,color:#fff
+    style PIPELINE fill:#8b5cf6,stroke:#7c3aed,stroke-width:2px,color:#fff
+    style CAPACITY fill:#10b981,stroke:#059669,stroke-width:2px,color:#fff
+    style PORTFOLIO fill:#f59e0b,stroke:#d97706,stroke-width:2px,color:#fff
+    style CONTROLS fill:#ef4444,stroke:#dc2626,stroke-width:2px,color:#fff
+    style TASK fill:#ec4899,stroke:#db2777,stroke-width:2px,color:#fff
+    style FINANCES fill:#14b8a6,stroke:#0d9488,stroke-width:2px,color:#fff
+    style OUTPUT fill:#64748b,stroke:#475569,stroke-width:2px,color:#fff
+    style Core fill:#f1f5f9,stroke:#cbd5e1,stroke-width:3px
+    style Sources fill:#fefce8,stroke:#fde047,stroke-width:2px
+            </div>
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-label">Sources de données</div>
+                    <div class="stat-value">7</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Entités clés</div>
+                    <div class="stat-value">6</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Rubriques</div>
+                    <div class="stat-value">9</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Requêtes suggérées</div>
+                    <div class="stat-value">6</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="diagram-section" id="flux">
+            <div class="section-header">
+                <h2 class="section-title">Flux d'Orchestration des Rubriques</h2>
+                <p class="section-description">
+                    Comment Idexios traite les requêtes utilisateur via ses 9 rubriques personnalisées,
+                    routant intelligemment vers les analyses appropriées.
+                </p>
+            </div>
+            <div class="mermaid">
+graph TD
+    START["👤 Requête Utilisateur"] --> IDEXIOS["🎯 IDEXIOS<br/>Analyse & Routage"]
+
+    IDEXIOS --> SALUT{Type de<br/>requête?}
+
+    SALUT -->|Salutation| SAL["👋 Salutations<br/>Message d'accueil"]
+    SALUT -->|Au revoir| BYE["👋 Au revoir<br/>Fin de conversation"]
+    SALUT -->|Remerciement| THX["🙏 Merci<br/>Courtoisie"]
+
+    SALUT -->|Analyse| ANALYSIS{Domaine<br/>d'analyse?}
+
+    ANALYSIS -->|Portfolio| PORT["📊 Portefeuille<br/>Vue d'ensemble<br/>Projets à risque<br/>Panoramas<br/>Décision"]
+    ANALYSIS -->|Comité| CONS["🏛️ Conseils<br/>Ordre du jour<br/>Questions ciblées<br/>Préparation"]
+    ANALYSIS -->|Simulation| SCEN["🎲 Scenarios<br/>Comparaisons<br/>Impacts budget<br/>Capacité<br/>Délais"]
+    ANALYSIS -->|Documents| LIV["📝 Livrables<br/>Résumés exécutifs<br/>Recommandations<br/>Comptes rendus"]
+    ANALYSIS -->|Cadre| GOV["⚖️ Gouvernance<br/>Modèles rapports<br/>Rôles<br/>Mécanismes"]
+
+    ANALYSIS -->|Erreur| REC["🔄 Recommencer<br/>Révision<br/>Correction"]
+
+    PORT --> DATA["📊 Sources de données<br/>Portfolio<br/>Finances<br/>Capacity<br/>Controls"]
+    CONS --> DATA
+    SCEN --> DATA
+    LIV --> DATA
+    GOV --> DATA
+
+    DATA --> RESPONSE["✅ Réponse Structurée<br/>Vue rapide<br/>Détails<br/>Actions<br/>Corrections"]
+
+    SAL --> END["📤 Retour Utilisateur"]
+    BYE --> END
+    THX --> END
+    REC --> IDEXIOS
+    RESPONSE --> END
+
+    style START fill:#10b981,stroke:#059669,stroke-width:3px,color:#fff
+    style IDEXIOS fill:#3b82f6,stroke:#1e40af,stroke-width:4px,color:#fff
+    style PORT fill:#f59e0b,stroke:#d97706,stroke-width:2px,color:#fff
+    style CONS fill:#8b5cf6,stroke:#7c3aed,stroke-width:2px,color:#fff
+    style SCEN fill:#ec4899,stroke:#db2777,stroke-width:2px,color:#fff
+    style LIV fill:#06b6d4,stroke:#0891b2,stroke-width:2px,color:#fff
+    style GOV fill:#14b8a6,stroke:#0d9488,stroke-width:2px,color:#fff
+    style DATA fill:#64748b,stroke:#475569,stroke-width:2px,color:#fff
+    style RESPONSE fill:#10b981,stroke:#059669,stroke-width:2px,color:#fff
+    style END fill:#64748b,stroke:#475569,stroke-width:2px,color:#fff
+            </div>
+        </div>
+
+        <div class="diagram-section" id="composantes">
+            <div class="section-header">
+                <h2 class="section-title">Composantes du Système</h2>
+                <p class="section-description">
+                    Architecture détaillée des composantes d'Idexios : instructions système, sources de connaissances,
+                    comportement analytique et mécanismes d'orchestration.
+                </p>
+            </div>
+            <div class="mermaid">
+graph TB
+    subgraph SYSTEM["🎯 Système Idexios"]
+        subgraph INSTRUCTIONS["Instructions Système"]
+            CTX["Contexte<br/>Orchestrateur TPG<br/>Message d'accueil"]
+            RULES["Règles de comportement<br/>Priorité rubriques<br/>Pas d'invention de données<br/>Filtres utilisateur"]
+            STYLE["Style & Format<br/>Ton professionnel<br/>Tableaux structurés<br/>Actions correctives"]
+        end
+
+        subgraph KNOWLEDGE["Sources de Connaissances"]
+            SRC1["Idexios-Prime<br/>SharePoint"]
+            SRC2["Pipeline<br/>Dataverse"]
+            SRC3["Capacity<br/>Dataverse"]
+            SRC4["Portfolio<br/>Dataverse"]
+            SRC5["Controls<br/>Dataverse"]
+            SRC6["Task<br/>Dataverse"]
+            SRC7["Finances<br/>Dataverse"]
+        end
+
+        subgraph ANALYTICS["Comportement Analytique"]
+            DATA_DRIVEN["Basé sur données réelles<br/>Jamais de chiffres inventés"]
+            GAPS["Identification des manques<br/>Colonnes absentes<br/>Champs non accessibles"]
+            ACTIONS["Propositions d'actions<br/>Correctives & Questions"]
+        end
+
+        subgraph TOPICS["Rubriques Métier"]
+            T1["Portefeuille<br/>Synthèse & Comparaison"]
+            T2["Conseils<br/>Comités & Ordre du jour"]
+            T3["Scenarios<br/>Comparaisons & Impacts"]
+            T4["Gouvernance<br/>Rapports & Rôles"]
+            T5["Livrables<br/>Résumés & Recommandations"]
+        end
+
+        subgraph KEYS["Entités Clés"]
+            K1["Ressource → tpg_resourcepool"]
+            K2["Département → tpg_department"]
+            K3["Projet → tpg_project"]
+            K4["Période → tpg_period"]
+            K5["Driver → tpg_driver"]
+            K6["Demande → tpg_projectrequests"]
+        end
+    end
+
+    CTX --> RULES
+    RULES --> STYLE
+
+    SRC1 --> DATA_DRIVEN
+    SRC2 --> DATA_DRIVEN
+    SRC3 --> DATA_DRIVEN
+    SRC4 --> DATA_DRIVEN
+    SRC5 --> DATA_DRIVEN
+    SRC6 --> DATA_DRIVEN
+    SRC7 --> DATA_DRIVEN
+
+    DATA_DRIVEN --> GAPS
+    GAPS --> ACTIONS
+
+    ACTIONS --> T1
+    ACTIONS --> T2
+    ACTIONS --> T3
+    ACTIONS --> T4
+    ACTIONS --> T5
+
+    SRC4 --> K1
+    SRC4 --> K2
+    SRC4 --> K3
+    SRC7 --> K4
+    SRC2 --> K5
+    SRC2 --> K6
+
+    style SYSTEM fill:#f8fafc,stroke:#cbd5e1,stroke-width:3px
+    style INSTRUCTIONS fill:#dbeafe,stroke:#3b82f6,stroke-width:2px
+    style KNOWLEDGE fill:#fef3c7,stroke:#f59e0b,stroke-width:2px
+    style ANALYTICS fill:#d1fae5,stroke:#10b981,stroke-width:2px
+    style TOPICS fill:#e9d5ff,stroke:#8b5cf6,stroke-width:2px
+    style KEYS fill:#fce7f3,stroke:#ec4899,stroke-width:2px
+
+    style CTX fill:#bfdbfe,stroke:#3b82f6,stroke-width:2px
+    style RULES fill:#bfdbfe,stroke:#3b82f6,stroke-width:2px
+    style STYLE fill:#bfdbfe,stroke:#3b82f6,stroke-width:2px
+
+    style DATA_DRIVEN fill:#a7f3d0,stroke:#10b981,stroke-width:2px
+    style GAPS fill:#a7f3d0,stroke:#10b981,stroke-width:2px
+    style ACTIONS fill:#a7f3d0,stroke:#10b981,stroke-width:2px
+            </div>
+        </div>
+
+        <div class="diagram-section" id="overview">
+            <div class="section-header">
+                <h2 class="section-title">Vue d'ensemble - Mission et Capacités</h2>
+                <p class="section-description">
+                    Idexios transforme les intentions stratégiques en actions coordonnées, servant de hub intelligent
+                    pour l'écosystème d'agents de gestion de projet Reddixia.
+                </p>
+            </div>
+
+            <div class="mermaid">
+graph LR
+    subgraph MISSION["Mission Principale"]
+        M1["Transformer intentions<br/>stratégiques en actions"]
+        M2["Router vers agents<br/>spécialisés"]
+        M3["Assembler vue intégrée<br/>du portefeuille"]
+    end
+
+    subgraph CAPABILITIES["Capacités Clés"]
+        C1["📊 Analyse Portfolio<br/>Projets, budgets,<br/>ressources, risques"]
+        C2["🏛️ Support Comités<br/>Ordre du jour,<br/>questions ciblées"]
+        C3["🎲 Scénarisation<br/>Priorisation,<br/>impacts, arbitrages"]
+        C4["📝 Production<br/>Rapports exécutifs,<br/>recommandations"]
+        C5["⚖️ Gouvernance<br/>Modèles, rôles,<br/>conformité"]
+    end
+
+    subgraph ECOSYSTEM["Écosystème Reddixia"]
+        A1["ATLAS-CTRL<br/>Contrôleur PCO"]
+        A2["HERMES-PROJ<br/>Chef de projet"]
+        A3["ATHENA-PORTF<br/>Portefeuille"]
+        A4["THEMIS-GOV<br/>Conformité"]
+        A5["IRIS-RISK<br/>Risques"]
+        A6["GAIA-DATA<br/>Données"]
+        A7["APOLLO-CHANGE<br/>Changement"]
+    end
+
+    M1 --> M2
+    M2 --> M3
+
+    M3 --> C1
+    M3 --> C2
+    M3 --> C3
+    M3 --> C4
+    M3 --> C5
+
+    M2 -.->|Délégation| A1
+    M2 -.->|Délégation| A2
+    M2 -.->|Délégation| A3
+    M2 -.->|Délégation| A4
+    M2 -.->|Délégation| A5
+    M2 -.->|Délégation| A6
+    M2 -.->|Délégation| A7
+
+    style MISSION fill:#dbeafe,stroke:#3b82f6,stroke-width:3px
+    style CAPABILITIES fill:#d1fae5,stroke:#10b981,stroke-width:3px
+    style ECOSYSTEM fill:#fef3c7,stroke:#f59e0b,stroke-width:3px
+
+    style M1 fill:#3b82f6,stroke:#1e40af,stroke-width:2px,color:#fff
+    style M2 fill:#3b82f6,stroke:#1e40af,stroke-width:2px,color:#fff
+    style M3 fill:#3b82f6,stroke:#1e40af,stroke-width:2px,color:#fff
+
+    style C1 fill:#10b981,stroke:#059669,stroke-width:2px,color:#fff
+    style C2 fill:#10b981,stroke:#059669,stroke-width:2px,color:#fff
+    style C3 fill:#10b981,stroke:#059669,stroke-width:2px,color:#fff
+    style C4 fill:#10b981,stroke:#059669,stroke-width:2px,color:#fff
+    style C5 fill:#10b981,stroke:#059669,stroke-width:2px,color:#fff
+            </div>
+
+            <h3 style="margin-top: 3rem; margin-bottom: 1rem; color: #1e293b; font-size: 1.5rem;">Caractéristiques Principales</h3>
+            <ul class="features-list">
+                <li>Orchestration intelligente basée sur GPT-5 Auto (Preview)</li>
+                <li>Intégration complète avec 7 sources de données Dataverse</li>
+                <li>9 rubriques personnalisées pour couvrir tous les besoins métier</li>
+                <li>Aucune invention de données - analyses basées sur faits réels</li>
+                <li>Formatage structuré : vue rapide, détails, actions, corrections</li>
+                <li>Support multilingue avec ton professionnel et accessible</li>
+                <li>Détection automatique des manques de données avec propositions correctives</li>
+                <li>6 requêtes suggérées pour faciliter le démarrage</li>
+            </ul>
+
+            <h3 style="margin-top: 2rem; margin-bottom: 1rem; color: #1e293b; font-size: 1.5rem;">Métriques de Performance (7 derniers jours)</h3>
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-label">Sessions</div>
+                    <div class="stat-value">3</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Engagement</div>
+                    <div class="stat-value">67%</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Date de publication</div>
+                    <div class="stat-value">10/12/2025</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Environnement</div>
+                    <div class="stat-value">DEMO_Partage</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer">
+        <p><strong>Projet:</strong> idexia-xpm-pantheon | <strong>Solution:</strong> Reddixia</p>
+        <p>Dernière mise à jour: 11 décembre 2025 | Auteur: François Breton (Ledobs)</p>
+    </div>
+
+    <script>
+        const tabs = document.querySelectorAll('.tab');
+        const sections = document.querySelectorAll('.diagram-section');
+
+        tabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                const targetSection = tab.dataset.section;
+
+                tabs.forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+
+                sections.forEach(section => {
+                    section.classList.remove('active');
+                });
+
+                document.getElementById(targetSection).classList.add('active');
+            });
+        });
+    </script>
+</body>
+</html>
