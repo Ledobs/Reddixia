@@ -38,3 +38,47 @@
 └── Doc-Technique/
 ├── (fichiers PDF existants préservés)
 └── architecture-solution.md
+
+
+## Configuration dans Copilot Studio
+
+### Source de connaissance existante
+- **Nom**: Idexios-Prime  
+- **Type**: SharePoint  
+- **URL**: https://idexia365.sharepoint.com/sites/Idexios/Prime/  
+- **Statut**: Prêt
+
+### Utilisation par les rubriques
+
+#### Rubrique: Portefeuille
+**Documents référencés**:
+- `/Procedures/Portefeuille/analyse-portefeuille-procedure.md`
+- `/Templates/tableau-projets.xlsx`
+
+**Instructions**: Lire la procédure d'analyse pour structurer la synthèse. Utiliser format tableau du template.
+
+#### Rubrique: Conseils
+**Documents référencés**:
+- `/Procedures/Comites/ordre-du-jour-type.md`
+- `/Procedures/Comites/questions-chefs-projet.md`
+
+#### Rubrique: Gouvernance
+**Documents référencés**:
+- `/Procedures/Gouvernance/`
+- `/Templates/rapport-executif-template.pptx`
+
+## Roadmap Option B - Listes dynamiques
+
+Voir `backlog/evolutions-futures.md` pour détails complets.
+
+**Listes SharePoint à créer**:
+1. **Actions Configurables**
+2. **Templates Réponses**  
+3. **Règles Métier**
+4. **Projets Actifs** (sync tpg_project)
+
+**Avantages**:
+- Maintenance sans modification code agent
+- Versioning automatique
+- Gouvernance accès SharePoint
+- Synchronisation temps réel
