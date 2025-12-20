@@ -3,7 +3,7 @@ SPO_DYN Listes SharePoint dynamiques
 
 ## Vue d'ensemble
 
-SPO_DYN consiste à remplacer les éléments statiques des instructions par des listes SharePoint dynamiques, permettant une configuration low code.
+SPO_DYN consiste à remplacer les éléments statiques des instructions par des listes SharePoint dynamiques par agent, permettant une configuration low cod.
 
 ## Phase 1: Infrastructure (Non démarrée)
 
@@ -13,4 +13,4 @@ SPO_DYN consiste à remplacer les éléments statiques des instructions par des 
 **Listes à créer**:
 
 #### Liste: Actions Configurables
-| Colonne | Type | Description |
+| Code | Colonne | Type | Description |

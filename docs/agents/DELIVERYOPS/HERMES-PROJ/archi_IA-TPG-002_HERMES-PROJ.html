@@ -1,0 +1,1184 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Reddixia — Architecture — HERMES-PROJ (IA-TPG-002)</title>
+
+  <!--
+    Gabarit "Devis d'architecture" pour un agent Reddixia
+    Convention de nommage (ex.) : archi_IA-TPG-012_JANUS_CLOSE_v0.03.html
+    Dossier cible (ex.)        : docs/architecture/agents/
+
+    Ce fichier est pensé pour être copié et adapté par agent.
+    Les zones à modifier sont regroupées dans le bloc JS: PAGE_META / DIAGRAMS.
+  -->
+
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body{
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+      color:#0f172a;
+      line-height: 1.55;
+    }
+
+    a{ color: inherit; }
+    code{ background:#f1f5f9; padding:.1rem .25rem; border-radius:6px; }
+
+    /* Header */
+    .header{
+      background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%);
+      color:#fff;
+      padding: 1.25rem 2rem 2.25rem;
+      box-shadow: 0 4px 8px rgba(0,0,0,.10);
+    }
+    .header-content{
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    .topbar{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap: 1rem;
+      margin-bottom: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .brand{
+      display:flex;
+      align-items:center;
+      gap: .75rem;
+      text-decoration:none;
+      font-weight: 800;
+      letter-spacing: .02em;
+    }
+
+    .brand-badge{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      width: 34px; height: 34px;
+      border-radius:10px;
+      background: rgba(255,255,255,.16);
+      border: 1px solid rgba(255,255,255,.20);
+      backdrop-filter: blur(10px);
+      font-weight: 900;
+    }
+
+    .menu-wrap{
+      display:flex;
+      align-items:center;
+      gap: .6rem;
+      flex-wrap: wrap;
+    }
+
+    .menu-label{
+      font-size: .85rem;
+      opacity: .92;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .06em;
+    }
+
+    .menu-select{
+      appearance: none;
+      border: 1px solid rgba(255,255,255,.25);
+      background: rgba(255,255,255,.12);
+      color:#fff;
+      padding: .55rem .85rem;
+      border-radius: 10px;
+      font-weight: 700;
+      min-width: 280px;
+      outline: none;
+      cursor: pointer;
+    }
+    .menu-select option{ color:#0f172a; }
+    .menu-select optgroup{ color:#0f172a; font-weight: 900; }
+
+    .meta-right{
+      display:flex;
+      gap: .5rem;
+      flex-wrap: wrap;
+      align-items:center;
+    }
+
+    .pill{
+      display:inline-flex;
+      align-items:center;
+      gap:.5rem;
+      background: rgba(255,255,255,0.12);
+      padding: .45rem .8rem;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.18);
+      backdrop-filter: blur(10px);
+      font-size: .9rem;
+      white-space: nowrap;
+    }
+    .pill strong{ font-weight: 800; }
+    .pill a{ text-decoration: none; }
+
+    h1{
+      font-size: 2.15rem;
+      font-weight: 900;
+      margin-bottom: .25rem;
+    }
+    .subtitle{
+      font-size: 1.05rem;
+      opacity: .92;
+      font-weight: 350;
+    }
+
+    .agent-info{
+      display:flex;
+      gap: .75rem;
+      margin-top: 1.25rem;
+      flex-wrap: wrap;
+    }
+    .info-badge{
+      display:flex;
+      align-items:center;
+      gap: .45rem;
+      background: rgba(255,255,255,.12);
+      padding: .5rem .9rem;
+      border-radius: 12px;
+      border: 1px solid rgba(255,255,255,.18);
+      backdrop-filter: blur(10px);
+      text-decoration:none;
+      color: inherit;
+    }
+    .info-label{
+      font-weight: 800;
+      font-size: .82rem;
+      text-transform: uppercase;
+      letter-spacing: .06em;
+      opacity: .95;
+    }
+    .info-value{
+      font-weight: 500;
+      opacity: .98;
+    }
+
+    /* Layout */
+    .container{
+      max-width: 1400px;
+      margin: -1.6rem auto 2rem;
+      padding: 0 2rem;
+    }
+
+    .tabs{
+      display:flex;
+      gap: .5rem;
+      background:#fff;
+      padding: .5rem;
+      border-radius: 14px;
+      box-shadow: 0 6px 12px rgba(0,0,0,.08);
+      margin-bottom: 1.25rem;
+      overflow-x: auto;
+    }
+
+    .tab{
+      flex: 1;
+      min-width: 190px;
+      padding: 1rem 1.2rem;
+      background: transparent;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      font-size: 1rem;
+      font-weight: 800;
+      color: #64748b;
+      transition: all .22s ease;
+      white-space: nowrap;
+    }
+    .tab:hover{ background:#f1f5f9; color:#2563eb; }
+    .tab.active{
+      background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+      color:#fff;
+      box-shadow: 0 6px 12px rgba(59,130,246,.25);
+    }
+
+    .section{
+      display:none;
+      background:#fff;
+      padding: 1.7rem;
+      border-radius: 14px;
+      box-shadow: 0 6px 12px rgba(0,0,0,.08);
+      margin-bottom: 1.25rem;
+      animation: fadeIn .18s ease;
+    }
+    .section.active{ display:block; }
+    @keyframes fadeIn{
+      from { opacity:0; transform: translateY(8px); }
+      to   { opacity:1; transform: translateY(0); }
+    }
+
+    .section-header{
+      margin-bottom: 1.25rem;
+      padding-bottom: 1rem;
+      border-bottom: 2px solid #e2e8f0;
+    }
+    .section-title{
+      font-size: 1.6rem;
+      font-weight: 900;
+      color:#0f172a;
+      margin-bottom: .35rem;
+    }
+    .section-subtitle{
+      color:#64748b;
+      font-size: 1rem;
+      line-height: 1.8;
+    }
+
+    .diagram-card{
+      border: 1px solid #e2e8f0;
+      background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+      border-radius: 14px;
+      padding: 1.1rem 1.2rem;
+      margin-top: 1rem;
+      box-shadow: 0 1px 2px rgba(0,0,0,.04);
+    }
+    .diagram-card h3{ font-size: 1.2rem; margin-bottom: .35rem; }
+    .diagram-card h4{ font-size: 1.05rem; margin: .65rem 0 .25rem; }
+    .muted{ color:#64748b; }
+
+    .features-list{
+      list-style: none;
+      margin-top: .7rem;
+    }
+    .features-list li{
+      padding: .55rem 0;
+      padding-left: 1.7rem;
+      position: relative;
+      color:#334155;
+    }
+    .features-list li:before{
+      content: "✓";
+      position:absolute;
+      left:0;
+      color:#10b981;
+      font-weight: 900;
+    }
+
+    .grid-2{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+    .grid-3{
+      display:grid;
+      grid-template-columns: repeat(3,1fr);
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+    @media (max-width: 980px){
+      .grid-2, .grid-3{ grid-template-columns: 1fr; }
+    }
+
+    .data-table{
+      width:100%;
+      border-collapse: collapse;
+      margin: .6rem 0 .2rem;
+    }
+    .data-table th, .data-table td{
+      border: 1px solid #e2e8f0;
+      padding: .55rem .6rem;
+      vertical-align: top;
+    }
+    .data-table th{
+      background:#f8fafc;
+      text-align:left;
+      font-weight: 900;
+    }
+
+    .btn{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      padding: .85rem 1.1rem;
+      border-radius: 12px;
+      background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+      color:#fff;
+      font-weight: 900;
+      text-decoration:none;
+      border: none;
+      cursor:pointer;
+    }
+    .btn.secondary{
+      background:#f1f5f9;
+      color:#0f172a;
+      border: 1px solid #e2e8f0;
+    }
+
+    .footer{
+      text-align:center;
+      padding: 2rem;
+      color:#64748b;
+      font-size: .9rem;
+    }
+
+    /* Print */
+    @media print{
+      body{ background:#fff; }
+      .header{ box-shadow:none; }
+      .tabs{ display:none; }
+      .container{ margin: 0; }
+      .section{ display:block !important; box-shadow:none; border: 1px solid #e2e8f0; }
+      .footer{ page-break-after: avoid; }
+    }
+
+    /* Cytoscape containers */
+    .cyto{
+      width: 100%;
+      height: 700px;
+      border: 1px solid #e2e8f0;
+      border-radius: 14px;
+      background: #ffffff;
+      overflow: hidden;
+    }
+    .cyto.small{ height: 520px; }
+  </style>
+</head>
+
+<body>
+  <div class="header">
+    <div class="header-content">
+
+      <!-- Top navigation (Hub + menu agents) -->
+      <div class="topbar">
+        <a class="brand" id="hubLink" href="../idexios/archi_Reddixia_v11_Idexios_clean.html">
+          <span class="brand-badge">R</span>
+          <span>Reddixia — Architecture</span>
+        </a>
+
+        <div class="menu-wrap" id="menuWrap">
+          <span class="menu-label">Aller à</span>
+          <select class="menu-select" id="agentsMenu" aria-label="Menu des architectures">
+            <option value="">(menu en chargement...)</option>
+          </select>
+        </div>
+
+        <div class="meta-right">
+          <span class="pill"><strong id="metaVersion">v0.01</strong></span>
+          <span class="pill"><span>Dernière mise à jour:</span> <strong id="metaUpdated">YYYY-MM-DD</strong></span>
+          <a class="pill" id="repoLink" href="#" target="_blank" rel="noopener">Repo Git</a>
+        </div>
+      </div>
+
+      <h1 id="agentTitle">NOM DE L'AGENT — Devis d'architecture</h1>
+      <p class="subtitle" id="agentSubtitle">Rôle / mission en une phrase, orienté livrables.</p>
+
+      <div class="agent-info">
+        <div class="info-badge"><span class="info-label">Code</span><span class="info-value" id="metaCode">IA-TPG-XXX</span></div>
+        <div class="info-badge"><span class="info-label">Pack</span><span class="info-value" id="metaPack">FinanceOps</span></div>
+        <div class="info-badge"><span class="info-label">Modèle</span><span class="info-value" id="metaModel">GPT-x</span></div>
+        <div class="info-badge"><span class="info-label">Statut</span><span class="info-value" id="metaStatus">En cours</span></div>
+        <div class="info-badge"><span class="info-label">Plateforme</span><span class="info-value" id="metaPlatform">Copilot Studio</span></div>
+
+        <a class="info-badge" id="metaSolutionLink" href="#" target="_blank" rel="noopener" style="display:none;">
+          <span class="info-label">Solution</span><span class="info-value" id="metaSolutionLabel">xPM-Pantheon</span>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <div class="container">
+
+    <!-- Tabs -->
+    <div class="tabs" role="tablist" aria-label="Sections du devis d'architecture">
+      <button class="tab active" data-section="architecture" role="tab">Architecture</button>
+      <button class="tab" data-section="flux" role="tab">Flux</button>
+      <button class="tab" data-section="composantes" role="tab">Composantes</button>
+      <button class="tab" data-section="overview" role="tab">Vue d'ensemble</button>
+      <button class="tab" data-section="information" role="tab">Modèle de données</button>
+      <button class="tab" data-section="agentic" role="tab">Flux agentique</button>
+    </div>
+
+    <!-- Section: Architecture -->
+    <section class="section active" id="architecture" role="tabpanel">
+      <div class="section-header">
+        <h2 class="section-title">Architecture</h2>
+        <p class="section-subtitle">
+          Vue logique de l’agent : contexte → sources → traitements → sorties.
+          Le graphe doit rester lisible (peu de nœuds, regroupements explicites).
+        </p>
+      </div>
+
+      <div id="cyto-architecture" class="cyto"></div>
+
+      <div class="diagram-card">
+        <h3>Description</h3>
+        <p class="muted">
+          Résume ici : l’intention couverte par l’agent, les dépendances, et le type de sorties attendues (conversation / cartes / rapports / process).
+        </p>
+        <ul class="features-list">
+          <li>Routage attendu (rubrique / pack / escalade éventuelle)</li>
+          <li>Sources principales (Dataverse <code>tpg_*</code>, SharePoint <code>Idexios-Prime</code>, autres)</li>
+          <li>Traçabilité (traceId, liens vers enregistrements, journalisation)</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- Section: Flux -->
+    <section class="section" id="flux" role="tabpanel">
+      <div class="section-header">
+        <h2 class="section-title">Flux</h2>
+        <p class="section-subtitle">
+          Le flux décrit l’enchaînement des étapes : qualification → clarification → extraction → calcul → assemblage → restitution.
+        </p>
+      </div>
+
+      <div class="grid-2">
+        <div class="diagram-card">
+          <h3>Flux de la rubrique (local)</h3>
+          <p class="muted">
+            Si l’agent participe à une rubrique, documenter le flux de bout en bout (questions, règles de période, filtres, gestion des exceptions).
+          </p>
+          <div id="cyto-rubrique-local" class="cyto small"></div>
+        </div>
+
+        <div class="diagram-card">
+          <h3>Flux d’orchestration (Idexios ↔ agent)</h3>
+          <p class="muted">
+            Représentation simplifiée des allers-retours entre Idexios, l’agent et les sources.
+          </p>
+          <div id="cyto-rubriques-loop" class="cyto small"></div>
+        </div>
+      </div>
+
+      <div class="diagram-card">
+        <h3>Règles et décisions</h3>
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Point</th>
+              <th>Règle / choix</th>
+              <th>Justification</th>
+              <th>Impact</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Période</td>
+              <td>M0+M1 par défaut, confirmation si KPI financiers/capacité</td>
+              <td>Limiter les résultats ambigus</td>
+              <td>UX plus prévisible</td>
+            </tr>
+            <tr>
+              <td>Accès</td>
+              <td>Least-privilege, filtrage par contexte</td>
+              <td>Gouvernance et audit</td>
+              <td>Données plus sûres</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Section: Composantes -->
+    <section class="section" id="composantes" role="tabpanel">
+      <div class="section-header">
+        <h2 class="section-title">Composantes</h2>
+        <p class="section-subtitle">
+          Inventaire des connecteurs, actions, artefacts et dépendances techniques (MCP, Dataverse, SharePoint, Power Platform, etc.).
+        </p>
+      </div>
+
+      <div id="cyto-components" class="cyto"></div>
+
+      <div class="diagram-card">
+        <h3>Inventaire (à maintenir)</h3>
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Type</th>
+              <th>Nom</th>
+              <th>Rôle</th>
+              <th>Notes / contraintes</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Connecteur</td>
+              <td>Dataverse</td>
+              <td>Lire/écrire les tables <code>tpg_*</code></td>
+              <td>Respecter RLS / scopes</td>
+            </tr>
+            <tr>
+              <td>Artefact</td>
+              <td>Template SharePoint</td>
+              <td>Génération de livrables</td>
+              <td>Versionner + référencer</td>
+            </tr>
+            <tr>
+              <td>Service</td>
+              <td>Serveur MCP (si présent)</td>
+              <td>Outils / actions spécialisées</td>
+              <td>Traçabilité + contrôle accès</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Section: Vue d'ensemble -->
+    <section class="section" id="overview" role="tabpanel">
+      <div class="section-header">
+        <h2 class="section-title">Vue d’ensemble</h2>
+        <p class="section-subtitle">
+          Scénarios d’usage, contrat de sortie, et critères d’acceptation.
+        </p>
+      </div>
+
+      <div id="cyto-overview" class="cyto"></div>
+
+      <div class="grid-2">
+        <div class="diagram-card">
+          <h3>Scénarios d’usage</h3>
+          <ul class="features-list">
+            <li>Question type (ex.) : « Donne-moi l’état du portefeuille pour le mois courant »</li>
+            <li>Drill-down : portefeuille → programme → projet → tâche</li>
+            <li>Restitution : résumé + preuves + actions proposées</li>
+          </ul>
+        </div>
+
+        <div class="diagram-card">
+          <h3>Critères d’acceptation</h3>
+          <ul class="features-list">
+            <li>Les filtres de contexte sont explicités (périmètre/période)</li>
+            <li>Les champs non disponibles sont signalés avec la raison</li>
+            <li>Les sorties sont reproductibles (mêmes entrées → même structure)</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="diagram-card">
+        <h3>Contrat de sortie (à maintenir)</h3>
+
+        <h4>A. Entrées</h4>
+        <table class="data-table">
+          <thead><tr><th>Entrée</th><th>Source</th><th>Notes</th></tr></thead>
+          <tbody>
+            <tr><td>Contexte (projectId/portfolioId/programId)</td><td>Dataverse</td><td>Résolution par code/nom si nécessaire</td></tr>
+            <tr><td>Période</td><td>tpg_period</td><td>Obligatoire si KPI financiers/capacité</td></tr>
+          </tbody>
+        </table>
+
+        <h4>B. Traitements</h4>
+        <table class="data-table">
+          <thead><tr><th>Traitement</th><th>Règles</th><th>Erreurs gérées</th></tr></thead>
+          <tbody>
+            <tr><td>Calcul KPI</td><td>SPI/CPI, charge vs capacité, etc.</td><td>Données manquantes, période invalide</td></tr>
+            <tr><td>Qualification</td><td>Rubrique + pack + sous-intention</td><td>Ambiguïté, périmètre incomplet</td></tr>
+          </tbody>
+        </table>
+
+        <h4>C. Sorties</h4>
+        <table class="data-table">
+          <thead><tr><th>Type</th><th>Nom</th><th>Format</th><th>Notes</th></tr></thead>
+          <tbody>
+            <tr><td>Adaptive Card</td><td>Carte synthèse</td><td>Table + RAG + liens</td><td>Colonnes stables, drill-down</td></tr>
+            <tr><td>Rapport</td><td>Rapport PDF</td><td>Template SharePoint</td><td>Sections standardisées</td></tr>
+            <tr><td>Process</td><td>Création/MAJ</td><td>Tables Dataverse</td><td>Audit: traceId</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Section: Modèle de données -->
+    <section class="section" id="information" role="tabpanel">
+      <div class="section-header">
+        <h2 class="section-title">Modèle de données</h2>
+        <p class="section-subtitle">
+          Tables Dataverse / objets consommés. Si un schéma externe (dbdiagram) est utilisé, documenter le lien.
+        </p>
+      </div>
+
+      <div class="diagram-card">
+        <h3>Entités principales</h3>
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Entité / table</th>
+              <th>Usage</th>
+              <th>Champs clés</th>
+              <th>Remarques</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>tpg_project</code></td>
+              <td>Projet (budget, dates, statut)</td>
+              <td><code>tpg_projectid</code>, <code>tpg_name</code></td>
+              <td>RLS / accès par contexte</td>
+            </tr>
+            <tr>
+              <td><code>tpg_financials</code></td>
+              <td>PV/EV/AC, EVM</td>
+              <td><code>tpg_period</code>, <code>tpg_amount</code></td>
+              <td>Aligner sur périodes</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="diagram-card">
+        <h3>Schéma (optionnel)</h3>
+        <p class="muted">
+          Si vous avez un lien dbdiagram, activez le bouton. Sinon, retirer ce bloc.
+        </p>
+
+        <div style="display:flex; gap:12px; flex-wrap:wrap; margin: 10px 0 14px;">
+          <a id="dbdLink" class="btn" href="#" target="_blank" rel="noopener" style="display:none;">Ouvrir dans dbdiagram</a>
+          <button class="btn secondary" id="toggleEmbedBtn" type="button">Afficher / masquer l’embed</button>
+        </div>
+
+        <iframe
+          id="dbdEmbed"
+          title="Schéma dbdiagram"
+          src=""
+          style="width:100%; height:720px; border:1px solid #e2e8f0; border-radius:14px; background:white; display:none;"
+          loading="lazy">
+        </iframe>
+      </div>
+    </section>
+
+    <!-- Section: Flux agentique -->
+    <section class="section" id="agentic" role="tabpanel">
+      <div class="section-header">
+        <h2 class="section-title">Flux agentique</h2>
+        <p class="section-subtitle">
+          Comment Idexios appelle l’agent, comment l’agent exploite ses outils, et comment il restitue des sorties standardisées.
+        </p>
+      </div>
+
+      <div class="grid-2">
+        <div class="diagram-card">
+          <h3>Contrat d’orchestration (commun)</h3>
+          <ol style="margin-left: 1.15rem;">
+            <li>Qualification de l’intention → sélection de rubrique</li>
+            <li>Résolution du contexte (périmètre + période) → validation</li>
+            <li>Appel d’outils / sources → calculs / règles</li>
+            <li>Assemblage des preuves → synthèse</li>
+            <li>Restitution (conversation / cartes / rapport / process)</li>
+          </ol>
+        </div>
+
+        <div class="diagram-card">
+          <h3>Journalisation et audit</h3>
+          <ul class="features-list">
+            <li><strong>traceId</strong> unique par exécution</li>
+            <li>Références vers enregistrements (GUID Dataverse)</li>
+            <li>Justification des filtres (périmètre/période) dans la sortie</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="diagram-card">
+        <h3>Diagramme agentique (optionnel)</h3>
+        <p class="muted">Utilise ce graphe si tu veux illustrer les boucles de clarification et les appels MCP.</p>
+        <div id="cyto-agentic" class="cyto"></div>
+      </div>
+    </section>
+
+    <div class="footer">
+      <p><strong>Projet:</strong> idexia-xpm-pantheon | <strong>Solution:</strong> Reddixia</p>
+      <p id="footerLine">Dernière mise à jour: YYYY-MM-DD | Auteur: (à compléter)</p>
+    </div>
+  </div>
+
+  <!-- Cytoscape: local first, CDN fallback -->
+  <script src="./libs/cytoscape.min.js"
+          onerror="(function(){var s=document.createElement('script');s.src='https://unpkg.com/cytoscape@3.26.0/dist/cytoscape.min.js';document.head.appendChild(s);})();">
+  </script>
+
+  <script>
+
+    /* =========================
+       1) MÉTADONNÉES À MODIFIER
+       ========================= */
+    const PAGE_META = {
+      hubHref: "archi_Idexios.html",
+      repoHref: "https://github.com/Ledobs/Reddixia/blob/main/README.md",
+
+      agent: {
+        title: "HERMES-PROJ",
+        subtitle: "Compagnon des chefs de projet — livrables, registres et comptes rendus standardisés.",
+        code: "IA-TPG-002",
+        pack: "DeliveryOps",
+        model: "GPT-5 Auto (Preview)",
+        status: "En cours",
+        platform: "Microsoft Copilot Studio",
+
+        version: "v1.0",
+        updated: "2025-12-20",
+        author: "François Breton",
+
+        solutionLabel: "xPM-Pantheon",
+        solutionHref: ""
+      },
+
+      dbdiagram: {
+        link: "",
+        embed: ""
+      },
+
+      menu: {
+        enabled: true,
+        url: "./agents-menu.json"
+      }
+    };
+    const NAV_DATA = {"hub": {"label": "Idexios (Hub)", "href": "archi_Idexios.html"}, "agents": [{"code": "IA-TPG-002", "slug": "HERMES-PROJ", "pack": "DeliveryOps", "label": "HERMES-PROJ (IA-TPG-002)", "href": "agents/HERMES-PROJ/archi_IA-TPG-002_HERMES-PROJ.html"}, {"code": "IA-TPG-003", "slug": "ATHENA-PORTF", "pack": "PortfolioOps", "label": "ATHENA-PORTF (IA-TPG-003)", "href": "agents/ATHENA-PORTF/archi_IA-TPG-003_ATHENA-PORTF.html"}, {"code": "IA-TPG-004", "slug": "THEMIS-GOV", "pack": "GovernanceOps", "label": "THEMIS-GOV (IA-TPG-004)", "href": "agents/THEMIS-GOV/archi_IA-TPG-004_THEMIS-GOV.html"}, {"code": "IA-TPG-005", "slug": "ATLAS-CTRL", "pack": "FinanceOps", "label": "ATLAS-CTRL (IA-TPG-005)", "href": "agents/ATLAS-CTRL/archi_IA-TPG-005_ATLAS-CTRL.html"}, {"code": "IA-TPG-006", "slug": "IRIS-RISK", "pack": "PortfolioOps", "label": "IRIS-RISK (IA-TPG-006)", "href": "agents/IRIS-RISK/archi_IA-TPG-006_IRIS-RISK.html"}, {"code": "IA-TPG-007", "slug": "GAIA-DATA", "pack": "GovernanceOps", "label": "GAIA-DATA (IA-TPG-007)", "href": "agents/GAIA-DATA/archi_IA-TPG-007_GAIA-DATA.html"}, {"code": "IA-TPG-008", "slug": "APOLLO-CHANGE", "pack": "CommsOps", "label": "APOLLO-CHANGE (IA-TPG-008)", "href": "agents/APOLLO-CHANGE/archi_IA-TPG-008_APOLLO-CHANGE.html"}, {"code": "IA-TPG-009", "slug": "JANUS-CLOSE", "pack": "FinanceOps", "label": "JANUS-CLOSE (IA-TPG-009)", "href": "agents/JANUS-CLOSE/archi_IA-TPG-009_JANUS-CLOSE.html"}, {"code": "IA-TPG-010", "slug": "VESTA-INVOICE", "pack": "FinanceOps", "label": "VESTA-INVOICE (IA-TPG-010)", "href": "agents/VESTA-INVOICE/archi_IA-TPG-010_VESTA-INVOICE.html"}, {"code": "IA-TPG-011", "slug": "PLUTUS-ANOM", "pack": "FinanceOps", "label": "PLUTUS-ANOM (IA-TPG-011)", "href": "agents/PLUTUS-ANOM/archi_IA-TPG-011_PLUTUS-ANOM.html"}, {"code": "IA-TPG-012", "slug": "CASSANDRA-FQA", "pack": "FinanceOps", "label": "CASSANDRA-FQA (IA-TPG-012)", "href": "agents/CASSANDRA-FQA/archi_IA-TPG-012_CASSANDRA-FQA.html"}, {"code": "IA-TPG-013", "slug": "MERCURY-COLLECT", "pack": "FinanceOps", "label": "MERCURY-COLLECT (IA-TPG-013)", "href": "agents/MERCURY-COLLECT/archi_IA-TPG-013_MERCURY-COLLECT.html"}, {"code": "IA-TPG-014", "slug": "MINERVA-DATA", "pack": "GovernanceOps", "label": "MINERVA-DATA (IA-TPG-014)", "href": "agents/MINERVA-DATA/archi_IA-TPG-014_MINERVA-DATA.html"}, {"code": "IA-TPG-015", "slug": "CICERO-ALLHANDS", "pack": "CommsOps", "label": "CICERO-ALLHANDS (IA-TPG-015)", "href": "agents/CICERO-ALLHANDS/archi_IA-TPG-015_CICERO-ALLHANDS.html"}, {"code": "IA-TPG-016", "slug": "POSEIDON-CASH", "pack": "FinanceOps", "label": "POSEIDON-CASH (IA-TPG-016)", "href": "agents/POSEIDON-CASH/archi_IA-TPG-016_POSEIDON-CASH.html"}, {"code": "IA-TPG-017", "slug": "JUNO-CONTRACT", "pack": "ProcurementOps", "label": "JUNO-CONTRACT (IA-TPG-017)", "href": "agents/JUNO-CONTRACT/archi_IA-TPG-017_JUNO-CONTRACT.html"}, {"code": "IA-TPG-018", "slug": "CERES-BUDGET", "pack": "FinanceOps", "label": "CERES-BUDGET (IA-TPG-018)", "href": "agents/CERES-BUDGET/archi_IA-TPG-018_CERES-BUDGET.html"}, {"code": "IA-TPG-019", "slug": "VULCAN-PROC", "pack": "ProcurementOps", "label": "VULCAN-PROC (IA-TPG-019)", "href": "agents/VULCAN-PROC/archi_IA-TPG-019_VULCAN-PROC.html"}]};
+    const PACK_LABELS = {"PortfolioOps": "PortfolioOps — Pilotage de portefeuille", "DeliveryOps": "DeliveryOps — Exécution projet", "FinanceOps": "FinanceOps — Finance & contrôle", "GovernanceOps": "GovernanceOps — Gouvernance & conformité", "ProcurementOps": "ProcurementOps — Achats & contrats", "CommsOps": "CommsOps — Adoption & communications", "Transversal (Hub)": "Transversal — Orchestration"};
+    const PACK_ORDER = ["PortfolioOps", "DeliveryOps", "FinanceOps", "GovernanceOps", "ProcurementOps", "CommsOps"];
+
+    function normalizePath(p){
+      return (p || "").toString().replace(/\\/g,"/").toLowerCase();
+    }
+    function computePrefix(){
+      const p = normalizePath(window.location.pathname || "");
+      return p.includes("/agents/") ? "../../" : "";
+    }
+
+
+    /* =========================
+       2) DIAGRAMMES À MODIFIER
+       - Format Cytoscape: { nodes:[], edges:[] } ou directement elements[]
+       ========================= */
+    const DIAGRAMS = (function(){
+      function toElements(obj){
+        const nodes = (obj.nodes || []).map(n => ({ data: n.data, position: n.position, classes: n.classes || "" }));
+        const edges = (obj.edges || []).map(e => ({ data: e.data, classes: e.classes || "" }));
+        return nodes.concat(edges);
+      }
+
+      function architectureElements(){
+        return {
+          nodes: [
+            { data:{ id:"IDEXIOS", label:"Idexios (Hub)" }, position:{ x:520, y:90 }, classes:"hub" },
+            { data:{ id:"RUB_LIVRABLES", label:"Rubrique\nLIVRABLES" }, position:{ x:250, y:150 }, classes:"stage" },
+            { data:{ id:"RUB_CONSEILS", label:"Rubrique\nCONSEILS" }, position:{ x:250, y:60 }, classes:"stage" },
+
+            { data:{ id:"HERMES", label:"HERMES-PROJ\nCompagnon des chefs de projet" }, position:{ x:520, y:260 }, classes:"stage" },
+
+            { data:{ id:"DV_TPG_PROJECT", label:"Dataverse\nTPG Project\n(tpg_project)" }, position:{ x:160, y:300 } },
+            { data:{ id:"DV_TPG_TASK", label:"Dataverse\nTPG Tasks\n(tpg_projecttask)" }, position:{ x:160, y:390 } },
+            { data:{ id:"DV_TPG_CAPA", label:"Dataverse\nCapacité / Temps\n(assignments/timesheets)" }, position:{ x:160, y:480 }, classes:"optional" },
+            { data:{ id:"DV_TPG_RISK", label:"Dataverse\nRisques\n(tpg_risk*)" }, position:{ x:320, y:480 }, classes:"optional" },
+
+            { data:{ id:"SP_TEMPLATES", label:"SharePoint\nIdexios-Prime\nGabarits projets" }, position:{ x:320, y:360 } },
+
+            { data:{ id:"SRC_EXT", label:"Sources externes\n(CRM/ERP...)\nOptionnel" }, position:{ x:320, y:560 }, classes:"optional" },
+
+            { data:{ id:"OUT_MOP_DOCX", label:"ProjectMOP.docx" }, position:{ x:380, y:660 } },
+            { data:{ id:"OUT_STATUS_DOCX", label:"ProjectStatusReport.docx" }, position:{ x:520, y:660 } },
+            { data:{ id:"OUT_COMMITTEE_PPTX", label:"ProjectCommitteePack.pptx" }, position:{ x:700, y:660 } },
+            { data:{ id:"OUT_ACTION_XLSX", label:"ActionRegister.xlsx" }, position:{ x:880, y:660 } },
+
+            { data:{ id:"CS_AGENT_HERMES", label:"Copilot Studio\nAgent HERMES" }, position:{ x:860, y:240 }, classes:"stage" },
+            { data:{ id:"TOPICS_HERMES", label:"Topics\n(Livrables/Conseils)" }, position:{ x:860, y:140 } },
+            { data:{ id:"ACTIONS_CONNECTORS", label:"Connecteurs\nDataverse / SharePoint" }, position:{ x:860, y:340 } }
+          ],
+          edges: [
+            { data:{ id:"E_IDEXIOS_HERMES", source:"IDEXIOS", target:"HERMES" } },
+            { data:{ id:"E_LIVR_HERMES", source:"RUB_LIVRABLES", target:"HERMES" } },
+            { data:{ id:"E_CONS_HERMES", source:"RUB_CONSEILS", target:"HERMES" } },
+
+            { data:{ id:"E_HERMES_DV1", source:"HERMES", target:"DV_TPG_PROJECT" }, classes:"accessEdge" },
+            { data:{ id:"E_HERMES_DV2", source:"HERMES", target:"DV_TPG_TASK" }, classes:"accessEdge" },
+            { data:{ id:"E_HERMES_DV3", source:"HERMES", target:"DV_TPG_CAPA" }, classes:"accessEdge optionalEdge" },
+            { data:{ id:"E_HERMES_DV4", source:"HERMES", target:"DV_TPG_RISK" }, classes:"accessEdge optionalEdge" },
+
+            { data:{ id:"E_HERMES_SP", source:"HERMES", target:"SP_TEMPLATES" }, classes:"accessEdge" },
+            { data:{ id:"E_HERMES_EXT", source:"HERMES", target:"SRC_EXT" }, classes:"accessEdge optionalEdge" },
+
+            { data:{ id:"E_HERMES_OUT1", source:"HERMES", target:"OUT_MOP_DOCX" } },
+            { data:{ id:"E_HERMES_OUT2", source:"HERMES", target:"OUT_STATUS_DOCX" } },
+            { data:{ id:"E_HERMES_OUT3", source:"HERMES", target:"OUT_COMMITTEE_PPTX" } },
+            { data:{ id:"E_HERMES_OUT4", source:"HERMES", target:"OUT_ACTION_XLSX" } },
+
+            { data:{ id:"E_TOPICS_CS", source:"TOPICS_HERMES", target:"CS_AGENT_HERMES" } },
+            { data:{ id:"E_CS_CONN", source:"CS_AGENT_HERMES", target:"ACTIONS_CONNECTORS" }, classes:"accessEdge" }
+          ]
+        };
+      }
+
+      function componentsElements(){
+        return {
+          nodes: [
+            { data:{ id:"TOPICS_HERMES", label:"Topics HERMES\n(Livrables/Conseils)" }, position:{ x:300, y:90 }, classes:"stage" },
+            { data:{ id:"CS_AGENT_HERMES", label:"Copilot Studio\nAgent HERMES" }, position:{ x:520, y:180 }, classes:"stage" },
+            { data:{ id:"ACTIONS_CONNECTORS", label:"Actions & Connecteurs\nDataverse / SharePoint" }, position:{ x:760, y:180 } },
+
+            { data:{ id:"DV_TPG_PROJECT", label:"Dataverse\n(tpg_project)" }, position:{ x:900, y:80 } },
+            { data:{ id:"DV_TPG_TASK", label:"Dataverse\n(tpg_projecttask)" }, position:{ x:900, y:160 } },
+            { data:{ id:"DV_TPG_RISK", label:"Dataverse\n(tpg_risk*)" }, position:{ x:900, y:240 }, classes:"optional" },
+            { data:{ id:"SP_TEMPLATES", label:"SharePoint\nGabarits projets" }, position:{ x:900, y:330 } },
+
+            { data:{ id:"REPORT_FACTORY", label:"Générateur de documents\n(Logic Apps / Flow / Function)\nOptionnel" }, position:{ x:520, y:340 }, classes:"optional" },
+
+            { data:{ id:"OUT_MOP_DOCX", label:"ProjectMOP.docx" }, position:{ x:360, y:520 } },
+            { data:{ id:"OUT_STATUS_DOCX", label:"ProjectStatusReport.docx" }, position:{ x:520, y:520 } },
+            { data:{ id:"OUT_COMMITTEE_PPTX", label:"ProjectCommitteePack.pptx" }, position:{ x:700, y:520 } },
+            { data:{ id:"OUT_ACTION_XLSX", label:"ActionRegister.xlsx" }, position:{ x:880, y:520 } }
+          ],
+          edges: [
+            { data:{ id:"E_TP_CS", source:"TOPICS_HERMES", target:"CS_AGENT_HERMES" } },
+            { data:{ id:"E_CS_AC", source:"CS_AGENT_HERMES", target:"ACTIONS_CONNECTORS" } },
+
+            { data:{ id:"E_AC_DV1", source:"ACTIONS_CONNECTORS", target:"DV_TPG_PROJECT" }, classes:"accessEdge" },
+            { data:{ id:"E_AC_DV2", source:"ACTIONS_CONNECTORS", target:"DV_TPG_TASK" }, classes:"accessEdge" },
+            { data:{ id:"E_AC_DV3", source:"ACTIONS_CONNECTORS", target:"DV_TPG_RISK" }, classes:"accessEdge optionalEdge" },
+            { data:{ id:"E_AC_SP", source:"ACTIONS_CONNECTORS", target:"SP_TEMPLATES" }, classes:"accessEdge" },
+
+            { data:{ id:"E_CS_RF", source:"CS_AGENT_HERMES", target:"REPORT_FACTORY" }, classes:"optionalEdge" },
+            { data:{ id:"E_RF_O1", source:"REPORT_FACTORY", target:"OUT_MOP_DOCX" }, classes:"optionalEdge" },
+            { data:{ id:"E_RF_O2", source:"REPORT_FACTORY", target:"OUT_STATUS_DOCX" }, classes:"optionalEdge" },
+            { data:{ id:"E_RF_O3", source:"REPORT_FACTORY", target:"OUT_COMMITTEE_PPTX" }, classes:"optionalEdge" },
+            { data:{ id:"E_RF_O4", source:"REPORT_FACTORY", target:"OUT_ACTION_XLSX" }, classes:"optionalEdge" }
+          ]
+        };
+      }
+
+      function overviewElements(){
+        return {
+          nodes: [
+            { data:{ id:"REQ_PM", label:"Demande chef de projet\n(MOP, CR, ODJ, registre)" }, position:{ x:160, y:160 }, classes:"stage" },
+            { data:{ id:"RUB_LIVRABLES", label:"Rubrique\nLIVRABLES" }, position:{ x:360, y:80 } },
+            { data:{ id:"RUB_CONSEILS", label:"Rubrique\nCONSEILS" }, position:{ x:360, y:240 } },
+
+            { data:{ id:"HERMES", label:"HERMES-PROJ\nCompagnon des chefs de projet" }, position:{ x:560, y:160 }, classes:"stage" },
+            { data:{ id:"FETCH_DATA", label:"Récupération données projet\n(tpg_project, tasks, risques, capacité)" }, position:{ x:780, y:160 } },
+            { data:{ id:"APPLY_RULES", label:"Mise en forme\n(règles, structure, gabarits)" }, position:{ x:1000, y:160 } },
+
+            { data:{ id:"OUT_MOP_DOCX", label:"ProjectMOP.docx" }, position:{ x:860, y:330 } },
+            { data:{ id:"OUT_STATUS_DOCX", label:"ProjectStatusReport.docx" }, position:{ x:1030, y:330 } },
+            { data:{ id:"OUT_COMMITTEE_PPTX", label:"ProjectCommitteePack.pptx" }, position:{ x:1200, y:330 } },
+            { data:{ id:"OUT_ACTION_XLSX", label:"ActionRegister.xlsx" }, position:{ x:1370, y:330 } }
+          ],
+          edges: [
+            { data:{ id:"E_REQ_LIV", source:"REQ_PM", target:"RUB_LIVRABLES" } },
+            { data:{ id:"E_REQ_CONS", source:"REQ_PM", target:"RUB_CONSEILS" } },
+            { data:{ id:"E_LIV_H", source:"RUB_LIVRABLES", target:"HERMES" } },
+            { data:{ id:"E_CONS_H", source:"RUB_CONSEILS", target:"HERMES" } },
+            { data:{ id:"E_H_F", source:"HERMES", target:"FETCH_DATA" }, classes:"accessEdge" },
+            { data:{ id:"E_F_A", source:"FETCH_DATA", target:"APPLY_RULES" } },
+            { data:{ id:"E_A_O1", source:"APPLY_RULES", target:"OUT_MOP_DOCX" } },
+            { data:{ id:"E_A_O2", source:"APPLY_RULES", target:"OUT_STATUS_DOCX" } },
+            { data:{ id:"E_A_O3", source:"APPLY_RULES", target:"OUT_COMMITTEE_PPTX" } },
+            { data:{ id:"E_A_O4", source:"APPLY_RULES", target:"OUT_ACTION_XLSX" } }
+          ]
+        };
+      }
+
+      function rubriquesLoopElements(){
+        return {
+          nodes: [
+            { data:{ id:"IDEXIOS", label:"Idexios (Hub)" }, position:{ x:520, y:90 }, classes:"hub" },
+            { data:{ id:"RUB_LIVRABLES", label:"Rubrique\nLIVRABLES" }, position:{ x:260, y:210 }, classes:"stage" },
+            { data:{ id:"RUB_CONSEILS", label:"Rubrique\nCONSEILS" }, position:{ x:260, y:90 }, classes:"stage" },
+            { data:{ id:"HERMES", label:"HERMES-PROJ" }, position:{ x:520, y:160 }, classes:"stage" },
+            { data:{ id:"OUT", label:"Livrables\n+ registres\n+ actions" }, position:{ x:820, y:160 } }
+          ],
+          edges: [
+            { data:{ id:"E_I_L", source:"IDEXIOS", target:"RUB_LIVRABLES" } },
+            { data:{ id:"E_I_C", source:"IDEXIOS", target:"RUB_CONSEILS" } },
+            { data:{ id:"E_L_H", source:"RUB_LIVRABLES", target:"HERMES" } },
+            { data:{ id:"E_C_H", source:"RUB_CONSEILS", target:"HERMES" } },
+            { data:{ id:"E_H_O", source:"HERMES", target:"OUT" } },
+            { data:{ id:"E_O_I", source:"OUT", target:"IDEXIOS" }, classes:"optionalEdge" }
+          ]
+        };
+      }
+
+      function rubriqueLocalElements(){
+        return {
+          nodes: [
+            { data:{ id:"STEP1", label:"Intention\n& contexte" }, position:{ x:220, y:160 }, classes:"stage" },
+            { data:{ id:"STEP2", label:"Clarifier\n(périmètre/période)" }, position:{ x:460, y:160 } },
+            { data:{ id:"STEP3", label:"Extraire\n(sources)" }, position:{ x:700, y:160 } },
+            { data:{ id:"STEP4", label:"Produire\n(livrable)" }, position:{ x:940, y:160 }, classes:"stage" }
+          ],
+          edges: [
+            { data:{ id:"L1", source:"STEP1", target:"STEP2" } },
+            { data:{ id:"L2", source:"STEP2", target:"STEP3" } },
+            { data:{ id:"L3", source:"STEP3", target:"STEP4" } }
+          ]
+        };
+      }
+
+      function agenticElements(){
+        return {
+          nodes: [
+            { data:{ id:"USER", label:"Utilisateur" }, position:{ x:240, y:160 }, classes:"stage" },
+            { data:{ id:"HERMES", label:"HERMES-PROJ" }, position:{ x:520, y:160 }, classes:"stage" },
+            { data:{ id:"TOOLS", label:"Outils\n(connecteurs)" }, position:{ x:820, y:160 } }
+          ],
+          edges: [
+            { data:{ id:"A1", source:"USER", target:"HERMES" } },
+            { data:{ id:"A2", source:"HERMES", target:"TOOLS" }, classes:"accessEdge" }
+          ]
+        };
+      }
+
+      return {
+        architecture: { elements: toElements(architectureElements()), layout: { name:"preset", padding: 30 } },
+        components: { elements: toElements(componentsElements()), layout: { name:"preset", padding: 30 } },
+        overview: { elements: toElements(overviewElements()), layout: { name:"preset", padding: 30 } },
+        rubriquesLoop: { elements: toElements(rubriquesLoopElements()), layout: { name:"preset", padding: 30 } },
+        rubriqueLocal: { elements: toElements(rubriqueLocalElements()), layout: { name:"preset", padding: 30 } },
+        agentic: { elements: toElements(agenticElements()), layout: { name:"preset", padding: 30 } }
+      };
+    })();
+
+    /* =========================
+       3) RENDER
+       ========================= */
+    function applyMeta(){
+      const a = PAGE_META.agent;
+
+      const prefix = computePrefix();
+      document.getElementById("hubLink").href = prefix + PAGE_META.hubHref;
+      const repo = document.getElementById("repoLink");
+      if(repo) repo.href = PAGE_META.repoHref || "#";
+
+      document.getElementById("agentTitle").textContent = `${a.title} — Devis d'architecture`;
+      document.getElementById("agentSubtitle").textContent = a.subtitle;
+
+      document.getElementById("metaCode").textContent = a.code;
+      document.getElementById("metaPack").textContent = a.pack;
+      document.getElementById("metaModel").textContent = a.model;
+      document.getElementById("metaStatus").textContent = a.status;
+      document.getElementById("metaPlatform").textContent = a.platform;
+
+      document.getElementById("metaVersion").textContent = a.version;
+      document.getElementById("metaUpdated").textContent = a.updated;
+      document.getElementById("footerLine").textContent = `Dernière mise à jour: ${a.updated} | Auteur: ${a.author}`;
+
+      const sol = document.getElementById("metaSolutionLink");
+      if(a.solutionHref){
+        sol.style.display = "inline-flex";
+        sol.href = a.solutionHref;
+        document.getElementById("metaSolutionLabel").textContent = a.solutionLabel || "Solution";
+      }
+
+      // dbdiagram
+      const db = PAGE_META.dbdiagram || {};
+      const dbdLink = document.getElementById("dbdLink");
+      const dbdEmbed = document.getElementById("dbdEmbed");
+      if(db.link){
+        dbdLink.style.display = "inline-flex";
+        dbdLink.href = db.link;
+      }
+      if(db.embed){
+        dbdEmbed.src = db.embed;
+      }
+    }
+
+    function setupDbdiagramToggle(){
+      const btn = document.getElementById("toggleEmbedBtn");
+      const iframe = document.getElementById("dbdEmbed");
+      btn.addEventListener("click", () => {
+        const isVisible = iframe.style.display !== "none";
+        iframe.style.display = isVisible ? "none" : "block";
+      });
+    }
+
+    function styleBase(){
+      return [
+        { selector: "node", style: {
+          "label": "data(label)",
+          "text-wrap": "wrap",
+          "text-max-width": 150,
+          "font-size": 12,
+          "background-color": "#ffffff",
+          "border-width": 1,
+          "border-color": "#cbd5e1",
+          "shape": "round-rectangle",
+          "padding": "10px",
+          "text-valign": "center",
+          "text-halign": "center"
+        }},
+        { selector: "edge", style: {
+          "curve-style": "bezier",
+          "target-arrow-shape": "triangle",
+          "arrow-scale": 0.8,
+          "line-color": "#94a3b8",
+          "target-arrow-color": "#94a3b8",
+          "width": 1.6
+        }},
+        { selector: ".hub", style: { "border-width": 2 } },
+        { selector: ".stage", style: { "font-weight": 800 } },
+        { selector: "node.optional", style: { "border-style": "dotted", "border-color": "#94a3b8" } },
+        { selector: "edge.optionalEdge", style: { "line-style": "dashed" } },
+        { selector: "edge.accessEdge", style: { "line-style": "dotted", "line-color": "#64748b", "target-arrow-color": "#64748b" } }
+      ];
+    }
+
+    function waitForCytoscape(timeoutMs = 6000){
+      return new Promise((resolve, reject) => {
+        const start = Date.now();
+        const t = setInterval(() => {
+          if(window.cytoscape){
+            clearInterval(t);
+            resolve(true);
+            return;
+          }
+          if(Date.now() - start > timeoutMs){
+            clearInterval(t);
+            reject(new Error("Cytoscape non disponible (script non chargé)."));
+          }
+        }, 50);
+      });
+    }
+
+    const CY_INSTANCES = new Map();
+
+    function makeCy(containerId, config){
+      const el = document.getElementById(containerId);
+      if(!el || !window.cytoscape) return null;
+
+      const elements = config.elements || config;
+      const layout = config.layout || { name:"breadthfirst", directed:true, padding: 30 };
+
+      const cy = window.cytoscape({
+        container: el,
+        elements: elements,
+        style: styleBase(),
+        layout: layout,
+        wheelSensitivity: 0.18
+      });
+
+      CY_INSTANCES.set(containerId, cy);
+      return cy;
+    }
+
+    function resizeVisibleCytos(){
+      // resize only for visible panels
+      CY_INSTANCES.forEach((cy, id) => {
+        const el = document.getElementById(id);
+        if(!el) return;
+        const isVisible = el.offsetParent !== null;
+        if(isVisible){
+          cy.resize();
+          cy.fit(undefined, 20);
+        }
+      });
+    }
+
+    function setupTabs(){
+      const tabs = document.querySelectorAll(".tab");
+      const sections = document.querySelectorAll(".section");
+
+      tabs.forEach(tab => {
+        tab.addEventListener("click", () => {
+          const target = tab.dataset.section;
+
+          tabs.forEach(t => t.classList.remove("active"));
+          tab.classList.add("active");
+
+          sections.forEach(s => s.classList.remove("active"));
+          document.getElementById(target).classList.add("active");
+
+          // cytoscape needs a resize when shown
+          setTimeout(resizeVisibleCytos, 40);
+        });
+      });
+    }
+
+    async function loadMenu(){
+      const wrap = document.getElementById("menuWrap");
+      const select = document.getElementById("agentsMenu");
+      if(!wrap || !select) return;
+
+      if(!PAGE_META.menu?.enabled){
+        wrap.style.display = "none";
+        return;
+      }
+
+      const prefix = computePrefix();
+      const current = (location.pathname || "").split("/").pop();
+
+      select.innerHTML = "";
+
+      const hubOpt = document.createElement("option");
+      hubOpt.value = NAV_DATA.hub.href;
+      hubOpt.textContent = NAV_DATA.hub.label || "Idexios (Hub)";
+      select.appendChild(hubOpt);
+
+      const groups = new Map();
+      (NAV_DATA.agents || []).forEach(a => {
+        const pack = a.pack || "Autres";
+        if(!groups.has(pack)) groups.set(pack, []);
+        groups.get(pack).push(a);
+      });
+
+      const orderedPacks = [];
+      PACK_ORDER.forEach(pk => { if(groups.has(pk)) orderedPacks.push(pk); });
+      [...groups.keys()].sort().forEach(pk => {
+        if(!orderedPacks.includes(pk) && pk !== "Transversal (Hub)") orderedPacks.push(pk);
+      });
+
+      orderedPacks.forEach(pack => {
+        const og = document.createElement("optgroup");
+        og.label = PACK_LABELS[pack] || pack;
+
+        groups.get(pack)
+          .slice()
+          .sort((x,y) => (x.label || "").localeCompare(y.label || ""))
+          .forEach(a => {
+            const opt = document.createElement("option");
+            opt.value = a.href;
+            opt.textContent = "\u00A0\u00A0\u00A0" + (a.label || a.slug || a.href);
+            og.appendChild(opt);
+          });
+
+        select.appendChild(og);
+      });
+
+      const opts = Array.from(select.querySelectorAll("option"));
+      const match = opts.find(o => (o.value || "").includes(current));
+      if(match) select.value = match.value;
+
+      select.addEventListener("change", () => {
+        if(!select.value) return;
+        window.location.href = prefix + select.value;
+      });
+    }
+
+async function init(){
+      applyMeta();
+      setupDbdiagramToggle();
+      setupTabs();
+      await loadMenu();
+
+      await waitForCytoscape();
+
+      // Render cytos
+      makeCy("cyto-architecture", DIAGRAMS.architecture);
+      makeCy("cyto-rubrique-local", DIAGRAMS.rubriqueLocal);
+      makeCy("cyto-rubriques-loop", DIAGRAMS.rubriquesLoop);
+      makeCy("cyto-components", DIAGRAMS.components);
+      makeCy("cyto-overview", DIAGRAMS.overview);
+      makeCy("cyto-agentic", DIAGRAMS.agentic);
+
+      // Resize after initial layout
+      setTimeout(resizeVisibleCytos, 80);
+      window.addEventListener("resize", () => setTimeout(resizeVisibleCytos, 80));
+    }
+
+    // Kickoff (when DOM is ready)
+    document.addEventListener("DOMContentLoaded", () => {
+      init().catch(err => {
+        console.error(err);
+        // Leave the page usable even if diagrams fail.
+      });
+    });
+  
+  </script>
+</body>
+</html>

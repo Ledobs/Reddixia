@@ -15,6 +15,8 @@ Idexios - En référence à son étymologie (ce qui extrait et déploie les conc
 ### Caractéristiques
 
 - **Code**: IA-TPG-001
+- **Domain Pack**: Transversal (Hub)
+- **Rubriques**: Salutations, Portefeuille, Conseils, Scenarios, Livrables, Gouvernance, Recommencer, Merci, Au revoir
 - **Rôle**: Hub / méta-orchestrateur
 - **Mission**: Agent orchestrateur qui utilise tous les autres agents et évalue l'état du portefeuille. Route les questions vers ATHENA-PORTF, ATLAS-CTRL, HERMES-PROJ, THEMIS-GOV, IRIS-RISK, GAIA-DATA, APOLLO-CHANGE.
 - **Modèle**: GPT-5 Auto
@@ -42,6 +44,8 @@ Hermès, messager des dieux et dieu des voyageurs. Coordonne et communique.
 ### Caractéristiques
 
 - **Code**: IA-TPG-002
+- **Domain Pack**: DeliveryOps
+- **Rubriques**: Livrables, Conseils
 - **Rôle**: Compagnon des chefs de projet
 - **Mission**: Génère MOP, comptes rendus, ordres du jour, registres. Traduit données TPG en plans d'action.
 - **Modèle**: GPT-5 Auto
@@ -64,6 +68,8 @@ Athéna, déesse de la sagesse et stratégie. Décisions réfléchies, scénario
 ### Caractéristiques
 
 - **Code**: IA-TPG-003
+- **Domain Pack**: PortfolioOps
+- **Rubriques**: Portefeuille, Scenarios, Conseils
 - **Rôle**: Conseiller portefeuille (scénarios, priorisation)
 - **Mission**: Analyse TPG, projets sensibles, synthèses comités, scénarios de priorisation.
 - **Modèle**: GPT-5 Auto
@@ -90,6 +96,8 @@ Thémis, déesse de la justice et de l'ordre. Veille au respect des règles.
 ### Caractéristiques
 
 - **Code**: IA-TPG-004
+- **Domain Pack**: GovernanceOps
+- **Rubriques**: Gouvernance
 - **Rôle**: Auditeur de conformité & qualité solution
 - **Mission**: Surveille paramètres, configurations, qualité données pour repérer écarts et non-conformités.
 - **Modèle**: GPT-5 Auto
@@ -113,6 +121,8 @@ Atlas qui porte le monde sur ses épaules. Soutient la structure des plans, char
 ### Caractéristiques
 
 - **Code**: IA-TPG-005
+- **Domain Pack**: FinanceOps
+- **Rubriques**: Portefeuille, Conseils, Gouvernance
 - **Rôle**: Contrôleur/analyste PCO
 - **Mission**: Consolide efforts, coûts, échéanciers, risques. Détecte anomalies, prépare rapports.
 - **Modèle**: GPT-5 Auto
@@ -135,6 +145,8 @@ Iris, déesse messagère. Fait le lien entre signaux dispersés et registre de r
 ### Caractéristiques
 
 - **Code**: IA-TPG-006
+- **Domain Pack**: PortfolioOps
+- **Rubriques**: Portefeuille, Gouvernance
 - **Rôle**: Analyste et gardien du registre des risques
 - **Mission**: Structure registres risques, analyse données TPG, croise signaux, met en évidence vulnérabilités.
 - **Modèle**: GPT-5 Auto
@@ -157,6 +169,8 @@ Gaïa, la Terre-mère, fondation du monde. Base sur laquelle tout repose.
 ### Caractéristiques
 
 - **Code**: IA-TPG-007
+- **Domain Pack**: GovernanceOps
+- **Rubriques**: Gouvernance
 - **Rôle**: Gardienne des données de référence
 - **Mission**: Veille qualité et cohérence données de référence TPG. Compare référentiels entre systèmes.
 - **Modèle**: GPT-5 Auto
@@ -179,6 +193,8 @@ Apollon, dieu de la lumière et connaissances. Éclaire les impacts des changeme
 ### Caractéristiques
 
 - **Code**: IA-TPG-008
+- **Domain Pack**: CommsOps
+- **Rubriques**: Conseils, Livrables, Gouvernance
 - **Rôle**: Conseiller adoption et gestion du changement
 - **Mission**: Transforme décisions en plans de changement concrets. Plans communication, formation, accompagnement.
 - **Modèle**: GPT-5 Auto
@@ -192,15 +208,334 @@ Apollon, dieu de la lumière et connaissances. Éclaire les impacts des changeme
 
 ---
 
+## IA-TPG-009 - JANUS-CLOSE (Clôture & réconciliation)
+
+### Étymologie
+
+Janus, dieu à deux visages : rapprochement (avant/après), clôture et réconciliation.
+
+### Caractéristiques
+
+- **Code**: IA-TPG-009
+- **Domain Pack**: FinanceOps
+- **Rubriques**: Portefeuille, Gouvernance, Livrables
+- **Rôle**: Clôture & réconciliation
+- **Mission**: Accélère la clôture de période : rapprochement des écarts, analyse des causes, préparation du pack de clôture, création de cases d’exception/validation.
+- **Modèle**: GPT-5 Auto
+- **Statut**: Approuvé (à implémenter)
+
+### Pré-requis
+
+- Bibliothèque SPO: `/Idexios-Prime/Procedures/Finance/`
+- Accès Dataverse TPG: données financières, périodes (`tpg_period`) et dimensions d’imputation
+- Règles CPI/SPI (RAG) + cadres TBM/VMO/LPM (Coordinateur de Valeur IA)
+
+### Notes
+
+Les agents FinanceOps appliquent TBM/VMO/LPM pour justifier le coût des analyses et prioriser les actions à plus forte valeur.
+
+---
+
+## IA-TPG-010 - VESTA-INVOICE (Exceptions de facture)
+
+### Étymologie
+
+Vesta, déesse du foyer : stabilité, contrôle des exceptions et conformité des factures.
+
+### Caractéristiques
+
+- **Code**: IA-TPG-010
+- **Domain Pack**: FinanceOps
+- **Rubriques**: Portefeuille, Gouvernance, Livrables
+- **Rôle**: Exceptions de facture
+- **Mission**: Gère les exceptions de facturation : détecte incohérences/doublons/écarts, prépare un dossier d’approbation avec preuves et recommandations.
+- **Modèle**: GPT-5 Auto
+- **Statut**: Approuvé (à implémenter)
+
+### Pré-requis
+
+- Bibliothèque SPO: `/Idexios-Prime/Procedures/Finance/`
+- Accès Dataverse TPG: données financières, périodes (`tpg_period`) et dimensions d’imputation
+- Règles CPI/SPI (RAG) + cadres TBM/VMO/LPM (Coordinateur de Valeur IA)
+
+### Notes
+
+Les agents FinanceOps appliquent TBM/VMO/LPM pour justifier le coût des analyses et prioriser les actions à plus forte valeur.
+
+---
+
+## IA-TPG-011 - PLUTUS-ANOM (Anomalies de dépenses)
+
+### Étymologie
+
+Plutus, dieu de la richesse : détection d’écarts et d’anomalies de dépenses.
+
+### Caractéristiques
+
+- **Code**: IA-TPG-011
+- **Domain Pack**: FinanceOps
+- **Rubriques**: Portefeuille, Gouvernance
+- **Rôle**: Anomalies de dépenses
+- **Mission**: Identifie anomalies de dépenses et signaux faibles : tendances atypiques, priorisation des investigations, ouverture de cases de suivi.
+- **Modèle**: GPT-5 Auto
+- **Statut**: Approuvé (à implémenter)
+
+### Pré-requis
+
+- Bibliothèque SPO: `/Idexios-Prime/Procedures/Finance/`
+- Accès Dataverse TPG: données financières, périodes (`tpg_period`) et dimensions d’imputation
+- Règles CPI/SPI (RAG) + cadres TBM/VMO/LPM (Coordinateur de Valeur IA)
+
+### Notes
+
+Les agents FinanceOps appliquent TBM/VMO/LPM pour justifier le coût des analyses et prioriser les actions à plus forte valeur.
+
+---
+
+## IA-TPG-012 - CASSANDRA-FQA (Finance Q&A)
+
+### Étymologie
+
+Cassandra : réponses traçables et signaux d’alerte sur les questions financières.
+
+### Caractéristiques
+
+- **Code**: IA-TPG-012
+- **Domain Pack**: FinanceOps
+- **Rubriques**: Conseils, Portefeuille, Gouvernance
+- **Rôle**: Finance Q&A
+- **Mission**: Répond aux questions financières avec traçabilité des sources et règles; escalade vers analyses approfondies au besoin.
+- **Modèle**: GPT-5 Auto
+- **Statut**: Approuvé (à implémenter)
+
+### Pré-requis
+
+- Bibliothèque SPO: `/Idexios-Prime/Procedures/Finance/`
+- Accès Dataverse TPG: données financières, périodes (`tpg_period`) et dimensions d’imputation
+- Règles CPI/SPI (RAG) + cadres TBM/VMO/LPM (Coordinateur de Valeur IA)
+
+### Notes
+
+Les agents FinanceOps appliquent TBM/VMO/LPM pour justifier le coût des analyses et prioriser les actions à plus forte valeur.
+
+---
+
+## IA-TPG-013 - MERCURY-COLLECT (Recouvrement / AR)
+
+### Étymologie
+
+Mercure : relance, communication et suivi du recouvrement/AR.
+
+### Caractéristiques
+
+- **Code**: IA-TPG-013
+- **Domain Pack**: FinanceOps
+- **Rubriques**: Portefeuille, Conseils, Livrables
+- **Rôle**: Recouvrement / AR
+- **Mission**: Structure et suit les actions de recouvrement/AR (si applicable) : priorise, planifie relances et produit un plan d’actions.
+- **Modèle**: GPT-5 Auto
+- **Statut**: Approuvé (optionnel selon périmètre AR)
+
+### Pré-requis
+
+- Bibliothèque SPO: `/Idexios-Prime/Procedures/Finance/`
+- Accès Dataverse TPG: données financières, périodes (`tpg_period`) et dimensions d’imputation
+- Règles CPI/SPI (RAG) + cadres TBM/VMO/LPM (Coordinateur de Valeur IA)
+
+### Notes
+
+Les agents FinanceOps appliquent TBM/VMO/LPM pour justifier le coût des analyses et prioriser les actions à plus forte valeur.
+
+---
+
+## IA-TPG-014 - MINERVA-DATA (Gouvernance data & veille)
+
+### Étymologie
+
+Minerve : sagesse et gouvernance des données, conformité et veille.
+
+### Caractéristiques
+
+- **Code**: IA-TPG-014
+- **Domain Pack**: GovernanceOps
+- **Rubriques**: Gouvernance, Portefeuille
+- **Rôle**: Gouvernance data & veille
+- **Mission**: Produit des briefs de gouvernance data : conformité, changements de politiques/procédures, priorisation des actions de qualité et preuves.
+- **Modèle**: GPT-5 Auto
+- **Statut**: Approuvé (à implémenter)
+
+### Pré-requis
+
+- Bibliothèque SPO: `/Idexios-Prime/Procedures/Gouvernance/`
+- Accès Dataverse TPG: registres et contrôles (risques/enjeux/changements/décisions/actions)
+- Politiques, normes et procédures de conformité + preuves
+
+### Notes
+
+—
+
+---
+
+## IA-TPG-015 - CICERO-ALLHANDS (Comms exécutives)
+
+### Étymologie
+
+Cicéron : rhétorique et communication exécutive structurée.
+
+### Caractéristiques
+
+- **Code**: IA-TPG-015
+- **Domain Pack**: CommsOps
+- **Rubriques**: Livrables, Conseils
+- **Rôle**: Comms exécutives
+- **Mission**: Prépare communications exécutives : messages clés, notes de synthèse, kits de communication et récapitulatif d’actions.
+- **Modèle**: GPT-5 Auto
+- **Statut**: Approuvé (à implémenter)
+
+### Pré-requis
+
+- Bibliothèque SPO: `/Idexios-Prime/Procedures/Communication/`
+- Registre parties prenantes et canaux de diffusion
+- Gabarits de communication (all-hands, FAQ, annonces)
+
+### Notes
+
+—
+
+---
+
+## IA-TPG-016 - POSEIDON-CASH (Variances cashflow)
+
+### Étymologie
+
+Poséidon : flux; analyse des variances de cashflow et tendances.
+
+### Caractéristiques
+
+- **Code**: IA-TPG-016
+- **Domain Pack**: FinanceOps
+- **Rubriques**: Portefeuille, Conseils
+- **Rôle**: Variances cashflow
+- **Mission**: Analyse les variances de cashflow et tendances (rolling), propose pistes d’investigation et actions correctives, prépare un pack d’analyse.
+- **Modèle**: GPT-5 Auto
+- **Statut**: Approuvé (à implémenter)
+
+### Pré-requis
+
+- Bibliothèque SPO: `/Idexios-Prime/Procedures/Finance/`
+- Accès Dataverse TPG: données financières, périodes (`tpg_period`) et dimensions d’imputation
+- Règles CPI/SPI (RAG) + cadres TBM/VMO/LPM (Coordinateur de Valeur IA)
+
+### Notes
+
+Les agents FinanceOps appliquent TBM/VMO/LPM pour justifier le coût des analyses et prioriser les actions à plus forte valeur.
+
+---
+
+## IA-TPG-017 - JUNO-CONTRACT (Intelligence contractuelle)
+
+### Étymologie
+
+Junon : engagements; lecture contractuelle, clauses et risques.
+
+### Caractéristiques
+
+- **Code**: IA-TPG-017
+- **Domain Pack**: ProcurementOps
+- **Rubriques**: Gouvernance, Livrables, Conseils
+- **Rôle**: Intelligence contractuelle
+- **Mission**: Analyse contrats/clauses : extraction de points clés, comparaison, risques, matrices d’écarts et note décisionnelle pour approbation.
+- **Modèle**: GPT-5 Auto
+- **Statut**: Approuvé (à implémenter)
+
+### Pré-requis
+
+- Bibliothèque SPO: `/Idexios-Prime/Procedures/Procurement/`
+- Référentiels contrats/clauses et politiques d’approbation
+- Flux d’approvisionnement (cycle time) + gabarits RFP
+
+### Notes
+
+—
+
+---
+
+## IA-TPG-018 - CERES-BUDGET (Adhérence budgétaire)
+
+### Étymologie
+
+Cérès : ressources; contrôle de l’adhérence budgétaire et politiques.
+
+### Caractéristiques
+
+- **Code**: IA-TPG-018
+- **Domain Pack**: FinanceOps
+- **Rubriques**: Portefeuille, Gouvernance, Conseils
+- **Rôle**: Adhérence budgétaire
+- **Mission**: Contrôle l’adhérence budgétaire : budget vs prévision, dashboards, alertes, notes de politiques et soutien aux arbitrages.
+- **Modèle**: GPT-5 Auto
+- **Statut**: Approuvé (à implémenter)
+
+### Pré-requis
+
+- Bibliothèque SPO: `/Idexios-Prime/Procedures/Finance/`
+- Accès Dataverse TPG: données financières, périodes (`tpg_period`) et dimensions d’imputation
+- Règles CPI/SPI (RAG) + cadres TBM/VMO/LPM (Coordinateur de Valeur IA)
+
+### Notes
+
+Les agents FinanceOps appliquent TBM/VMO/LPM pour justifier le coût des analyses et prioriser les actions à plus forte valeur.
+
+---
+
+## IA-TPG-019 - VULCAN-PROC (Procurement & RFP Ops)
+
+### Étymologie
+
+Vulcain : forge; industrialisation des opérations d’approvisionnement et RFP.
+
+### Caractéristiques
+
+- **Code**: IA-TPG-019
+- **Domain Pack**: ProcurementOps
+- **Rubriques**: Gouvernance, Livrables, Conseils
+- **Rôle**: Procurement & RFP Ops
+- **Mission**: Industrialise procurement & RFP ops : exigences, gabarits, analyse cycle time, préparation dossiers d’approbation.
+- **Modèle**: GPT-5 Auto
+- **Statut**: Approuvé (à implémenter)
+
+### Pré-requis
+
+- Bibliothèque SPO: `/Idexios-Prime/Procedures/Procurement/`
+- Référentiels contrats/clauses et politiques d’approbation
+- Flux d’approvisionnement (cycle time) + gabarits RFP
+
+### Notes
+
+—
+
+---
+
 ## Tableau récapitulatif
 
-| Code | Nom | Rôle | Statut | Modèle |
-|------|-----|------|--------|--------|
-| IA-TPG-001 | Idexios | Hub / Méta-orchestrateur | En cours | GPT-5 Auto |
-| IA-TPG-002 | HERMES-PROJ | Chefs de projet | En cours | GPT-5 Auto |
-| IA-TPG-003 | ATHENA-PORTF | Conseiller portefeuille | En essais | GPT-5 Auto |
-| IA-TPG-004 | THEMIS-GOV | Auditeur conformité | En cours | GPT-5 Auto |
-| IA-TPG-005 | ATLAS-CTRL | Contrôleur PCO | En cours | GPT-5 Auto |
-| IA-TPG-006 | IRIS-RISK | Gardien registre risques | Non démarré | GPT-5 Auto |
-| IA-TPG-007 | GAIA-DATA | Gardienne données | Non démarré | GPT-5 Auto |
-| IA-TPG-008 | APOLLO-CHANGE | Gestion changement | Non démarré | GPT-5 Auto |
+| Code | Nom | Domain Pack | Rubriques | Statut | Modèle |
+|------|-----|------------|-----------|--------|--------|
+| IA-TPG-001 | Idexios (Hub / Méta-orchestrateur) | Transversal (Hub) | Salutations, Portefeuille, Conseils, Scenarios, Livrables, Gouvernance, Recommencer, Merci, Au revoir | En cours | GPT-5 Auto |
+| IA-TPG-002 | HERMES-PROJ (Chefs de projet) | DeliveryOps | Livrables, Conseils | En cours | GPT-5 Auto |
+| IA-TPG-003 | ATHENA-PORTF (Conseiller portefeuille) | PortfolioOps | Portefeuille, Scenarios, Conseils | En essais | GPT-5 Auto |
+| IA-TPG-004 | THEMIS-GOV (Auditeur conformité & qualité solution) | GovernanceOps | Gouvernance | En cours | GPT-5 Auto |
+| IA-TPG-005 | ATLAS-CTRL (Contrôleur/analyste PCO) | FinanceOps | Portefeuille, Conseils, Gouvernance | En cours | GPT-5 Auto |
+| IA-TPG-006 | IRIS-RISK (Analyste et gardien registre des risques) | PortfolioOps | Portefeuille, Gouvernance | Non démarré | GPT-5 Auto |
+| IA-TPG-007 | GAIA-DATA (Gardienne données de référence) | GovernanceOps | Gouvernance | Non démarré | GPT-5 Auto |
+| IA-TPG-008 | APOLLO-CHANGE (Conseiller adoption et gestion changement) | CommsOps | Conseils, Livrables, Gouvernance | Non démarré | GPT-5 Auto |
+| IA-TPG-009 | JANUS-CLOSE (Clôture & réconciliation) | FinanceOps | Portefeuille, Gouvernance, Livrables | Approuvé (à implémenter) | GPT-5 Auto |
+| IA-TPG-010 | VESTA-INVOICE (Exceptions de facture) | FinanceOps | Portefeuille, Gouvernance, Livrables | Approuvé (à implémenter) | GPT-5 Auto |
+| IA-TPG-011 | PLUTUS-ANOM (Anomalies de dépenses) | FinanceOps | Portefeuille, Gouvernance | Approuvé (à implémenter) | GPT-5 Auto |
+| IA-TPG-012 | CASSANDRA-FQA (Finance Q&A) | FinanceOps | Conseils, Portefeuille, Gouvernance | Approuvé (à implémenter) | GPT-5 Auto |
+| IA-TPG-013 | MERCURY-COLLECT (Recouvrement / AR) | FinanceOps | Portefeuille, Conseils, Livrables | Approuvé (optionnel selon périmètre AR) | GPT-5 Auto |
+| IA-TPG-014 | MINERVA-DATA (Gouvernance data & veille) | GovernanceOps | Gouvernance, Portefeuille | Approuvé (à implémenter) | GPT-5 Auto |
+| IA-TPG-015 | CICERO-ALLHANDS (Comms exécutives) | CommsOps | Livrables, Conseils | Approuvé (à implémenter) | GPT-5 Auto |
+| IA-TPG-016 | POSEIDON-CASH (Variances cashflow) | FinanceOps | Portefeuille, Conseils | Approuvé (à implémenter) | GPT-5 Auto |
+| IA-TPG-017 | JUNO-CONTRACT (Intelligence contractuelle) | ProcurementOps | Gouvernance, Livrables, Conseils | Approuvé (à implémenter) | GPT-5 Auto |
+| IA-TPG-018 | CERES-BUDGET (Adhérence budgétaire) | FinanceOps | Portefeuille, Gouvernance, Conseils | Approuvé (à implémenter) | GPT-5 Auto |
+| IA-TPG-019 | VULCAN-PROC (Procurement & RFP Ops) | ProcurementOps | Gouvernance, Livrables, Conseils | Approuvé (à implémenter) | GPT-5 Auto |

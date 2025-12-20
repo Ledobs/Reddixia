@@ -1,0 +1,81 @@
+﻿# Registre Agent Reddixia - IA-TPG-011
+
+**Auteur**: Idexia365  
+**Date**: 2025-12-20  
+**Version**: 11.0  
+**Projet**: Reddixia - Toolbox agentique xPM-Pantheon
+
+---
+
+## Metadata
+
+| Propriété | Valeur |
+|-----------|--------|
+| **Code** | IA-TPG-011 |
+| **Nom** | PLUTUS-ANOM |
+| **Rôle** | Détection d'anomalies et conformité dépenses |
+| **Version** | v0.03 |
+| **Statut** | 🟡 Approuvé - À implémenter |
+| **Domain Pack** | FinanceOps |
+| **Modèle** | GPT-4 Turbo |
+| **Plateforme** | Microsoft Copilot Studio |
+
+---
+
+## Mission
+
+Surveille transactions, applique patterns, score et crée cas d'investigation.
+
+---
+
+## Responsabilités
+
+- (Aucune responsabilité décrite)
+
+---
+
+## Intégrations
+
+### Rubriques Idexios
+- (Aucune rubrique listée)
+
+---
+
+## Spécifications Techniques
+
+### Sources de données
+- (Aucune source renseignée)
+
+---
+
+### Sorties
+- (Aucune sortie listée)
+
+---
+
+### KPIs
+
+---
+
+### Adaptive Cards
+
+---
+
+### Rapports
+
+---
+
+### Règles / Patterns
+
+
+---
+
+## Références
+
+- $(System.Collections.Hashtable.Path)/plutus-anom-index.md
+- $(System.Collections.Hashtable.Path)/archi_IA-TPG-011_PLUTUS-ANOM.html
+
+---
+
+**Mis à jour**: 2025-12-20  
+**Maintenu par**: Idexia365

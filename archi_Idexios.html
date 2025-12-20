@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Architecture Idexios - Visualisation Interactive</title>
+    <title>Reddixia — Architecture — Idexios (Hub)</title>
     <script type="module">
         import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
         mermaid.initialize({
@@ -284,17 +284,140 @@
         details { background:#ffffff; border:1px solid #e2e8f0; border-radius:12px; padding:.8rem .95rem; margin:.9rem 0; box-shadow: 0 1px 2px rgba(0,0,0,.04); }
         details > summary { cursor:pointer; font-weight:900; }
 
-    </style>
+    
+        /* ===== Topbar (Reddixia) ===== */
+        .topbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+            padding: 0.9rem 1rem;
+            border-radius: 1.25rem;
+            background: rgba(255,255,255,0.12);
+            border: 1px solid rgba(255,255,255,0.18);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.10);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            margin-bottom: 1.2rem;
+        }
+        .topbar-left {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            min-width: 220px;
+        }
+        .brand-badge {
+            width: 38px;
+            height: 38px;
+            border-radius: 12px;
+            display: grid;
+            place-items: center;
+            font-weight: 900;
+            background: rgba(255,255,255,0.18);
+            border: 1px solid rgba(255,255,255,0.25);
+        }
+        .brand-title {
+            font-weight: 800;
+            letter-spacing: 0.2px;
+            white-space: nowrap;
+        }
+        .topbar-center {
+            display: flex;
+            align-items: center;
+            gap: 0.9rem;
+            flex: 1;
+            justify-content: center;
+        }
+        .topbar-label {
+            font-weight: 900;
+            letter-spacing: 0.22em;
+            text-transform: uppercase;
+            opacity: 0.95;
+            white-space: nowrap;
+        }
+        .topbar-select {
+            width: min(520px, 58vw);
+            padding: 0.85rem 1rem;
+            border-radius: 999px;
+            border: 1px solid rgba(255,255,255,0.25);
+            background: rgba(255,255,255,0.16);
+            color: #ffffff;
+            font-weight: 700;
+            outline: none;
+            appearance: none;
+        }
+        .topbar-select:focus {
+            box-shadow: 0 0 0 4px rgba(255,255,255,0.18);
+        }
+        /* Dropdown list colors (browser dependent, but helps on most) */
+        .topbar-select optgroup {
+            color: #0f172a;
+            font-weight: 900;
+        }
+        .topbar-select option {
+            color: #0f172a;
+            font-weight: 650;
+        }
+        .topbar-right {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            justify-content: flex-end;
+            min-width: 260px;
+            flex-wrap: wrap;
+        }
+        .pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            padding: 0.45rem 0.8rem;
+            border-radius: 999px;
+            background: rgba(255,255,255,0.16);
+            border: 1px solid rgba(255,255,255,0.22);
+            font-weight: 700;
+            color: #ffffff;
+            text-decoration: none;
+            white-space: nowrap;
+        }
+        .pill strong { font-weight: 900; }
+        .pill:hover { background: rgba(255,255,255,0.20); }
+
+        @media (max-width: 980px) {
+            .topbar { flex-wrap: wrap; }
+            .topbar-left, .topbar-right { min-width: auto; }
+            .topbar-center { order: 3; justify-content: flex-start; width: 100%; }
+            .topbar-select { width: 100%; }
+        }
+
+</style>
 </head>
 <body>
     <div class="header">
         <div class="header-content">
+            <div class="topbar">
+                <div class="topbar-left">
+                    <span class="brand-badge">R</span>
+                    <span class="brand-title">Reddixia — Architecture</span>
+                </div>
+                <div class="topbar-center">
+                    <span class="topbar-label">ALLER À</span>
+                    <select class="topbar-select" id="navSelect" aria-label="Aller à">
+                        <option value="archi_Idexios.html">Idexios (Hub)</option>
+                    </select>
+                </div>
+                <div class="topbar-right">
+                    <a class="pill" id="repoLink" href="https://github.com/Ledobs/Reddixia/blob/main/README.md" target="_blank" rel="noopener">Repo Git</a>
+                    <span class="pill"><strong id="metaVersion">v1.0</strong></span>
+                    <span class="pill">Dernière mise à jour:&nbsp;<strong id="metaUpdated">2025-12-20</strong></span>
+                </div>
+            </div>
+
             <h1>Idexios - Orchestrateur Central</h1>
             <p class="subtitle">Agent orchestrateur de la solution Reddixia pour la gestion de projet augmentée</p>
             <div class="agent-info">
                 <div class="info-badge">
                     <span class="info-label">Code:</span>
-                    <span class="info-value">IA-TPG-005</span>
+                    <span class="info-value">IA-TPG-001</span>
                 </div>
                 <div class="info-badge">
                     <span class="info-label">Modèle:</span>
@@ -1367,7 +1490,7 @@
 
                     <tr>
                         <td style="vertical-align:top; padding:10px; border-bottom:1px solid #e2e8f0;">
-                          <code>IA-TPG-005</code><br/>ATLAS-CTRL
+                          <code>IA-TPG-001</code><br/>ATLAS-CTRL
                         </td>
                         <td style="vertical-align:top; padding:10px; border-bottom:1px solid #e2e8f0;">Contrôle financier & reddition PCO (EVM/FinOps)</td>
                         <td style="vertical-align:top; padding:10px; border-bottom:1px solid #e2e8f0;">• Analyser les écarts budgétaires M0+M1 pour un portefeuille donné<br/>• Produire un tableau CPI/SPI et variances > 10% sur la période courante<br/>• Expliquer une dérive de coûts projet et proposer des actions correctives</td>
@@ -2514,6 +2637,85 @@ instances.arch = makeCy('cyto-architecture', cosmosElements(), '860px');
   });
 })();
 </script>
+
+
+    <script>
+      (function() {
+        const NAV_DATA = {"hub": {"label": "Idexios (Hub)", "href": "archi_Idexios.html"}, "agents": [{"code": "IA-TPG-002", "slug": "HERMES-PROJ", "pack": "DeliveryOps", "label": "HERMES-PROJ (IA-TPG-002)", "href": "agents/HERMES-PROJ/archi_IA-TPG-002_HERMES-PROJ.html"}, {"code": "IA-TPG-003", "slug": "ATHENA-PORTF", "pack": "PortfolioOps", "label": "ATHENA-PORTF (IA-TPG-003)", "href": "agents/ATHENA-PORTF/archi_IA-TPG-003_ATHENA-PORTF.html"}, {"code": "IA-TPG-004", "slug": "THEMIS-GOV", "pack": "GovernanceOps", "label": "THEMIS-GOV (IA-TPG-004)", "href": "agents/THEMIS-GOV/archi_IA-TPG-004_THEMIS-GOV.html"}, {"code": "IA-TPG-005", "slug": "ATLAS-CTRL", "pack": "FinanceOps", "label": "ATLAS-CTRL (IA-TPG-005)", "href": "agents/ATLAS-CTRL/archi_IA-TPG-005_ATLAS-CTRL.html"}, {"code": "IA-TPG-006", "slug": "IRIS-RISK", "pack": "PortfolioOps", "label": "IRIS-RISK (IA-TPG-006)", "href": "agents/IRIS-RISK/archi_IA-TPG-006_IRIS-RISK.html"}, {"code": "IA-TPG-007", "slug": "GAIA-DATA", "pack": "GovernanceOps", "label": "GAIA-DATA (IA-TPG-007)", "href": "agents/GAIA-DATA/archi_IA-TPG-007_GAIA-DATA.html"}, {"code": "IA-TPG-008", "slug": "APOLLO-CHANGE", "pack": "CommsOps", "label": "APOLLO-CHANGE (IA-TPG-008)", "href": "agents/APOLLO-CHANGE/archi_IA-TPG-008_APOLLO-CHANGE.html"}, {"code": "IA-TPG-009", "slug": "JANUS-CLOSE", "pack": "FinanceOps", "label": "JANUS-CLOSE (IA-TPG-009)", "href": "agents/JANUS-CLOSE/archi_IA-TPG-009_JANUS-CLOSE.html"}, {"code": "IA-TPG-010", "slug": "VESTA-INVOICE", "pack": "FinanceOps", "label": "VESTA-INVOICE (IA-TPG-010)", "href": "agents/VESTA-INVOICE/archi_IA-TPG-010_VESTA-INVOICE.html"}, {"code": "IA-TPG-011", "slug": "PLUTUS-ANOM", "pack": "FinanceOps", "label": "PLUTUS-ANOM (IA-TPG-011)", "href": "agents/PLUTUS-ANOM/archi_IA-TPG-011_PLUTUS-ANOM.html"}, {"code": "IA-TPG-012", "slug": "CASSANDRA-FQA", "pack": "FinanceOps", "label": "CASSANDRA-FQA (IA-TPG-012)", "href": "agents/CASSANDRA-FQA/archi_IA-TPG-012_CASSANDRA-FQA.html"}, {"code": "IA-TPG-013", "slug": "MERCURY-COLLECT", "pack": "FinanceOps", "label": "MERCURY-COLLECT (IA-TPG-013)", "href": "agents/MERCURY-COLLECT/archi_IA-TPG-013_MERCURY-COLLECT.html"}, {"code": "IA-TPG-014", "slug": "MINERVA-DATA", "pack": "GovernanceOps", "label": "MINERVA-DATA (IA-TPG-014)", "href": "agents/MINERVA-DATA/archi_IA-TPG-014_MINERVA-DATA.html"}, {"code": "IA-TPG-015", "slug": "CICERO-ALLHANDS", "pack": "CommsOps", "label": "CICERO-ALLHANDS (IA-TPG-015)", "href": "agents/CICERO-ALLHANDS/archi_IA-TPG-015_CICERO-ALLHANDS.html"}, {"code": "IA-TPG-016", "slug": "POSEIDON-CASH", "pack": "FinanceOps", "label": "POSEIDON-CASH (IA-TPG-016)", "href": "agents/POSEIDON-CASH/archi_IA-TPG-016_POSEIDON-CASH.html"}, {"code": "IA-TPG-017", "slug": "JUNO-CONTRACT", "pack": "ProcurementOps", "label": "JUNO-CONTRACT (IA-TPG-017)", "href": "agents/JUNO-CONTRACT/archi_IA-TPG-017_JUNO-CONTRACT.html"}, {"code": "IA-TPG-018", "slug": "CERES-BUDGET", "pack": "FinanceOps", "label": "CERES-BUDGET (IA-TPG-018)", "href": "agents/CERES-BUDGET/archi_IA-TPG-018_CERES-BUDGET.html"}, {"code": "IA-TPG-019", "slug": "VULCAN-PROC", "pack": "ProcurementOps", "label": "VULCAN-PROC (IA-TPG-019)", "href": "agents/VULCAN-PROC/archi_IA-TPG-019_VULCAN-PROC.html"}]};
+        const PACK_LABELS = {"PortfolioOps": "PortfolioOps — Pilotage de portefeuille", "DeliveryOps": "DeliveryOps — Exécution projet", "FinanceOps": "FinanceOps — Finance & contrôle", "GovernanceOps": "GovernanceOps — Gouvernance & conformité", "ProcurementOps": "ProcurementOps — Achats & contrats", "CommsOps": "CommsOps — Adoption & communications", "Transversal (Hub)": "Transversal — Orchestration"};
+        const PACK_ORDER = ["PortfolioOps", "DeliveryOps", "FinanceOps", "GovernanceOps", "ProcurementOps", "CommsOps"];
+
+        function normalizePath(p) {
+          return (p || "").toString().replace(/\\/g, "/").toLowerCase();
+        }
+
+        function computePrefix() {
+          const p = normalizePath(window.location.pathname || "");
+          return p.includes("/agents/") ? "../../" : "";
+        }
+
+        function buildMenu() {
+          const select = document.getElementById("navSelect");
+          if(!select) return;
+
+          const prefix = computePrefix();
+          const current = (window.location.pathname || "").split("/").pop() || "";
+
+          // Reset
+          select.innerHTML = "";
+
+          // Hub
+          const hubOpt = document.createElement("option");
+          hubOpt.value = NAV_DATA.hub.href;
+          hubOpt.textContent = NAV_DATA.hub.label || "Idexios (Hub)";
+          select.appendChild(hubOpt);
+
+          // Group agents by pack
+          const groups = new Map();
+          (NAV_DATA.agents || []).forEach(a => {
+            const pack = a.pack || "Autres";
+            if(!groups.has(pack)) groups.set(pack, []);
+            groups.get(pack).push(a);
+          });
+
+          const orderedPacks = [];
+          PACK_ORDER.forEach(pk => { if(groups.has(pk)) orderedPacks.push(pk); });
+          [...groups.keys()].sort().forEach(pk => {
+            if(!orderedPacks.includes(pk) && pk !== "Transversal (Hub)") orderedPacks.push(pk);
+          });
+
+          orderedPacks.forEach(pack => {
+            const og = document.createElement("optgroup");
+            og.label = PACK_LABELS[pack] || pack;
+
+            groups.get(pack)
+              .slice()
+              .sort((x,y) => (x.label || "").localeCompare(y.label || ""))
+              .forEach(a => {
+                const opt = document.createElement("option");
+                opt.value = a.href;
+                opt.textContent = "\u00A0\u00A0\u00A0" + (a.label || a.slug || a.href);
+                og.appendChild(opt);
+              });
+
+            select.appendChild(og);
+          });
+
+          // Auto-select
+          const opts = Array.from(select.querySelectorAll("option"));
+          const match = opts.find(o => (o.value || "").includes(current));
+          if(match) select.value = match.value;
+
+          select.addEventListener("change", () => {
+            if(!select.value) return;
+            const target = prefix + select.value;
+            window.location.href = target;
+          });
+        }
+
+        document.addEventListener("DOMContentLoaded", buildMenu);
+      })(); 
+    </script>
 
 </body>
 </html>
