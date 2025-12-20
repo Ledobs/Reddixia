@@ -1,0 +1,30 @@
+﻿{
+  "Statistics": {
+    "TotalFiles": 64,
+    "Deleted": 0,
+    "Added": 0,
+    "Modified": 0,
+    "Untracked": 3
+  },
+  "Repository": {
+    "Branch": "main",
+    "RemoteUrl": "https://github.com/Ledobs/Reddixia.git"
+  },
+  "Timestamp": "2025-12-20 18:38:25",
+  "Changes": {
+    "Deleted": [],
+    "Added": [],
+    "Modified": [],
+    "Untracked": [
+      "?? Session-Inventory.ps1",
+      "?? docs/agents/backlog/workload_pending.md",
+      "?? workload-resume.ps1"
+    ]
+  },
+  "FileTypes": {
+    "Markdown": 51,
+    "Html": 3,
+    "Csv": 1,
+    "PowerShell": 2
+  }
+}

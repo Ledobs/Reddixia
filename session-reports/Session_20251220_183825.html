@@ -1,0 +1,91 @@
+﻿<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inventaire Session Reddixia</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #f5f5f5; padding: 20px; }
+        .container { max-width: 1200px; margin: 0 auto; background: white; padding: 30px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+        h1 { color: #2c3e50; margin-bottom: 10px; border-bottom: 3px solid #3498db; padding-bottom: 10px; }
+        h2 { color: #34495e; margin-top: 30px; margin-bottom: 15px; border-left: 4px solid #3498db; padding-left: 10px; }
+        .header-info { background: #ecf0f1; padding: 15px; border-radius: 5px; margin-bottom: 20px; }
+        .header-info p { margin: 8px 0; }
+        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-bottom: 30px; }
+        .stat-card { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 20px; border-radius: 8px; text-align: center; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        .stat-card.added { background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%); }
+        .stat-card.modified { background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); }
+        .stat-card.deleted { background: linear-gradient(135deg, #fa709a 0%, #fee140 100%); }
+        .stat-value { font-size: 32px; font-weight: bold; }
+        .stat-label { font-size: 14px; opacity: 0.9; margin-top: 8px; }
+        table { width: 100%; border-collapse: collapse; margin-bottom: 20px; }
+        table th { background: #3498db; color: white; padding: 12px; text-align: left; }
+        table td { padding: 10px 12px; border-bottom: 1px solid #ecf0f1; }
+        table tr:hover { background: #f8f9fa; }
+        .file-list { background: #f8f9fa; padding: 15px; border-radius: 5px; max-height: 400px; overflow-y: auto; }
+        .file-item { padding: 8px; border-left: 3px solid #3498db; margin-bottom: 5px; font-family: monospace; font-size: 12px; }
+        .file-item.added { border-left-color: #27ae60; color: #27ae60; }
+        .file-item.modified { border-left-color: #e74c3c; color: #e74c3c; }
+        .file-item.deleted { border-left-color: #c0392b; color: #c0392b; }
+        .footer { margin-top: 40px; text-align: center; color: #7f8c8d; font-size: 12px; border-top: 1px solid #ecf0f1; padding-top: 20px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>📋 Inventaire Session Reddixia</h1>
+        
+        <div class="header-info">
+            <p><strong>Date:</strong> 2025-12-20 18:38:25</p>
+            <p><strong>Branch:</strong> <code>main</code></p>
+            <p><strong>Remote:</strong> https://github.com/Ledobs/Reddixia.git</p>
+        </div>
+
+        <h2>📊 Résumé des modifications</h2>
+        <div class="stats-grid">
+            <div class="stat-card added">
+                <div class="stat-value">0</div>
+                <div class="stat-label">Ajoutés</div>
+            </div>
+            <div class="stat-card modified">
+                <div class="stat-value">0</div>
+                <div class="stat-label">Modifiés</div>
+            </div>
+            <div class="stat-card deleted">
+                <div class="stat-value">0</div>
+                <div class="stat-label">Supprimés</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">64</div>
+                <div class="stat-label">Total fichiers</div>
+            </div>
+        </div>
+
+        <h2>📁 Fichiers par type</h2>
+        <table>
+            <thead>
+                <tr><th>Type</th><th>Nombre</th></tr>
+            </thead>
+            <tbody>
+                <tr><td>Markdown (.md)</td><td>51</td></tr>
+                <tr><td>HTML (.html)</td><td>3</td></tr>
+                <tr><td>PowerShell (.ps1)</td><td>2</td></tr>
+                <tr><td>CSV (.csv)</td><td>1</td></tr>
+            </tbody>
+        </table>
+
+        <h2>🔄 Changements en attente</h2>
+        
+        
+
+        
+
+        
+
+        <div class="footer">
+            <p>Généré par Session-Inventory.ps1 v1.0 | Projet Reddixia - Toolbox agentique xPM-Pantheon</p>
+            <p>2025-12-20 18:38:25</p>
+        </div>
+    </div>
+</body>
+</html>
