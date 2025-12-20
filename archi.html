@@ -1,0 +1,2519 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Architecture Idexios - Visualisation Interactive</title>
+    <script type="module">
+        import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+        mermaid.initialize({
+            startOnLoad: true,
+            theme: 'base',
+            themeVariables: {
+                primaryColor: '#3b82f6',
+                primaryTextColor: '#1e293b',
+                primaryBorderColor: '#2563eb',
+                lineColor: '#64748b',
+                secondaryColor: '#06b6d4',
+                tertiaryColor: '#10b981',
+                background: '#ffffff',
+                mainBkg: '#f1f5f9',
+                secondBkg: '#e0f2fe',
+                border1: '#cbd5e1',
+                border2: '#94a3b8',
+                fontSize: '16px',
+                fontFamily: 'system-ui, -apple-system, sans-serif'
+            },
+            flowchart: {
+                useMaxWidth: true,
+                htmlLabels: true,
+                curve: 'basis'
+            }
+        });
+    </script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+            color: #1e293b;
+            line-height: 1.6;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%);
+            color: white;
+            padding: 2rem 2rem 3rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        .header-content {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .subtitle {
+            font-size: 1.1rem;
+            opacity: 0.9;
+            font-weight: 300;
+        }
+
+        .agent-info {
+            display: flex;
+            gap: 2rem;
+            margin-top: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .info-badge {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            backdrop-filter: blur(10px);
+        }
+
+        .info-label {
+            font-weight: 600;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .info-value {
+            font-weight: 400;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: -2rem auto 2rem;
+            padding: 0 2rem;
+        }
+
+        .tabs {
+            display: flex;
+            gap: 0.5rem;
+            background: white;
+            padding: 0.5rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            margin-bottom: 2rem;
+            overflow-x: auto;
+        }
+
+        .tab {
+            flex: 1;
+            min-width: 200px;
+            padding: 1rem 1.5rem;
+            background: transparent;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            color: #64748b;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+        }
+
+        .tab:hover {
+            background: #f1f5f9;
+            color: #3b82f6;
+        }
+
+        .tab.active {
+            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+            color: white;
+            box-shadow: 0 4px 6px -1px rgba(59, 130, 246, 0.3);
+        }
+
+        .diagram-section {
+            display: none;
+            background: white;
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            margin-bottom: 2rem;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .diagram-section.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .section-header {
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid #e2e8f0;
+        }
+
+        .section-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #1e293b;
+            margin-bottom: 0.5rem;
+        }
+
+        .section-description {
+            color: #64748b;
+            font-size: 1rem;
+            line-height: 1.8;
+        }
+
+        .mermaid {
+            display: flex;
+            justify-content: center;
+            margin: 2rem 0;
+            background: #fafafa;
+            padding: 2rem;
+            border-radius: 8px;
+            border: 1px solid #e2e8f0;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+            padding: 1.5rem;
+            border-radius: 8px;
+            border-left: 4px solid #3b82f6;
+        }
+
+        .stat-label {
+            font-size: 0.875rem;
+            color: #64748b;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #1e293b;
+        }
+
+        .features-list {
+            list-style: none;
+            margin-top: 1.5rem;
+        }
+
+        .features-list li {
+            padding: 0.75rem 0;
+            padding-left: 2rem;
+            position: relative;
+            color: #475569;
+        }
+
+        .features-list li:before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: #10b981;
+            font-weight: 700;
+            font-size: 1.2rem;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 2rem;
+            color: #64748b;
+            font-size: 0.875rem;
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 1.8rem;
+            }
+
+            .tabs {
+                flex-direction: column;
+            }
+
+            .tab {
+                min-width: auto;
+            }
+
+            .agent-info {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+        }
+    
+        /* ===== Flux des Rubriques — Détails (v9.0) ===== */
+        .rubrique-block { margin-top: 1.5rem; }
+        .rubrique-block h3 { margin: 1.25rem 0 .25rem; font-size: 1.35rem; }
+        .rubrique-block h4 { margin: 1rem 0 .35rem; font-size: 1.05rem; }
+        .rubrique-meta { color:#475569; font-size: .95rem; margin-bottom: .75rem; line-height:1.5; }
+        .pill { display:inline-block; padding:.15rem .55rem; border-radius:999px; font-size:.82rem; background:#eef2ff; color:#3730a3; margin-right:.35rem; }
+        .warn { color:#b91c1c; font-weight:700; }
+        .data-table { width:100%; border-collapse: collapse; margin:.5rem 0 1rem; }
+        .data-table th, .data-table td { border:1px solid #e2e8f0; padding:.55rem .6rem; vertical-align: top; }
+        .data-table th { background:#f8fafc; text-align:left; font-weight:700; }
+        .data-table code { background:#f1f5f9; padding:.08rem .22rem; border-radius:6px; }
+        details { background:#ffffff; border:1px solid #e2e8f0; border-radius:12px; padding:.8rem .95rem; margin:.9rem 0; box-shadow: 0 1px 2px rgba(0,0,0,.04); }
+        details > summary { cursor:pointer; font-weight:900; }
+
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="header-content">
+            <h1>Idexios - Orchestrateur Central</h1>
+            <p class="subtitle">Agent orchestrateur de la solution Reddixia pour la gestion de projet augmentée</p>
+            <div class="agent-info">
+                <div class="info-badge">
+                    <span class="info-label">Code:</span>
+                    <span class="info-value">IA-TPG-005</span>
+                </div>
+                <div class="info-badge">
+                    <span class="info-label">Modèle:</span>
+                    <span class="info-value">GPT-5 Auto (Preview)</span>
+                </div>
+                <div class="info-badge">
+                    <span class="info-label">Statut:</span>
+                    <span class="info-value">En cours</span>
+                </div>
+                <div class="info-badge">
+                    <span class="info-label">Plateforme:</span>
+                    <span class="info-value">Microsoft Copilot Studio</span>
+                </div>
+                <a class="info-badge" href="https://copilotstudio.preview.microsoft.com/environments/14a51a38-b4c0-eb5b-9089-fcef1e4b79f5/solutions/89228855-0fd5-f011-8544-7ced8d0679f6" target="_blank" rel="noopener" style="text-decoration:none;color:inherit;">
+                    <span class="info-label">SOLUTION:</span>
+                    <span class="info-value">xPM-Pantheon</span>
+                </a>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="tabs">
+            <button class="tab active" data-section="architecture">Architecture Globale</button>
+            <button class="tab" data-section="flux">Flux des Rubriques</button>
+            <button class="tab" data-section="composantes">Composantes Système</button>
+            <button class="tab" data-section="overview">Vue d'ensemble</button>
+                    <button class="tab" data-section="information">Modèle de données</button>
+            <button class="tab" data-section="agentic">Flux Agentique</button>
+        </div>
+
+        
+        <div class="diagram-section active" id="architecture">
+            <div class="section-header">
+                <h2 class="section-title">Architecture Globale</h2>
+                <p class="section-subtitle">
+                    Vue logique du toolbox agentique Reddixia orchestré par Idexios. Organisation par étapes : requête, analyse, rubriques, sources, agents, traitement et sorties.
+                </p>
+            </div>
+
+            <div class="diagram-container">
+                <div id="cyto-architecture" style="width:100%; height:860px;"></div>
+            </div>
+
+
+            <div class="diagram-card">
+                <h3>Description de l'architecture</h3>
+                <p>
+                    Le diagramme présente une orchestration par étapes. L'utilisateur formule une requête; Idexios agit comme hub central
+                    pour qualifier l'intention, résoudre le contexte (périmètre et période), sélectionner une rubrique, puis router vers
+                    le Domain Pack requis. Les Domain Packs utilisent les sources nécessaires pour produire des sorties standardisées.
+                </p>
+                <ul>
+                    <li><strong>Routage par rubriques</strong> : Idexios qualifie l'intention (Portefeuille, Conseils, Scenarios, Livrables, Gouvernance) et sélectionne le Domain Pack utile. En fonction du domaine, d'autres rubriques ou sources complémentaires peuvent être exploitées.</li>
+                    <li><strong>Sources par défaut</strong> : Dataverse TPG (tpg_*) et SharePoint (Idexios-Prime) sont les sources par défaut. Il est possible d'arrimer des sources de systèmes de suivi financier lorsque l'agentique soutenant la reddition de compte est utilisée. Par exemple, dans un contexte TI, Système financier (source personnalisée) peut être connecté afin de suivre la facturation et concilier les données.</li>
+                    <li><strong>Traitement</strong> : les agents spécialisés appliquent des règles de calcul, de détection d'écarts, de synthèse et de génération d'artefacts, avec traçabilité vers les enregistrements et procédures.</li>
+                    <li><strong>Sorties (3 formats)</strong> :
+                        <ol>
+                            <li>Conversation : réponse structurée et contextualisée dans Copilot Studio.</li>
+                            <li>Power Pages : objets de rapport et Adaptive Cards affichables (drill-down et navigation).</li>
+                            <li>Process : écriture dans des tables et/ou formulaires lorsque la demande déclenche un workflow.</li>
+                        </ol>
+                    </li>
+                </ul>
+            </div>
+
+        </div>
+
+
+        <div class="diagram-section" id="flux">
+            <div class="section-header">
+                <h2 class="section-title">Flux d'Orchestration des Rubriques</h2>
+                <p class="section-description">
+                    Comment Idexios traite les requêtes utilisateur via ses 9 rubriques personnalisées,
+                    routant intelligemment vers les analyses appropriées.
+                </p>
+            </div>
+            <!-- diagram removed -->
+
+            <div class="rubrique-block">
+
+                <h3>Flux des Rubriques — Spécification des sorties (Adaptive Cards & Rapports)</h3>
+                <p class="rubrique-meta">
+                    Documente ici le contrat d’orchestration Idexios pour que l’équipe d’implémentation livre des <strong>Adaptive Cards</strong> et des
+                    <strong>rapports</strong> reproductibles, mesurables (PMI/EVM), et auditables (gouvernance/FinOps). Je m’appuie sur Dataverse (<code>tpg_*</code>) et
+                    Idexios-Prime (SharePoint) comme sources de vérité.
+                    <br><span class="warn">Principe non négociable :</span> si une métrique n’est pas disponible (champ non exposé / pas de droits / pas de période),
+                    Idexios doit le signaler explicitement et demander les filtres manquants.
+                </p>
+
+                <div class="diagram-card" style="margin-top:16px;">
+                    <h4>Schéma — Orchestration Rubriques ↔ Agents</h4>
+                    <p class="rubrique-meta" style="margin-top:6px;">
+                        Représentation synthétique des allées-retours entre l’orchestrateur Idexios, les rubriques (qualification d’intention)
+                        et les agents spécialisés (Domain Packs). Le schéma illustre la boucle de clarification, le routage, la récupération des données,
+                        puis l’assemblage des sorties.
+                    </p>
+                    <div id="cyto-rubriques-loop" style="width:100%; height:460px;"></div>
+                </div>
+
+                <div class="diagram-card">
+                    <h4>Description des interactions</h4>
+                    <ul class="features-list">
+                        <li><strong>Qualification</strong> : Idexios interprète la demande et sélectionne une rubrique (Portefeuille, Conseils, Scénarios, Livrables, Gouvernance).</li>
+                        <li><strong>Clarification</strong> : si le contexte est incomplet (projet/programme/portefeuille, période, filtres), Idexios déclenche une boucle de questions/réponses avant calcul.</li>
+                        <li><strong>Routage</strong> : la rubrique active détermine le Domain Pack utile; l’orchestrateur appelle ensuite les agents spécialisés.</li>
+                        <li><strong>Accès aux sources</strong> : les agents consomment Dataverse TPG (<code>tpg_*</code>) et SharePoint (Idexios-Prime) via les actions/connecteurs; des sources personnalisées peuvent être arrimées si configurées.</li>
+                        <li><strong>Retour agentique</strong> : les résultats (KPI, écarts, recommandations, preuves) reviennent à Idexios, qui met à jour le contexte et prépare la sortie.</li>
+                        <li><strong>Sorties</strong> : conversation, Power Pages (Adaptive Cards/rapports), ou déclenchement de processus (création/MAJ d’enregistrements).</li>
+                    </ul>
+                    <p class="rubrique-meta" style="margin-top:10px;">
+                        Les sections de rubriques ci-dessous détaillent, pour chaque intention, les entrées, traitements, colonnes d’Adaptive Cards et rapports attendus.
+                    </p>
+                </div>
+
+
+                <details open>
+                    <summary>📊 Rubrique PORTEFEUILLE — Exemple complet (ATHENA-PORTF)</summary>
+
+    <div class="diagram-card">
+      <h4>Scénario d'usage</h4>
+      <p>
+        Cette rubrique synthétise les informations clés (nombre de projets, budgets totaux, coûts engagés, capacité, bénéfices cibles,
+        risques majeurs) par portefeuille. Un cas typique consiste à comparer plusieurs portefeuilles ou programmes et à identifier les projets
+        qui nécessitent une décision ou une escalade.
+      </p>
+      <h4>Finalité métier</h4>
+      <p>
+        Vue portefeuille pour comité de direction / PCO : projets à risque, EVM (SPI/CPI), capacité, dépendances et décisions à trancher.
+      </p>
+      <h4>Drill-down (logique contextuelle)</h4>
+      <p>
+        Question PROJET → ancrage <code>ProjectId</code> ; question PORTEFEUILLE → ancrage <code>PortfolioId</code> ; question PROGRAMME → ancrage <code>ProgramId</code>.
+        Les clés restent des GUID Dataverse, avec résolution possible via code et nom (disambiguation).
+      </p>
+    </div>
+
+
+                    <p class="rubrique-meta">
+                        <strong>Finalité métier</strong> : vue portefeuille pour comité de direction / PCO : projets à risque, EVM (SPI/CPI), capacité, dépendances,
+                        décisions à trancher. <br>
+                        <strong>Drill-down (logique contextuelle)</strong> : question <strong>PROJET</strong> → ancrage <code>projectId</code> ;
+                        question <strong>PORTEFEUILLE</strong> → ancrage <code>portfolioId</code> ;
+                        question <strong>PROGRAMME</strong> → ancrage <code>programId</code>. Les trois restent des GUID Dataverse, avec résolution possible via
+                        <em>code projet</em> et <em>nom</em> (disambiguation).
+                    </p>
+
+                    <h4>Flux logique (niveau implémentation)</h4>
+                    <!-- diagram removed -->
+
+                    <h4>Règles de période (obligatoire vs optionnelle)</h4>
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Cas d’usage</th>
+                                <th>Période requise ?</th>
+                                <th>Comportement par défaut</th>
+                                <th>UI attendue (Adaptive Card)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Finances / Capacité / EVM (PV, EV, AC, SPI, CPI, EAC, ETC)</td>
+                                <td><strong>Obligatoire</strong></td>
+                                <td><strong>Mois courant + mois suivant (M0+M1)</strong> avec confirmation utilisateur</td>
+                                <td>Bandeau: « J’analyse M0+M1. OK ? » + boutons “Changer période”</td>
+                            </tr>
+                            <tr>
+                                <td>Narratif (synthèse comité, constats, recommandations)</td>
+                                <td>Optionnelle</td>
+                                <td>Réutiliser M0+M1 si déjà validée, sinon proposer</td>
+                                <td>Chip période (facultatif) + lien “Définir période”</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <h4>Seuils RAG (PMI / EVM) — norme de rendu</h4>
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Indicateur</th>
+                                <th>🔴 Rouge</th>
+                                <th>🟡 Ambre</th>
+                                <th>🟢 Vert</th>
+                                <th>Usage</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><code>SPI</code> (Schedule Performance Index)</td>
+                                <td>&lt; 0.85</td>
+                                <td>0.85 – 0.95</td>
+                                <td>≥ 0.95</td>
+                                <td>Risque délai / dérive calendrier</td>
+                            </tr>
+                            <tr>
+                                <td><code>CPI</code> (Cost Performance Index)</td>
+                                <td>&lt; 0.85</td>
+                                <td>0.85 – 0.95</td>
+                                <td>≥ 0.95</td>
+                                <td>Risque budget / performance coût</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <p class="rubrique-meta">
+                        Référence : la valeur cible nominale de <code>CPI</code> et <code>SPI</code> est <strong>1.00</strong>.
+                        Les seuils ci-dessus (Vert ≥ 0.95, Ambre 0.85–0.95, Rouge &lt; 0.85) servent à la catégorisation RAG.
+                    </p>
+
+                    <h4>📊 COLONNES DE DONNÉES (Adaptive Cards) — Portefeuille</h4>
+                    <p class="rubrique-meta">
+                        Ce tableau est le contrat UI. Les colonnes ci-dessous doivent exister côté “dataset” de la carte, même si la valeur est <span class="warn">manquante</span>.
+                        Les “Sources” sont exprimées en table/colonne Dataverse quand elles sont confirmées; sinon je les garde en logique à mapper.
+                    </p>
+
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Nom colonne</th>
+                                <th>Type</th>
+                                <th>Format</th>
+                                <th>Calcul / Source</th>
+                                <th>Utilité métier</th>
+                                <th>Contexte d’usage agent</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><code>projectId</code></td>
+                                <td>GUID</td>
+                                <td>—</td>
+                                <td>Dataverse (clé projet)</td>
+                                <td>Drill-down PROJET</td>
+                                <td>ATHENA-PORTF: navigation + export</td>
+                            </tr>
+                            <tr>
+                                <td><code>portfolioId</code></td>
+                                <td>GUID</td>
+                                <td>—</td>
+                                <td>Dataverse (clé portefeuille)</td>
+                                <td>Drill-down PORTEFEUILLE</td>
+                                <td>ATHENA-PORTF: agrégation et filtres</td>
+                            </tr>
+                            <tr>
+                                <td><code>programId</code></td>
+                                <td>GUID</td>
+                                <td>—</td>
+                                <td>Dataverse (clé programme)</td>
+                                <td>Drill-down PROGRAMME</td>
+                                <td>ATHENA-PORTF: regroupements stratégiques</td>
+                            </tr>
+
+                            <tr>
+                                <td><code>ProjectCode</code></td>
+                                <td>String</td>
+                                <td>Texte 50</td>
+                                <td>Dataverse (code projet)</td>
+                                <td>Référence stable en comité</td>
+                                <td>Disambiguation (nom similaire)</td>
+                            </tr>
+                            <tr>
+                                <td><code>ProjectName</code></td>
+                                <td>String</td>
+                                <td>Texte 255</td>
+                                <td>Dataverse (nom projet)</td>
+                                <td>Identification rapide</td>
+                                <td>Titre cliquable + recherche</td>
+                            </tr>
+                            <tr>
+                                <td><code>ProjectUrl</code></td>
+                                <td>String</td>
+                                <td>URL</td>
+                                <td>Composé (base PWA/TPG) + <code>projectId</code></td>
+                                <td>Accès direct TPG</td>
+                                <td>Bouton “Ouvrir dans TPG”</td>
+                            </tr>
+
+                            <tr>
+                                <td><code>PeriodScope</code></td>
+                                <td>String</td>
+                                <td>Texte</td>
+                                <td>Valeur UI: “M0+M1”, “T1”, “2026-01..2026-03”</td>
+                                <td>Trace des hypothèses</td>
+                                <td>Audit/traçabilité + réutilisation rapport</td>
+                            </tr>
+
+                            <!-- PMI / EVM -->
+                            <tr>
+                                <td><code>PlannedValue</code></td>
+                                <td>Decimal</td>
+                                <td>Currency CAD</td>
+                                <td>PV (EVM) — finances/baseline (à mapper)</td>
+                                <td>Base EVM</td>
+                                <td>ATHENA-PORTF calcule SPI/SV</td>
+                            </tr>
+                            <tr>
+                                <td><code>EarnedValue</code></td>
+                                <td>Decimal</td>
+                                <td>Currency CAD</td>
+                                <td>EV (EVM) — méthode TPG (à documenter)</td>
+                                <td>Valeur acquise</td>
+                                <td>ATHENA-PORTF explique la méthode</td>
+                            </tr>
+                            <tr>
+                                <td><code>ActualCost</code></td>
+                                <td>Decimal</td>
+                                <td>Currency CAD</td>
+                                <td>AC — <code>tpg_finances</code> (à mapper)</td>
+                                <td>Coût réel</td>
+                                <td>ATLAS-CTRL: reddition</td>
+                            </tr>
+                            <tr>
+                                <td><code>SPI</code></td>
+                                <td>Decimal</td>
+                                <td>0.00</td>
+                                <td><code>EarnedValue / PlannedValue</code></td>
+                                <td>Performance délai</td>
+                                <td>RAG selon seuils (PMI)</td>
+                            </tr>
+                            <tr>
+                                <td><code>CPI</code></td>
+                                <td>Decimal</td>
+                                <td>0.00</td>
+                                <td><code>EarnedValue / ActualCost</code></td>
+                                <td>Performance coût</td>
+                                <td>RAG selon seuils (PMI)</td>
+                            </tr>
+                            <tr>
+                                <td><code>EAC</code></td>
+                                <td>Decimal</td>
+                                <td>Currency CAD</td>
+                                <td>Estimate at Completion (ex. <code>BAC / CPI</code>)</td>
+                                <td>Projection fin projet</td>
+                                <td>ATLAS-CTRL: hypothèses explicites</td>
+                            </tr>
+                            <tr>
+                                <td><code>ETC</code></td>
+                                <td>Decimal</td>
+                                <td>Currency CAD</td>
+                                <td><code>EAC - ActualCost</code></td>
+                                <td>Reste à dépenser</td>
+                                <td>Arbitrages comité</td>
+                            </tr>
+
+                            <!-- Capacité / Agile -->
+                            <tr>
+                                <td><code>CapacityPlannedHours</code></td>
+                                <td>Decimal</td>
+                                <td>Heures 0.0</td>
+                                <td><code>tpg_capacity</code> (à mapper)</td>
+                                <td>Engagement capacité</td>
+                                <td>Contrainte portefeuille</td>
+                            </tr>
+                            <tr>
+                                <td><code>CapacityActualHours</code></td>
+                                <td>Decimal</td>
+                                <td>Heures 0.0</td>
+                                <td>Timesheet / capacity réel (à mapper)</td>
+                                <td>Consommation capacité</td>
+                                <td>Contrôle effort / anomalies</td>
+                            </tr>
+                            <tr>
+                                <td><code>Velocity</code></td>
+                                <td>Decimal</td>
+                                <td>Points/sprint</td>
+                                <td>Agile: métrique backlog/delivery (si exposée)</td>
+                                <td>Prévision delivery</td>
+                                <td>Si indisponible: afficher <span class="warn">manque</span></td>
+                            </tr>
+
+                            <!-- Échéancier / chemin critique -->
+                            <tr>
+                                <td><code>CriticalPathFlag</code></td>
+                                <td>Boolean</td>
+                                <td>true/false</td>
+                                <td><code>tpg_projecttask.tpg_iscritical</code></td>
+                                <td>Focus chemin critique</td>
+                                <td>ATHENA-PORTF: priorisation exécution</td>
+                            </tr>
+
+                            <!-- FinOps (systèmes financiers Allocation / Showback / Chargeback) -->
+                            <tr>
+                                <td><code>Period</code></td>
+                                <td>String</td>
+                                <td>YYYY-MM</td>
+                                <td>Système financier (source personnalisée) (mois de facturation) ↔ <code>tpg_period</code> (mapping)</td>
+                                <td>Suivi temporel (MoM, tendances)</td>
+                                <td>ATLAS-CTRL: agrégation et lecture FinOps</td>
+                            </tr>
+                            <tr>
+                                <td><code>CentreCouts</code></td>
+                                <td>String</td>
+                                <td>Code alphanumérique</td>
+                                <td>Dimension <code>CostCenter</code> (imputation) (normalisé) + table de référence d’imputation</td>
+                                <td>Imputation comptable / showback-chargeback</td>
+                                <td>ATLAS-CTRL: regroupements et écarts</td>
+                            </tr>
+                            <tr>
+                                <td><code>CostAllocationKey</code></td>
+                                <td>String</td>
+                                <td>Clé normalisée</td>
+                                <td>Règles d’allocation (tables de référence) + dimensions d’imputation (Projet/Programme/Portefeuille)</td>
+                                <td>Clé de jointure stable (allocation & audit)</td>
+                                <td>Idexios: corrélation coûts → hiérarchie PPM</td>
+                            </tr>
+                            <tr>
+                                <td><code>ShowbackAmount</code></td>
+                                <td>Decimal</td>
+                                <td>Currency CAD</td>
+                                <td>Somme des coûts agrégés par <code>CostAllocationKey</code> (showback : information sans refacturation)</td>
+                                <td>Transparence coûts (FinOps showback)</td>
+                                <td>Dashboard FinOps + préparation comités</td>
+                            </tr>
+                            <tr>
+                                <td><code>ChargebackAmount</code></td>
+                                <td>Decimal</td>
+                                <td>Currency CAD</td>
+                                <td>Somme des coûts × formules de refacturation (chargeback : refacturation selon règles établies)</td>
+                                <td>Refacturation réelle (inter-services)</td>
+                                <td>ATLAS-CTRL: reddition financière officielle</td>
+                            </tr>
+                            <tr>
+                                <td><code>VariancePct</code></td>
+                                <td>Decimal</td>
+                                <td>Percent 0.0%</td>
+                                <td><code>(ActualCost - PlannedCost) / PlannedCost</code> (par période, niveau projet/programme/portefeuille)</td>
+                                <td>Alertes dérives budget (seuils & tri)</td>
+                                <td>ATLAS-CTRL + ATHENA-PORTF: arbitrages</td>
+                            </tr>
+</tbody>
+                    </table>
+
+                    <h4>🧾 Sous-flux FinOps (Showback / Chargeback) — Portefeuille</h4>
+                    <p class="rubrique-meta">
+                        Dans la rubrique <strong>Portefeuille</strong>, le volet financier est traité comme un sous-flux spécialisé : je consolide les coûts par centre de coûts et par hiérarchie PPM (Projet → Programme → Portefeuille),
+                        en appliquant les règles d’allocation normalisées via <code>CostAllocationKey</code>. Par défaut, j’analyse <strong>mois courant + mois suivant</strong> et je fais confirmer cette fenêtre à l’utilisateur avant d’exécuter les calculs.
+                    </p>
+
+                    <div id="cyto-flux" style="width:100%; height:520px;"></div>
+
+                    
+                    <div class="diagram-card" style="margin-top: 14px;">
+                        <h4>Schéma — Flux de traitement (rubrique PORTEFEUILLE)</h4>
+                        <div id="cyto-rubrique-portefeuille" style="width:100%; height:320px;"></div>
+                    </div>
+
+                    <div class="diagram-card">
+                        <h4>Description du flux</h4>
+                        <ul class="features-list">
+                            <li><strong>Qualification</strong> : Idexios associe l’intention à la rubrique <strong>PORTEFEUILLE</strong> et résout le contexte (projet/programme/portefeuille) et la période.</li>
+                            <li><strong>Routage</strong> : l’orchestrateur sélectionne les Domain Packs utiles (<strong>PortfolioOps + FinanceOps</strong>) et appelle les actions nécessaires.</li>
+                            <li><strong>Sources</strong> : données et procédures issues de <strong>Dataverse TPG, SharePoint, Sources personnalisées (optionnel)</strong> (selon disponibilité et configuration).</li>
+                            <li><strong>Sorties</strong> : assemblage en trois formats (Conversation, Power Pages, Process), avec création de cases SharePoint lorsqu’un suivi est requis.</li>
+                        </ul>
+                    </div>
+<h4>Entrées (sources)</h4>
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Entrée</th><th>Source</th><th>Format</th><th>Clés / dimensions requises</th><th>Usage</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Consommation financière</td>
+                                <td>Système financier (source personnalisée) API (Query / Exports)</td>
+                                <td>Coûts & usage par ressource / service</td>
+                                <td><code>billingAccountId</code>, <code>billingPeriod</code></td>
+                                <td>Base de calcul des montants showback/chargeback</td>
+                            </tr>
+                            <tr>
+                                <td>Dimensions d’imputation</td>
+                                <td>Dimensions d’imputation</td>
+                                <td>Key/Value</td>
+                                <td><code>CostCenter</code>, <code>Project</code>, <code>Program</code>, <code>Portfolio</code></td>
+                                <td>Jointure “coûts → hiérarchie PPM”</td>
+                            </tr>
+                            <tr>
+                                <td>Règles d’allocation</td>
+                                <td>Tables de référence (Dataverse/SharePoint)</td>
+                                <td>Mapping & formules</td>
+                                <td><code>CostAllocationKey</code>, clés comptables, périmètres</td>
+                                <td>Normalisation, refacturation, auditabilité</td>
+                            </tr>
+                            <tr>
+                                <td>PlannedCost (budget)</td>
+                                <td>Dataverse Finances (<code>tpg_*</code>)</td>
+                                <td>Montant planifié par période</td>
+                                <td><code>PeriodId</code> + niveau (projet/programme/portefeuille)</td>
+                                <td>Calcul de <code>VariancePct</code> et alertes budgétaires</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <h4>Traitements (règles de calcul)</h4>
+                    <ul>
+                        <li><strong>Normalisation</strong> : j’applique les règles de mapping pour produire une <code>CostAllocationKey</code> stable (dimensions → clés de référence).</li>
+                        <li><strong>ShowbackAmount</strong> : j’agrège les coûts par <code>CostAllocationKey</code> pour fournir une visibilité (sans refacturation).</li>
+                        <li><strong>ChargebackAmount</strong> : j’applique les formules de refacturation réelles (périmètre + règles + exceptions), puis j’agrège au niveau comptable attendu.</li>
+                        <li><strong>Agrégation temporelle</strong> : par défaut <em>M0 + M1</em>, avec option de bascule Semaine/Mois/Trimestre/Intervalle sur confirmation utilisateur.</li>
+                        <li><strong>Seuils d’alerte</strong> : je déclenche les alertes portefeuille sur <code>VariancePct</code> (ex. vert &lt; 10%, jaune 10–20%, rouge &gt; 20%).</li>
+                    </ul>
+
+                    <h4>KPIs (à afficher en en-tête de carte)</h4>
+                    <table class="data-table">
+                        <thead>
+                            <tr><th>KPI</th><th>Calcul</th><th>Utilité</th><th>Agent</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Coût total période</td>
+                                <td><code>sum(ShowbackAmount)</code> (ou <code>sum(ChargebackAmount)</code> selon contexte)</td>
+                                <td>Lecture “macro” du portefeuille</td>
+                                <td>ATLAS-CTRL</td>
+                            </tr>
+                            <tr>
+                                <td>Variance budgétaire (%)</td>
+                                <td><code>(ActualCost - PlannedCost) / PlannedCost</code></td>
+                                <td>Alerte et justification dérives</td>
+                                <td>ATLAS-CTRL</td>
+                            </tr>
+                            <tr>
+                                <td>Top 3 centres de coûts</td>
+                                <td>Tri décroissant sur <code>ShowbackAmount</code> ou <code>ChargebackAmount</code></td>
+                                <td>Focaliser les actions d’optimisation</td>
+                                <td>ATLAS-CTRL + ATHENA-PORTF</td>
+                            </tr>
+                            <tr>
+                                <td>Tendance mensuelle (MoM)</td>
+                                <td><code>(M0 - M-1) / M-1</code> (sur 6 mois glissants)</td>
+                                <td>Détection d’accélération ou stabilisation</td>
+                                <td>ATLAS-CTRL</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <h4>Graphiques / diagrammes (rapports & dashboards)</h4>
+                    <ul>
+                        <li><strong>Barres empilées</strong> : répartition <code>ShowbackAmount</code> par <em>Centre de coûts</em> et <em>Projet</em>.</li>
+                        <li><strong>Linéaire</strong> : tendance <code>ChargebackAmount</code> sur <em>6 mois glissants</em>.</li>
+                        <li><strong>Heatmap</strong> : <code>VariancePct</code> par <em>Programme</em> (vert &lt; 10%, jaune 10–20%, rouge &gt; 20%).</li>
+                    </ul>
+
+                    <h4>📄 RAPPORTS (Documents générés) — Portefeuille</h4>
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Nom fichier</th>
+                                <th>Format</th>
+                                <th>Template SharePoint</th>
+                                <th>Sections</th>
+                                <th>Graphiques / diagrammes</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><code>Portfolio_Executive_Summary</code></td>
+                                <td>Word (.docx)</td>
+                                <td><code>/Idexios-Prime/Templates/Portfolio/Executive_Summary.dotx</code> <span class="warn">(à créer)</span></td>
+                                <td>
+                                    1) Vue d’ensemble<br>
+                                    2) Projets à risque (RAG + causes)<br>
+                                    3) EVM (SPI/CPI, SV/CV, EAC/ETC)<br>
+                                    4) Capacité (plan vs réel)<br>
+                                    5) Décisions & recommandations
+                                </td>
+                                <td>
+                                    - Table RAG<br>
+                                    - Courbe tendance coûts (par période)<br>
+                                    - Histogramme capacité<br>
+                                    - (Option) Heatmap risques 5x5
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><code>Portfolio_Committee_Pack</code></td>
+                                <td>PowerPoint (.pptx)</td>
+                                <td><code>/Idexios-Prime/Templates/Portfolio/Committee_Pack.potx</code> <span class="warn">(à créer)</span></td>
+                                <td>
+                                    1) Messages clés<br>
+                                    2) Top projets sensibles<br>
+                                    3) Arbitrages (budget/capacité/délais)<br>
+                                    4) Décisions à prendre
+                                </td>
+                                <td>
+                                    - Waterfall PV/EV/AC (EVM)<br>
+                                    - Roadmap/jalons<br>
+                                    - Bubble chart (valeur vs risque vs coût)
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><code>Portfolio_FinOps_Showback</code></td>
+                                <td>Excel (.xlsx)</td>
+                                <td><code>/Idexios-Prime/Templates/FinOps/Showback.xlsx</code> <span class="pill">en place</span></td>
+                                <td>
+                                    1) Sources (système financier) & dimensions d’imputation<br>
+                                    2) Règles d’allocation (<code>CostAllocationKey</code>)<br>
+                                    3) Showback (visibilité sans refacturation)<br>
+                                    4) Chargeback (refacturation réelle)<br>
+                                    5) Variances (%) vs budget + alertes<br>
+                                    6) KPIs (Top 3 centres, MoM, tendances 6 mois)
+                                </td>
+                                <td>
+                                    - Barres empilées: Showback par Centre de coûts & Projet<br>
+                                    - Courbe: tendance Chargeback (6 mois glissants)<br>
+                                    - Heatmap: Variance% par Programme (vert/jaune/rouge)
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <h4>Décisions d’architecture (justification)</h4>
+                    <ul>
+                        <li><strong>Clés de forage</strong> : je garde <code>projectId</code>, <code>portfolioId</code>, <code>programId</code> en contexte pour garantir un drill-down déterministe.</li>
+                        <li><strong>Période par défaut M0+M1</strong> : c’est le compromis “opérationnel” pour comité (projection courte) tout en restant confirmable.</li>
+                        <li><strong>RAG SPI/CPI</strong> : je normalise le rendu UI pour éviter que deux agents présentent des seuils différents.</li>
+                        <li><strong>Chemin critique</strong> : je mappe <code>CriticalPathFlag</code> sur <code>tpg_projecttask.tpg_iscritical</code> (testé), ce qui me permet un tri “exécution” sans interprétation.</li>
+                    </ul>
+
+                </details>
+
+                <!-- ====================== CONSEILS (SYNTHESE) ====================== -->
+                <details>
+                    <summary>🏛️ Rubrique CONSEILS — Synthèse (préparation comité)</summary>
+
+    <div class="diagram-card">
+      <h4>Scénario d'usage</h4>
+      <p>
+        Cette rubrique prépare un comité ou une décision en transformant les signaux portefeuille (écarts, risques, contraintes capacité, décisions ouvertes)
+        en ordre du jour, questions structurées et recommandations priorisées.
+      </p>
+      <h4>Finalité métier</h4>
+      <p>
+        Support décisionnel : recommandations (stratégiques/tactiques/opérationnelles), priorités, statuts d'adoption, et liens vers preuves et suivis.
+      </p>
+    </div>
+
+                    <p class="rubrique-meta">
+                        Fournit ici une “mise en scène” comité : ordre du jour, questions PMI, décisions à trancher, et pré-lectures. Les conseils s’appuient sur les signaux Portefeuille (RAG, EVM, risques, capacité).
+                    </p>
+
+                    
+                    <div class="diagram-card" style="margin-top: 14px;">
+                        <h4>Schéma — Flux de traitement (rubrique CONSEILS)</h4>
+                        <div id="cyto-rubrique-conseils" style="width:100%; height:320px;"></div>
+                    </div>
+
+                    <div class="diagram-card">
+                        <h4>Description du flux</h4>
+                        <ul class="features-list">
+                            <li><strong>Qualification</strong> : Idexios associe l’intention à la rubrique <strong>CONSEILS</strong> et résout le contexte (projet/programme/portefeuille) et la période.</li>
+                            <li><strong>Routage</strong> : sélection des Domain Packs utiles (<strong>PortfolioOps / GovernanceOps</strong>) et exécution des actions nécessaires via connecteurs.</li>
+                            <li><strong>Sources</strong> : données et procédures issues de <strong>Dataverse TPG, SharePoint</strong>, selon disponibilité et configuration.</li>
+                            <li><strong>Sorties</strong> : assemblage en trois formats (Conversation, Power Pages, Process), avec création de cases SharePoint lorsqu’un suivi est requis.</li>
+                        </ul>
+                    </div>
+<h4>📊 COLONNES DE DONNÉES (Adaptive Cards)</h4>
+                    <table class="data-table">
+                        <thead><tr><th>Nom colonne</th><th>Type</th><th>Format</th><th>Calcul/Source</th><th>Utilité</th><th>Contexte agent</th></tr></thead>
+                        <tbody>
+                            <tr><td><code>CommitteeDate</code></td><td>Date</td><td>YYYY-MM-DD</td><td>Entrée utilisateur / calendrier (intégration future)</td><td>Cadrage comité</td><td>Idexios</td></tr>
+                            <tr><td><code>AgendaItems</code></td><td>Array</td><td>Liste</td><td>Pipeline + Controls + Portefeuille</td><td>Ordre du jour</td><td>ATHENA-PORTF</td></tr>
+                            <tr><td><code>KeyQuestions</code></td><td>Array</td><td>Liste</td><td>Généré : SPI/CPI bas, dérives, risques critiques</td><td>Questions “PMI”</td><td>ATHENA-PORTF</td></tr>
+                            <tr><td><code>DecisionsRequired</code></td><td>Array</td><td>Liste</td><td>Pipeline/Controls</td><td>Décisions à trancher</td><td>Idexios</td></tr>
+                            <tr><td><code>PreReadLinks</code></td><td>Array</td><td>Liens</td><td>SharePoint Idexios-Prime</td><td>Pré-lectures</td><td>HERMES-PROJ</td></tr>
+                        </tbody>
+                    </table>
+
+                    <h4>📄 RAPPORTS</h4>
+                    <table class="data-table">
+                        <thead><tr><th>Nom fichier</th><th>Format</th><th>Template SharePoint</th><th>Sections</th><th>Graphiques/diagrammes</th></tr></thead>
+                        <tbody>
+                            <tr>
+                                <td><code>Committee_Agenda_and_Briefing</code></td>
+                                <td>Word</td>
+                                <td><code>/Idexios-Prime/Templates/Committee/Agenda_Briefing.dotx</code> <span class="warn">(à créer)</span></td>
+                                <td>1) ODJ, 2) décisions, 3) questions, 4) annexes</td>
+                                <td>Mini-matrice RAG + liste risques</td>
+                            </tr>
+                            <tr>
+                                <td><code>Committee_Decision_Log</code></td>
+                                <td>Excel</td>
+                                <td><code>/Idexios-Prime/Templates/Committee/Decision_Log.xlsx</code> <span class="warn">(à créer)</span></td>
+                                <td>Registre décisions (owner, date, statut, impact)</td>
+                                <td>—</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </details>
+
+                <!-- ====================== SCENARIOS (SYNTHESE) ====================== -->
+                <details>
+                    <summary>🎲 Rubrique SCENARIOS — Synthèse (arbitrages & priorisation)</summary>
+
+    <div class="diagram-card">
+      <h4>Scénario d'usage</h4>
+      <p>
+        Cette rubrique modélise des variantes de portefeuille (inclure/exclure/projeter des projets) afin de comparer impacts budget, capacité, délais et risques.
+        Un cas typique consiste à proposer un scénario "optimal" sous contraintes (budget plafond, capacité limitée, date cible).
+      </p>
+      <h4>Finalité métier</h4>
+      <p>
+        Arbitrage : comparaison multi-scénarios, analyse de sensibilité et justification des trade-offs.
+      </p>
+    </div>
+
+                    <p class="rubrique-meta">
+                        Je produis des scénarios défendables : sous-ensembles de projets (multi-sélection), impacts budget/capacité/délais, et compromis explicites (PMI + FinOps).
+                    </p>
+
+                    
+                    <div class="diagram-card" style="margin-top: 14px;">
+                        <h4>Schéma — Flux de traitement (rubrique SCENARIOS)</h4>
+                        <div id="cyto-rubrique-scenarios" style="width:100%; height:320px;"></div>
+                    </div>
+
+                    <div class="diagram-card">
+                        <h4>Description du flux</h4>
+                        <ul class="features-list">
+                            <li><strong>Qualification</strong> : Idexios associe l’intention à la rubrique <strong>SCENARIOS</strong> et résout le contexte (projet/programme/portefeuille) et la période.</li>
+                            <li><strong>Routage</strong> : sélection des Domain Packs utiles (<strong>PortfolioOps</strong>) et exécution des actions nécessaires via connecteurs.</li>
+                            <li><strong>Sources</strong> : données et procédures issues de <strong>Dataverse TPG, SharePoint (gabarits)</strong>, selon disponibilité et configuration.</li>
+                            <li><strong>Sorties</strong> : assemblage en trois formats (Conversation, Power Pages, Process), avec création de cases SharePoint lorsqu’un suivi est requis.</li>
+                        </ul>
+                    </div>
+<h4>📊 COLONNES DE DONNÉES (Adaptive Cards)</h4>
+                    <table class="data-table">
+                        <thead><tr><th>Nom colonne</th><th>Type</th><th>Format</th><th>Calcul/Source</th><th>Utilité</th><th>Contexte agent</th></tr></thead>
+                        <tbody>
+                            <tr><td><code>ScenarioId</code></td><td>String</td><td>SCN-###</td><td>Généré</td><td>Traçabilité</td><td>ATHENA-PORTF</td></tr>
+                            <tr><td><code>ScenarioName</code></td><td>String</td><td>Texte</td><td>Généré</td><td>Lecture comité</td><td>ATHENA-PORTF</td></tr>
+                            <tr><td><code>IncludedProjects</code></td><td>Array</td><td>Liste</td><td>Multi-select (Var2) → projectIds[]</td><td>Périmètre</td><td>Idexios</td></tr>
+                            <tr><td><code>DeltaBudget</code></td><td>Decimal</td><td>Currency CAD</td><td>Σ(EAC/BAC) scénario – baseline</td><td>Impact budget</td><td>ATLAS-CTRL</td></tr>
+                            <tr><td><code>DeltaCapacity</code></td><td>Decimal</td><td>Heures</td><td>Σ(capacité planifiée) scénario – baseline</td><td>Impact staffing</td><td>ATHENA-PORTF</td></tr>
+                            <tr><td><code>DeltaDeliveryDate</code></td><td>Integer</td><td>Jours</td><td>Comparaison forecast finish</td><td>Impact délai</td><td>ATHENA-PORTF</td></tr>
+                            <tr><td><code>TradeOffNarrative</code></td><td>String</td><td>Texte</td><td>Généré (justification)</td><td>Décision défendable</td><td>ATHENA-PORTF</td></tr>
+                        </tbody>
+                    </table>
+
+                    <h4>📄 RAPPORTS</h4>
+                    <table class="data-table">
+                        <thead><tr><th>Nom fichier</th><th>Format</th><th>Template SharePoint</th><th>Sections</th><th>Graphiques/diagrammes</th></tr></thead>
+                        <tbody>
+                            <tr><td><code>Scenario_Comparison_Matrix</code></td><td>PPTX</td><td><code>/Idexios-Prime/Templates/Scenario/Comparison.potx</code> <span class="warn">(à créer)</span></td><td>Comparaison + recommandation</td><td>Bubble chart + waterfall budget</td></tr>
+                            <tr><td><code>Scenario_Data_Export</code></td><td>XLSX</td><td><code>/Idexios-Prime/Templates/Scenario/Data_Export.xlsx</code> <span class="warn">(à créer)</span></td><td>Hypothèses + données sources</td><td>—</td></tr>
+                        </tbody>
+                    </table>
+                </details>
+
+                <!-- ====================== LIVRABLES (SYNTHESE) ====================== -->
+                <details>
+                    <summary>📝 Rubrique LIVRABLES — Synthèse (documents & reddition)</summary>
+
+    <div class="diagram-card">
+      <h4>Scénario d'usage</h4>
+      <p>
+        Cette rubrique génère des livrables standardisés (résumés exécutifs, comptes rendus, rapports statut) à partir des données projet et des gabarits,
+        avec publication dans SharePoint et liens de traçabilité.
+      </p>
+      <h4>Finalité métier</h4>
+      <p>
+        Production documentaire : livrables prêts à diffuser (comité, reddition, communication), alignés sur les procédures Idexios-Prime.
+      </p>
+    </div>
+
+                    <p class="rubrique-meta">
+                        Je génère des livrables normalisés (Word/PPT/Excel/HTML) en appliquant les gabarits SharePoint. Le contenu provient des mêmes objets que Portefeuille, avec un “packaging” différent.
+                    </p>
+
+                    
+                    <div class="diagram-card" style="margin-top: 14px;">
+                        <h4>Schéma — Flux de traitement (rubrique LIVRABLES)</h4>
+                        <div id="cyto-rubrique-livrables" style="width:100%; height:320px;"></div>
+                    </div>
+
+                    <div class="diagram-card">
+                        <h4>Description du flux</h4>
+                        <ul class="features-list">
+                            <li><strong>Qualification</strong> : Idexios associe l’intention à la rubrique <strong>LIVRABLES</strong> et résout le contexte (projet/programme/portefeuille) et la période.</li>
+                            <li><strong>Routage</strong> : sélection des Domain Packs utiles (<strong>DeliveryOps / CommsOps</strong>) et exécution des actions nécessaires via connecteurs.</li>
+                            <li><strong>Sources</strong> : données et procédures issues de <strong>Dataverse TPG, SharePoint (gabarits)</strong>, selon disponibilité et configuration.</li>
+                            <li><strong>Sorties</strong> : assemblage en trois formats (Conversation, Power Pages, Process), avec création de cases SharePoint lorsqu’un suivi est requis.</li>
+                        </ul>
+                    </div>
+<h4>📊 COLONNES DE DONNÉES (Adaptive Cards)</h4>
+                    <table class="data-table">
+                        <thead><tr><th>Nom colonne</th><th>Type</th><th>Format</th><th>Calcul/Source</th><th>Utilité</th><th>Contexte agent</th></tr></thead>
+                        <tbody>
+                            <tr><td><code>DeliverableType</code></td><td>Choice</td><td>Liste</td><td>Entrée utilisateur</td><td>Choix gabarit</td><td>HERMES-PROJ</td></tr>
+                            <tr><td><code>TemplatePath</code></td><td>String</td><td>Chemin</td><td>Idexios-Prime /Templates</td><td>Standardisation</td><td>HERMES-PROJ</td></tr>
+                            <tr><td><code>OutputFolder</code></td><td>String</td><td>Chemin</td><td>Convention (projet/période/type)</td><td>Classement</td><td>Idexios</td></tr>
+                            <tr><td><code>GeneratedFileName</code></td><td>String</td><td>Nom</td><td>Convention: type + date + scope</td><td>Traçabilité</td><td>HERMES-PROJ</td></tr>
+                            <tr><td><code>SharePointOutputUrl</code></td><td>URL</td><td>URL</td><td>SharePoint (lien fichier)</td><td>Partage</td><td>Idexios</td></tr>
+                        </tbody>
+                    </table>
+
+                    <h4>📄 RAPPORTS</h4>
+                    <table class="data-table">
+                        <thead><tr><th>Nom fichier</th><th>Format</th><th>Template SharePoint</th><th>Sections</th><th>Graphiques/diagrammes</th></tr></thead>
+                        <tbody>
+                            <tr><td><code>Project_Status_Report</code></td><td>DOCX</td><td><code>/Idexios-Prime/Templates/Project/Status_Report.dotx</code> <span class="warn">(à créer)</span></td><td>Portée / coût / délai / risques</td><td>RAG + EV/PV/AC</td></tr>
+                            <tr><td><code>Executive_Brief</code></td><td>PPTX</td><td><code>/Idexios-Prime/Templates/Project/Executive_Brief.potx</code> <span class="warn">(à créer)</span></td><td>5–7 slides comité</td><td>Burndown budget + jalons</td></tr>
+                            <tr><td><code>Action_Register</code></td><td>XLSX</td><td><code>/Idexios-Prime/Templates/Project/Action_Register.xlsx</code> <span class="warn">(à créer)</span></td><td>Actions / propriétaires / échéances</td><td>—</td></tr>
+                        </tbody>
+                    </table>
+                </details>
+
+                <!-- ====================== GOUVERNANCE (SYNTHESE) ====================== -->
+                <details>
+                    <summary>⚖️ Rubrique GOUVERNANCE — Synthèse (qualité & conformité)</summary>
+
+    <div class="diagram-card">
+      <h4>Scénario d'usage</h4>
+      <p>
+        Cette rubrique applique des contrôles de conformité et de qualité (données, processus, règles) et produit des constats auditables.
+        Un cas typique consiste à détecter les champs manquants, incohérences et écarts de gouvernance, puis à créer des cases de correction.
+      </p>
+      <h4>Finalité métier</h4>
+      <p>
+        Gouvernance : conformité, preuves, escalade, et plan d'actions avec suivi.
+      </p>
+    </div>
+
+                    <p class="rubrique-meta">
+                        Je contrôle ici la qualité des données et la cohérence de configuration (workflows, clés comptables, états, obligations de saisie) pour sécuriser la reddition et réduire les surprises en comité.
+                    </p>
+
+                    
+                    <div class="diagram-card" style="margin-top: 14px;">
+                        <h4>Schéma — Flux de traitement (rubrique GOUVERNANCE)</h4>
+                        <div id="cyto-rubrique-gouvernance" style="width:100%; height:320px;"></div>
+                    </div>
+
+                    <div class="diagram-card">
+                        <h4>Description du flux</h4>
+                        <ul class="features-list">
+                            <li><strong>Qualification</strong> : Idexios associe l’intention à la rubrique <strong>GOUVERNANCE</strong> et résout le contexte (projet/programme/portefeuille) et la période.</li>
+                            <li><strong>Routage</strong> : sélection des Domain Packs utiles (<strong>GovernanceOps</strong>) et exécution des actions nécessaires via connecteurs.</li>
+                            <li><strong>Sources</strong> : données et procédures issues de <strong>Dataverse TPG, SharePoint (procédures/cases)</strong>, selon disponibilité et configuration.</li>
+                            <li><strong>Sorties</strong> : assemblage en trois formats (Conversation, Power Pages, Process), avec création de cases SharePoint lorsqu’un suivi est requis.</li>
+                        </ul>
+                    </div>
+<h4>📊 COLONNES DE DONNÉES (Adaptive Cards)</h4>
+                    <table class="data-table">
+                        <thead><tr><th>Nom colonne</th><th>Type</th><th>Format</th><th>Calcul/Source</th><th>Utilité</th><th>Contexte agent</th></tr></thead>
+                        <tbody>
+                            <tr><td><code>DataQualityFindings</code></td><td>Array</td><td>Liste</td><td>Contrôles sur champs obligatoires / incohérences</td><td>Fiabiliser la reddition</td><td>THEMIS-GOV</td></tr>
+                            <tr><td><code>MissingFields</code></td><td>Array</td><td>Liste</td><td>Détection colonnes non exposées</td><td>Plan de correction</td><td>THEMIS-GOV</td></tr>
+                            <tr><td><code>WorkflowAlignment</code></td><td>String</td><td>Texte</td><td>Alignement Project_State + Type_WF (si présents)</td><td>Cohérence opérations</td><td>THEMIS-GOV</td></tr>
+                            <tr><td><code>PolicyComplianceStatus</code></td><td>Choice</td><td>RAG</td><td>Évaluation règles internes</td><td>Comité gouvernance</td><td>THEMIS-GOV</td></tr>
+                            <tr><td><code>EvidenceLinks</code></td><td>Array</td><td>Liens</td><td>SharePoint (procédures / preuves)</td><td>Audit</td><td>THEMIS-GOV</td></tr>
+                        </tbody>
+                    </table>
+
+                    <h4>📄 RAPPORTS</h4>
+                    <table class="data-table">
+                        <thead><tr><th>Nom fichier</th><th>Format</th><th>Template SharePoint</th><th>Sections</th><th>Graphiques/diagrammes</th></tr></thead>
+                        <tbody>
+                            <tr><td><code>Governance_Audit_Pack</code></td><td>DOCX</td><td><code>/Idexios-Prime/Templates/Governance/Audit_Pack.dotx</code> <span class="warn">(à créer)</span></td><td>Constats + preuves + correctifs</td><td>Table anomalies + heatmap</td></tr>
+                            <tr><td><code>Data_Quality_Dashboard</code></td><td>HTML</td><td><code>/Idexios-Prime/Templates/Governance/Data_Quality.html</code> <span class="warn">(à créer)</span></td><td>Indicateurs qualité</td><td>Bar chart + tendances</td></tr>
+                        </tbody>
+                    </table>
+                </details>
+
+            </div>
+        </div>
+
+        <div class="diagram-section" id="composantes">
+            <div class="section-header">
+                <h2 class="section-title">Composantes du Système</h2>
+                <p class="section-description">
+                    Architecture détaillée des composantes d'Idexios : instructions système, sources de connaissances,
+                    comportement analytique et mécanismes d'orchestration.
+                </p>
+            </div>
+            <div id="cyto-components" style="width:100%; height:560px;"></div>
+        
+
+            <div class="diagram-card" style="margin-top: 16px;">
+                <h3>Lecture du diagramme</h3>
+                <p>
+                    Les composantes décrivent les blocs d'implémentation du toolbox agentique dans Copilot Studio.
+                    Idexios orchestre les rubriques, appelle des actions (connecteurs) et assemble les sorties selon trois formats :
+                    conversation, Power Pages (cartes/rapports) et intégration de processus (écritures Dataverse/SharePoint).
+                </p>
+                <ul class="features-list">
+                    <li><strong>Report Factory</strong> : génération automatisée de documents et artefacts via Azure Function ou Logic App, alimentée par Dataverse et les gabarits Idexios-Prime.</li>
+                    <li><strong>Case Management</strong> : suivi des exceptions, anomalies et approbations via liste SharePoint (Idexios-Prime).</li>
+                    <li><strong>Observabilité</strong> : corrélation des appels (traceId) et journalisation des décisions/routages.</li>
+                    <li><strong>Sécurité</strong> : RBAC, DLP et audit appliqués aux connecteurs et aux ressources SharePoint/Dataverse.</li>
+                </ul>
+            </div>
+</div>
+
+        <div class="diagram-section" id="overview">
+            <div class="section-header">
+                <h2 class="section-title">Vue d'ensemble - Mission et Capacités</h2>
+                <p class="section-description">
+                    Idexios transforme les intentions stratégiques en actions coordonnées, servant de hub intelligent
+                    pour l'écosystème d'agents de gestion de projet Reddixia.
+                </p>
+            </div>
+
+            <div id="cyto-overview" style="width:100%; height:520px;"></div>
+
+            
+
+            <div class="diagram-card" style="margin-top: 16px;">
+                <h3>Description du processus</h3>
+                <p>
+                    Le schéma représente un enchaînement type de bout en bout. Une requête déclenche la qualification de l’intention,
+                    la résolution du contexte (portefeuille/programme/projet) et de la période, puis le routage vers le Domain Pack pertinent.
+                    Les agents spécialisés exécutent les traitements (lecture/écriture via connecteurs), assemblent des résultats vérifiables
+                    et renvoient des sorties standardisées pour le pilotage (cartes, rapports, items de suivi).
+                </p>
+                <p>
+                    Les décisions et exceptions à tracer (approbations, anomalies, écarts, corrections) sont matérialisées sous forme de cases
+                    dans Idexios-Prime, afin d’assurer la continuité opérationnelle et l’auditabilité.
+                </p>
+            </div>
+<h3 style="margin-top: 3rem; margin-bottom: 1rem; color: #1e293b; font-size: 1.5rem;">Caractéristiques Principales</h3>
+            <ul class="features-list">
+                <li>Orchestration intelligente basée sur GPT-5 Auto (Preview)</li>
+                <li>Intégration complète avec 7 sources de données Dataverse</li>
+                <li>9 rubriques personnalisées pour couvrir tous les besoins métier</li>
+                <li>Aucune invention de données - analyses basées sur faits réels</li>
+                <li>Formatage structuré : vue rapide, détails, actions, corrections</li>
+                <li>Support multilingue avec ton professionnel et accessible</li>
+                <li>Détection automatique des manques de données avec propositions correctives</li>
+                <li>6 requêtes suggérées pour faciliter le démarrage</li>
+            </ul>
+
+            <h3 style="margin-top: 2rem; margin-bottom: 1rem; color: #1e293b; font-size: 1.5rem;">Métriques de Performance (7 derniers jours)</h3>
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-label">Sessions</div>
+                    <div class="stat-value">3</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Engagement</div>
+                    <div class="stat-value">67%</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Dernière évaluation</div>
+                    <div class="stat-value">10/12/2025</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Environnement</div>
+                    <div class="stat-value">DEMO_Partage</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    
+        <div class="diagram-section" id="information">
+            <div class="section-header">
+                <h2 class="section-title">Modèle de données</h2>
+                <p class="section-subtitle">
+                    Modèle de données Dataverse TPG ProjectPowerPack &amp; Scheduler (TPG_PPPandS_DEC2025).
+                </p>
+            </div>
+
+
+            <div class="diagram-card">
+              <h3>Vue d'ensemble du modèle de données</h3>
+              <p>
+                Le schéma relationnel TPG_PPP&amp;S structure les données de gestion de portefeuille, programmes et projets (PPP) dans Dataverse.
+                L'information est organisée autour d'entités clés utilisées par Idexios pour le drill-down contextuel et les calculs de pilotage.
+              </p>
+
+              <ul class="features-list">
+                <li><strong>tpg_portfolio</strong> - Portefeuilles regroupant programmes et projets stratégiques</li>
+                <li><strong>tpg_project</strong> - Projets avec budgets, échéanciers, bénéfices et drivers</li>
+                <li><strong>tpg_projecttask</strong> - Tâches WBS avec dépendances, chemin critique (<code>tpg_iscritical</code>), et affectations</li>
+                <li><strong>tpg_financials</strong> - Données financières par période pour calculs EVM (PV, EV, AC)</li>
+                <li><strong>tpg_capacity</strong> - Capacité planifiée et timesheets réels pour contrôle d'effort</li>
+                <li><strong>tpg_period</strong> - Périodes fiscales pour agrégation temporelle</li>
+              </ul>
+
+              <p>
+                Les clés primaires sont des GUID Dataverse, permettant le drill-down contextuel (<code>ProjectId</code>, <code>PortfolioId</code>, <code>ProgramId</code>)
+                et la résolution par code/nom pour disambiguation.
+              </p>
+            </div>
+
+
+            <div class="diagram-card">
+                <p>
+                    Le schéma complet est intégré via dbdiagram. Si l'intégration est bloquée par le navigateur (X-Frame-Options),
+                    utiliser le bouton "Ouvrir dans dbdiagram".
+                </p>
+
+                <div style="display:flex; gap:12px; flex-wrap:wrap; margin: 10px 0 14px;">
+                    <a href="https://dbdiagram.io/d/TPG_PPPandS_DEC2025-69459a734bbde0fd74d8852f" target="_blank" rel="noopener"
+                       style="text-decoration:none; display:inline-block; text-align:center; padding:0.9rem 1.2rem; border-radius:10px;
+                              background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%); color:white; font-weight:700;">
+                        Ouvrir dans dbdiagram
+                    </a>
+                </div>
+
+                <iframe
+                    title="TPG_PPPandS_DEC2025"
+                    src="https://dbdiagram.io/embed/TPG_PPPandS_DEC2025-69459a734bbde0fd74d8852f"
+                    style="width:100%; height:720px; border:1px solid #e2e8f0; border-radius:12px; background:white;"
+                    loading="lazy">
+                </iframe>
+            </div>
+        </div>
+
+
+
+        
+        <div class="diagram-section" id="agentic">
+            <div class="section-header">
+                <h2 class="section-title">Flux Agentique</h2>
+                <p class="section-subtitle">
+                    Scénarios d'interactions entre Idexios et les Domain Packs. Chaque agent est relié à une phase BPMN et à une fonction du cycle de vie projet.
+                </p>
+            </div>
+
+            <div class="diagram-card">
+              <h3>Contrat d'orchestration (commun)</h3>
+              <ol>
+                <li>Qualification intention → sélection de rubrique.</li>
+                <li>Résolution contexte (périmètre + période) → validation si nécessaire.</li>
+                <li>Sélection du Domain Pack → appel d'agents spécialisés.</li>
+                <li>Traitement (calculs, synthèse, contrôles) → production d'artefacts traçables.</li>
+                <li>Sorties standardisées : conversation, Power Pages (cards/rapports), process (écritures/formulaires).</li>
+              </ol>
+            </div>
+
+
+            <details open style="margin-bottom: 16px;">
+              <summary style="cursor:pointer; font-weight:800; font-size: 1.05rem;">FinanceOps Pack — Objectif et flux</summary>
+              <div class="diagram-card" style="margin-top: 12px;">
+                <p>Analyse financière et discipline FinOps (Finance & Opérations), détection d'anomalies, contrôle des variances et clôture de période.</p>
+                <p style="margin-top:10px;">
+                  <strong>Cadre de coordination de valeur (TBM / VMO / Lean Portfolio Management)</strong> : les agents financiers appliquent un raisonnement orienté valeur
+                  pour décider du niveau d’effort, prioriser les analyses et structurer la reddition de compte.
+                </p>
+                <ul class="features-list" style="margin-top:10px;">
+                  <li><strong>TBM</strong> : avant extraction/calcul intensif, justification du coût (temps/tokens/API) vs l’objectif métier; réduction des traitements non nécessaires.</li>
+                  <li><strong>VMO</strong> : priorisation des actions maximisant le ROI/KPI; les jalons sont évalués en valeur générée (précision, gain de temps, alignement), pas seulement en avancement.</li>
+                  <li><strong>LPM</strong> : itérations courtes, points de contrôle et “fail fast”; arrêt/réorientation si la valeur attendue n’est pas démontrée rapidement.</li>
+                </ul>
+
+                
+                <div id="cyto-pack-financeops" style="width:100%; height:260px;"></div>
+
+              </div>
+
+              <div class="diagram-card">
+                <h3>FinanceOps Pack — Agents et scénarios</h3>
+                <div style="overflow-x:auto;">
+                  <table style="width:100%; border-collapse:collapse; min-width: 980px;">
+                    <thead>
+                      <tr>
+                        <th style="text-align:left; padding:10px; border-bottom:1px solid #e2e8f0;">Agent</th>
+                        <th style="text-align:left; padding:10px; border-bottom:1px solid #e2e8f0;">Rôle</th>
+                        <th style="text-align:left; padding:10px; border-bottom:1px solid #e2e8f0;">Demandes utilisateur (exemples)</th>
+                        <th style="text-align:left; padding:10px; border-bottom:1px solid #e2e8f0;">Action attendue</th>
+                        <th style="text-align:left; padding:10px; border-bottom:1px solid #e2e8f0;">Retour attendu</th>
+                        <th style="text-align:left; padding:10px; border-bottom:1px solid #e2e8f0;">Phase BPMN</th>
+                        <th style="text-align:left; padding:10px; border-bottom:1px solid #e2e8f0;">Fonction solution</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+
+                    <tr>
+                        <td style="vertical-align:top; padding:10px; border-bottom:1px solid #e2e8f0;">
+                          <code>IA-TPG-005</code><br/>ATLAS-CTRL
+                        </td>
+                        <td style="vertical-align:top; padding:10px; border-bottom:1px solid #e2e8f0;">Contrôle financier & reddition PCO (EVM/FinOps)</td>
+                        <td style="vertical-align:top; padding:10px; border-bottom:1px solid #e2e8f0;">• Analyser les écarts budgétaires M0+M1 pour un portefeuille donné<br/>• Produire un tableau CPI/SPI et variances > 10% sur la période courante<br/>• Expliquer une dérive de coûts projet et proposer des actions correctives</td>
+                        <td style="vertical-align:top; padding:10px; border-bottom:1px solid #e2e8f0;">Extraction Dataverse (finances/périodes), agrégation par périmètre, calcul variances et seuils RAG, préparation d'artefacts de reddition.</td>
+                        <td style="vertical-align:top; padding:10px; border-bottom:1px solid #e2e8f0;">Cards KPI (RAG, variances, top contributeurs), rapports FinOps (showback/chargeback), liens preuves Dataverse/Idexios-Prime.</td>
+                        <td style="vertical-align:top; padding:10px; border-bottom:1px solid #e2e8f0;">Suivi, Clôture</td>
+                        <td style="vertical-align:top; padding:10px; border-bottom:1px solid #e2e8f0;">Gestion budget, EVM/FinOps, reddition</td>
+                    </tr>
+        
+
+                    <tr>
+                        <td style="vertical-align:top; padding:10px; border-bottom:1px solid #e2e8f0;">
+                          <code>IA-TPG-009</code><br/>JANUS-CLOSE
+                        </td>
+                        <td style="vertical-align:top; padding:10px; border-bottom:1px solid #e2e8f0;">Clôture & réconciliation de période</td>
+                        <td style="vertical-align:top; padding:10px; border-bottom:1px solid #e2e8f0;">• Rapprocher les écarts budgétaires Q4 2025 et identifier les causes<br/>• Lister les projets avec coûts non imputés sur la période M0<br/>• Préparer le pack de clôture mensuelle (écarts, justifications, suivis)</td>
+                        <td style="vertical-align:top; padding:10px; border-bottom:1px solid #e2e8f0;">Extraction Dataverse (finances/périodes), détection écarts, hypothèses cause racine, création de cases de clôture.</td>
+                        <td style="vertical-align:top; padding:10px; border-bottom:1px solid #e2e8f0;">Rapport de clôture, liste de cases (SharePoint) avec statut/owner/SLA, recommandations de correction.</td>
+                        <td style="vertical-align:top; padding:10px; border-bottom:1px solid #e2e8f0;">Clôture</td>
+                        <td style="vertical-align:top; padding:10px; border-bottom:1px solid #e2e8f0;">Clôture de période, réconciliation, auditabilité</td>
+                    </tr>
+        
+
+                    <tr>
+                        <td style="vertical-align:top; padding:10px; border-bottom:1px solid #e2e8f0;">
+                          <code>IA-TPG-010</code><br/>VESTA-INVOICE
+                        </td>
+                        <td style="vertical-align:top; padding:10px; border-bottom:1px solid #e2e8f0;">Exceptions de factures / non-conformités</td>
+                        <td style="vertical-align:top; padding:10px; border-bottom:1px solid #e2e8f0;">• Identifier les factures en exception liées à un projet<br/>• Détecter des doublons de facturation sur la période M0<br/>• Préparer un dossier d'approbation pour une facture hors cadre</td>
+                        <td style="vertical-align:top; padding:10px; border-bottom:1px solid #e2e8f0;">Contrôles de cohérence (contrat/temps/facture), collecte de preuves, classification de l'exception, routage approbation.</td>
+                        <td style="vertical-align:top; padding:10px; border-bottom:1px solid #e2e8f0;">Card 'Invoice Exceptions', case SharePoint avec preuves et action recommandée, synthèse des exceptions.</td>
+                        <td style="vertical-align:top; padding:10px; border-bottom:1px solid #e2e8f0;">Exécution, Suivi</td>
+                        <td style="vertical-align:top; padding:10px; border-bottom:1px solid #e2e8f0;">Facturation, conformité, approbations</td>
+                    </tr>
+        
+
+                    <tr>
+                        <td style="vertical-align:top; padding:10px; border-bottom:1px solid #e2e8f0;">
+                          <code>IA-TPG-011</code><br/>PLUTUS-ANOM
+                        </td>
+                        <td style="vertical-align:top; padding:10px; border-bottom:1px solid #e2e8f0;">Anomalies de dépenses & signaux faibles</td>
+                        <td style="vertical-align:top; padding:10px; border-bottom:1px solid #e2e8f0;">• Détecter des dépenses anormales sur un portefeuille ce mois-ci<br/>• Identifier les centres de coûts avec hausse > 20% MoM<br/>• Prioriser les anomalies à investiguer (top 10)</td>
+                        <td style="vertical-align:top; padding:10px; border-bottom:1px solid #e2e8f0;">Normalisation, règles/patterns, scoring risque, création de cases d'investigation.</td>
+                        <td style="vertical-align:top; padding:10px; border-bottom:1px solid #e2e8f0;">Card 'Spend Anomalies' (RiskScore/RuleTriggered), rapport anomalies, cases SharePoint avec SLA.</td>
+                        <td style="vertical-align:top; padding:10px; border-bottom:1px solid #e2e8f0;">Suivi</td>
+                        <td style="vertical-align:top; padding:10px; border-bottom:1px solid #e2e8f0;">Détection anomalies, contrôle, conformité</td>
+                    </tr>
+        
+
+                    <tr>
+                        <td style="vertical-align:top; padding:10px; border-bottom:1px solid #e2e8f0;">
+                          <code>IA-TPG-012</code><br/>CASSANDRA-FQA
+                        </td>
+                        <td style="vertical-align:top; padding:10px; border-bottom:1px solid #e2e8f0;">Finance Q&A avec garde-fous</td>
+                        <td style="vertical-align:top; padding:10px; border-bottom:1px solid #e2e8f0;">• Quel est le coût réel M0 du projet Y et pourquoi l'écart est élevé?<br/>• Quels projets dépassent 90% du budget à date?<br/>• Quel centre de coûts porte un projet?</td>
+                        <td style="vertical-align:top; padding:10px; border-bottom:1px solid #e2e8f0;">Intent → requêtes Dataverse + procédures Idexios-Prime, réponse structurée, routage vers FinanceOps spécialisé en cas complexe.</td>
+                        <td style="vertical-align:top; padding:10px; border-bottom:1px solid #e2e8f0;">Réponse conversationnelle traçable + carte de traçabilité (sources, limites, liens procédures).</td>
+                        <td style="vertical-align:top; padding:10px; border-bottom:1px solid #e2e8f0;">Suivi</td>
+                        <td style="vertical-align:top; padding:10px; border-bottom:1px solid #e2e8f0;">Support décisionnel, transparence, self-service</td>
+                    </tr>
+        
+
+                    <tr>
+                        <td style="vertical-align:top; padding:10px; border-bottom:1px solid #e2e8f0;">
+                          <code>IA-TPG-013</code><br/>MERCURY-COLLECT
+                        </td>
+                        <td style="vertical-align:top; padding:10px; border-bottom:1px solid #e2e8f0;">Suivi d'encaissement / relances (si applicable)</td>
+                        <td style="vertical-align:top; padding:10px; border-bottom:1px solid #e2e8f0;">• Prioriser les retards de paiement internes (chargeback) ce mois-ci<br/>• Générer un plan de relance et une liste d'actions<br/>• Produire un suivi des promesses de paiement</td>
+                        <td style="vertical-align:top; padding:10px; border-bottom:1px solid #e2e8f0;">Priorisation par risque, génération d'actions et communications, création de cases de relance.</td>
+                        <td style="vertical-align:top; padding:10px; border-bottom:1px solid #e2e8f0;">Rapport de relances, liste d'actions, cases SharePoint; statut et échéances.</td>
+                        <td style="vertical-align:top; padding:10px; border-bottom:1px solid #e2e8f0;">Suivi, Clôture</td>
+                        <td style="vertical-align:top; padding:10px; border-bottom:1px solid #e2e8f0;">Discipline cash, suivi engagements</td>
+                    </tr>
+        
+
+                    <tr>
+                        <td style="vertical-align:top; padding:10px; border-bottom:1px solid #e2e8f0;">
+                          <code>IA-TPG-016</code><br/>POSEIDON-CASH
+                        </td>
+                        <td style="vertical-align:top; padding:10px; border-bottom:1px solid #e2e8f0;">Analyse variances cashflow / tendances</td>
+                        <td style="vertical-align:top; padding:10px; border-bottom:1px solid #e2e8f0;">• Analyser les variances de cashflow sur 12 mois glissants<br/>• Appliquer un seuil 10% et lister les plus grands écarts par programme<br/>• Préparer un agenda d'investigation (questions) pour le contrôleur</td>
+                        <td style="vertical-align:top; padding:10px; border-bottom:1px solid #e2e8f0;">Nettoyage/standardisation, rolling 12 mois, variance analysis, génération de questions d'analyse.</td>
+                        <td style="vertical-align:top; padding:10px; border-bottom:1px solid #e2e8f0;">Rapport Cashflow Variance, graphiques tendances, liste questions et actions.</td>
+                        <td style="vertical-align:top; padding:10px; border-bottom:1px solid #e2e8f0;">Suivi</td>
+                        <td style="vertical-align:top; padding:10px; border-bottom:1px solid #e2e8f0;">Cashflow, tendances, variances</td>
+                    </tr>
+        
+
+                    <tr>
+                        <td style="vertical-align:top; padding:10px; border-bottom:1px solid #e2e8f0;">
+                          <code>IA-TPG-018</code><br/>CERES-BUDGET
+                        </td>
+                        <td style="vertical-align:top; padding:10px; border-bottom:1px solid #e2e8f0;">Adhérence budgétaire & politiques</td>
+                        <td style="vertical-align:top; padding:10px; border-bottom:1px solid #e2e8f0;">• Vérifier l'adhérence budgétaire du portefeuille pour M0+M1<br/>• Produire une note de politique budgétaire pour le comité<br/>• Générer un tableau de bord budget vs prévision</td>
+                        <td style="vertical-align:top; padding:10px; border-bottom:1px solid #e2e8f0;">Analyse variance vs prévision, préparation note/politiques, préparation deck.</td>
+                        <td style="vertical-align:top; padding:10px; border-bottom:1px solid #e2e8f0;">Dashboard Budget Adherence, note de politique, deck de revue budgétaire.</td>
+                        <td style="vertical-align:top; padding:10px; border-bottom:1px solid #e2e8f0;">Planification, Suivi</td>
+                        <td style="vertical-align:top; padding:10px; border-bottom:1px solid #e2e8f0;">Contrôle budgétaire, politiques, communication</td>
+                    </tr>
+        
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </details>
+    
+            <details open style="margin-bottom: 16px;">
+              <summary style="cursor:pointer; font-weight:800; font-size: 1.05rem;">PortfolioOps Pack — Objectif et flux</summary>
+              <div class="diagram-card" style="margin-top: 12px;">
+                <p>Pilotage portefeuille, priorisation, arbitrages, synthèses comité et alignement capacité/valeur/risque.</p>
+                <p style="margin-top:10px;">
+                  <strong>Cadre de coordination de valeur (TBM / VMO / Lean Portfolio Management)</strong> : la planification et l’arbitrage portefeuille privilégient les
+                  scénarios à plus forte valeur, avec itérations et décisions rapides.
+                </p>
+                <ul class="features-list" style="margin-top:10px;">
+                  <li><strong>TBM</strong> : dimensionnement du niveau d’analyse selon la criticité (portefeuille/programme/projet) et l’impact attendu.</li>
+                  <li><strong>VMO</strong> : priorisation des actions et recommandations selon ROI/KPI (capacité, bénéfices, risques, dépendances).</li>
+                  <li><strong>LPM</strong> : cycles courts, “gates” de validation et réallocation de capacité si la valeur n’émerge pas.</li>
+                </ul>
+
+                
+                <div id="cyto-pack-portfolioops" style="width:100%; height:260px;"></div>
+
+              </div>
+
+              <div class="diagram-card">
+                <h3>PortfolioOps Pack — Agents et scénarios</h3>
+                <div style="overflow-x:auto;">
+                  <table style="width:100%; border-collapse:collapse; min-width: 980px;">
+                    <thead>
+                      <tr>
+                        <th style="text-align:left; padding:10px; border-bottom:1px solid #e2e8f0;">Agent</th>
+                        <th style="text-align:left; padding:10px; border-bottom:1px solid #e2e8f0;">Rôle</th>
+                        <th style="text-align:left; padding:10px; border-bottom:1px solid #e2e8f0;">Demandes utilisateur (exemples)</th>
+                        <th style="text-align:left; padding:10px; border-bottom:1px solid #e2e8f0;">Action attendue</th>
+                        <th style="text-align:left; padding:10px; border-bottom:1px solid #e2e8f0;">Retour attendu</th>
+                        <th style="text-align:left; padding:10px; border-bottom:1px solid #e2e8f0;">Phase BPMN</th>
+                        <th style="text-align:left; padding:10px; border-bottom:1px solid #e2e8f0;">Fonction solution</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+
+                    <tr>
+                        <td style="vertical-align:top; padding:10px; border-bottom:1px solid #e2e8f0;">
+                          <code>IA-TPG-003</code><br/>ATHENA-PORTF
+                        </td>
+                        <td style="vertical-align:top; padding:10px; border-bottom:1px solid #e2e8f0;">Analyse portefeuille & scénarios d'arbitrage</td>
+                        <td style="vertical-align:top; padding:10px; border-bottom:1px solid #e2e8f0;">• Comparer plusieurs portefeuilles et identifier les projets à risque<br/>• Proposer un scénario de priorisation sous contrainte de capacité<br/>• Lister les décisions à trancher pour le prochain comité</td>
+                        <td style="vertical-align:top; padding:10px; border-bottom:1px solid #e2e8f0;">Agrégation portefeuille, scoring valeur/risque, construction scénarios, préparation points décision.</td>
+                        <td style="vertical-align:top; padding:10px; border-bottom:1px solid #e2e8f0;">Cards portefeuille (RAG, top risques), matrices de scénarios, recommandations.</td>
+                        <td style="vertical-align:top; padding:10px; border-bottom:1px solid #e2e8f0;">Initiation, Planification, Suivi</td>
+                        <td style="vertical-align:top; padding:10px; border-bottom:1px solid #e2e8f0;">Gestion portefeuille, priorisation, arbitrage</td>
+                    </tr>
+        
+
+                    <tr>
+                        <td style="vertical-align:top; padding:10px; border-bottom:1px solid #e2e8f0;">
+                          <code>IA-TPG-006</code><br/>IRIS-RISK
+                        </td>
+                        <td style="vertical-align:top; padding:10px; border-bottom:1px solid #e2e8f0;">Registre risques & enjeux</td>
+                        <td style="vertical-align:top; padding:10px; border-bottom:1px solid #e2e8f0;">• Lister les risques critiques ouverts pour un portefeuille<br/>• Détecter les risques sans plan d'atténuation<br/>• Produire une heatmap risques 5x5 pour le comité</td>
+                        <td style="vertical-align:top; padding:10px; border-bottom:1px solid #e2e8f0;">Extraction registres, scoring, synthèse et recommandations.</td>
+                        <td style="vertical-align:top; padding:10px; border-bottom:1px solid #e2e8f0;">Heatmap risques, liste d'actions, liens vers registres et propriétaires.</td>
+                        <td style="vertical-align:top; padding:10px; border-bottom:1px solid #e2e8f0;">Suivi</td>
+                        <td style="vertical-align:top; padding:10px; border-bottom:1px solid #e2e8f0;">Gestion des risques, actions correctives</td>
+                    </tr>
+        
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </details>
+    
+            <details open style="margin-bottom: 16px;">
+              <summary style="cursor:pointer; font-weight:800; font-size: 1.05rem;">GovernanceOps Pack — Objectif et flux</summary>
+              <div class="diagram-card" style="margin-top: 12px;">
+                <p>Conformité, qualité des données, contrôles, preuves et veille de gouvernance (procédures Idexios-Prime).</p>
+                
+                <div id="cyto-pack-governanceops" style="width:100%; height:260px;"></div>
+
+              </div>
+
+              <div class="diagram-card">
+                <h3>GovernanceOps Pack — Agents et scénarios</h3>
+                <div style="overflow-x:auto;">
+                  <table style="width:100%; border-collapse:collapse; min-width: 980px;">
+                    <thead>
+                      <tr>
+                        <th style="text-align:left; padding:10px; border-bottom:1px solid #e2e8f0;">Agent</th>
+                        <th style="text-align:left; padding:10px; border-bottom:1px solid #e2e8f0;">Rôle</th>
+                        <th style="text-align:left; padding:10px; border-bottom:1px solid #e2e8f0;">Demandes utilisateur (exemples)</th>
+                        <th style="text-align:left; padding:10px; border-bottom:1px solid #e2e8f0;">Action attendue</th>
+                        <th style="text-align:left; padding:10px; border-bottom:1px solid #e2e8f0;">Retour attendu</th>
+                        <th style="text-align:left; padding:10px; border-bottom:1px solid #e2e8f0;">Phase BPMN</th>
+                        <th style="text-align:left; padding:10px; border-bottom:1px solid #e2e8f0;">Fonction solution</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+
+                    <tr>
+                        <td style="vertical-align:top; padding:10px; border-bottom:1px solid #e2e8f0;">
+                          <code>IA-TPG-004</code><br/>THEMIS-GOV
+                        </td>
+                        <td style="vertical-align:top; padding:10px; border-bottom:1px solid #e2e8f0;">Contrôles conformité & qualité</td>
+                        <td style="vertical-align:top; padding:10px; border-bottom:1px solid #e2e8f0;">• Vérifier la qualité des données projet (champs requis manquants)<br/>• Auditer la conformité des validations et workflows<br/>• Produire un pack de gouvernance avec preuves</td>
+                        <td style="vertical-align:top; padding:10px; border-bottom:1px solid #e2e8f0;">Checks de cohérence, validation de règles, escalade et création de cases.</td>
+                        <td style="vertical-align:top; padding:10px; border-bottom:1px solid #e2e8f0;">Pack audit gouvernance, dashboard qualité, cases de correction.</td>
+                        <td style="vertical-align:top; padding:10px; border-bottom:1px solid #e2e8f0;">Suivi, Clôture</td>
+                        <td style="vertical-align:top; padding:10px; border-bottom:1px solid #e2e8f0;">Gouvernance, conformité, qualité</td>
+                    </tr>
+        
+
+                    <tr>
+                        <td style="vertical-align:top; padding:10px; border-bottom:1px solid #e2e8f0;">
+                          <code>IA-TPG-007</code><br/>GAIA-DATA
+                        </td>
+                        <td style="vertical-align:top; padding:10px; border-bottom:1px solid #e2e8f0;">Données de référence & normalisation</td>
+                        <td style="vertical-align:top; padding:10px; border-bottom:1px solid #e2e8f0;">• Normaliser les codes de centre de coûts et vérifier les doublons<br/>• Valider les référentiels (programmes/portefeuilles) avant comité<br/>• Établir une liste de valeurs de référence pour les workflows</td>
+                        <td style="vertical-align:top; padding:10px; border-bottom:1px solid #e2e8f0;">Contrôles sur référentiels, détection doublons, recommandations de correction.</td>
+                        <td style="vertical-align:top; padding:10px; border-bottom:1px solid #e2e8f0;">Rapport de normalisation, liste corrections, preuves SharePoint.</td>
+                        <td style="vertical-align:top; padding:10px; border-bottom:1px solid #e2e8f0;">Planification, Suivi</td>
+                        <td style="vertical-align:top; padding:10px; border-bottom:1px solid #e2e8f0;">Référentiels, cohérence, MDM</td>
+                    </tr>
+        
+
+                    <tr>
+                        <td style="vertical-align:top; padding:10px; border-bottom:1px solid #e2e8f0;">
+                          <code>IA-TPG-014</code><br/>MINERVA-DATA
+                        </td>
+                        <td style="vertical-align:top; padding:10px; border-bottom:1px solid #e2e8f0;">Veille gouvernance data & conformité</td>
+                        <td style="vertical-align:top; padding:10px; border-bottom:1px solid #e2e8f0;">• Identifier les changements de politiques qui impactent la reddition<br/>• Produire une liste de priorités d'amélioration de qualité data<br/>• Générer un état de conformité data pour un comité</td>
+                        <td style="vertical-align:top; padding:10px; border-bottom:1px solid #e2e8f0;">Grounding procédures/politiques, synthèse impacts, plan d'actions.</td>
+                        <td style="vertical-align:top; padding:10px; border-bottom:1px solid #e2e8f0;">Brief gouvernance data, liste actions priorisées, journal de changements.</td>
+                        <td style="vertical-align:top; padding:10px; border-bottom:1px solid #e2e8f0;">Suivi</td>
+                        <td style="vertical-align:top; padding:10px; border-bottom:1px solid #e2e8f0;">Data governance, conformité, amélioration continue</td>
+                    </tr>
+        
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </details>
+    
+            <details open style="margin-bottom: 16px;">
+              <summary style="cursor:pointer; font-weight:800; font-size: 1.05rem;">DeliveryOps Pack — Objectif et flux</summary>
+              <div class="diagram-card" style="margin-top: 12px;">
+                <p>Pilotage projet et production de livrables standardisés (rapports, comptes rendus, statut).</p>
+                
+                <div id="cyto-pack-deliveryops" style="width:100%; height:260px;"></div>
+
+              </div>
+
+              <div class="diagram-card">
+                <h3>DeliveryOps Pack — Agents et scénarios</h3>
+                <div style="overflow-x:auto;">
+                  <table style="width:100%; border-collapse:collapse; min-width: 980px;">
+                    <thead>
+                      <tr>
+                        <th style="text-align:left; padding:10px; border-bottom:1px solid #e2e8f0;">Agent</th>
+                        <th style="text-align:left; padding:10px; border-bottom:1px solid #e2e8f0;">Rôle</th>
+                        <th style="text-align:left; padding:10px; border-bottom:1px solid #e2e8f0;">Demandes utilisateur (exemples)</th>
+                        <th style="text-align:left; padding:10px; border-bottom:1px solid #e2e8f0;">Action attendue</th>
+                        <th style="text-align:left; padding:10px; border-bottom:1px solid #e2e8f0;">Retour attendu</th>
+                        <th style="text-align:left; padding:10px; border-bottom:1px solid #e2e8f0;">Phase BPMN</th>
+                        <th style="text-align:left; padding:10px; border-bottom:1px solid #e2e8f0;">Fonction solution</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+
+                    <tr>
+                        <td style="vertical-align:top; padding:10px; border-bottom:1px solid #e2e8f0;">
+                          <code>IA-TPG-002</code><br/>HERMES-PROJ
+                        </td>
+                        <td style="vertical-align:top; padding:10px; border-bottom:1px solid #e2e8f0;">Pilotage projet & livrables</td>
+                        <td style="vertical-align:top; padding:10px; border-bottom:1px solid #e2e8f0;">• Générer un rapport d'état projet avec recommandations<br/>• Préparer un compte rendu de comité projet<br/>• Lister les livrables en retard et les responsables</td>
+                        <td style="vertical-align:top; padding:10px; border-bottom:1px solid #e2e8f0;">Extraction tâches/jalons, consolidation statut, génération de livrables standardisés.</td>
+                        <td style="vertical-align:top; padding:10px; border-bottom:1px solid #e2e8f0;">Rapport statut projet, timeline livrables (Gantt), cartes de suivi.</td>
+                        <td style="vertical-align:top; padding:10px; border-bottom:1px solid #e2e8f0;">Planification, Exécution, Suivi</td>
+                        <td style="vertical-align:top; padding:10px; border-bottom:1px solid #e2e8f0;">Suivi livrables, reporting projet</td>
+                    </tr>
+        
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </details>
+    
+            <details open style="margin-bottom: 16px;">
+              <summary style="cursor:pointer; font-weight:800; font-size: 1.05rem;">ProcurementOps Pack — Objectif et flux</summary>
+              <div class="diagram-card" style="margin-top: 12px;">
+                <p>Approvisionnement et contrats : RFP, analyse de clauses, standardisation des templates et accélération du cycle.</p>
+                
+                <div id="cyto-pack-procurementops" style="width:100%; height:260px;"></div>
+
+              </div>
+
+              <div class="diagram-card">
+                <h3>ProcurementOps Pack — Agents et scénarios</h3>
+                <div style="overflow-x:auto;">
+                  <table style="width:100%; border-collapse:collapse; min-width: 980px;">
+                    <thead>
+                      <tr>
+                        <th style="text-align:left; padding:10px; border-bottom:1px solid #e2e8f0;">Agent</th>
+                        <th style="text-align:left; padding:10px; border-bottom:1px solid #e2e8f0;">Rôle</th>
+                        <th style="text-align:left; padding:10px; border-bottom:1px solid #e2e8f0;">Demandes utilisateur (exemples)</th>
+                        <th style="text-align:left; padding:10px; border-bottom:1px solid #e2e8f0;">Action attendue</th>
+                        <th style="text-align:left; padding:10px; border-bottom:1px solid #e2e8f0;">Retour attendu</th>
+                        <th style="text-align:left; padding:10px; border-bottom:1px solid #e2e8f0;">Phase BPMN</th>
+                        <th style="text-align:left; padding:10px; border-bottom:1px solid #e2e8f0;">Fonction solution</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+
+                    <tr>
+                        <td style="vertical-align:top; padding:10px; border-bottom:1px solid #e2e8f0;">
+                          <code>IA-TPG-017</code><br/>JUNO-CONTRACT
+                        </td>
+                        <td style="vertical-align:top; padding:10px; border-bottom:1px solid #e2e8f0;">Intelligence contrats & analyse clauses</td>
+                        <td style="vertical-align:top; padding:10px; border-bottom:1px solid #e2e8f0;">• Comparer deux contrats et lister les différences de clauses<br/>• Extraire les risques contractuels pour un projet<br/>• Préparer une note décisionnelle pour approbation</td>
+                        <td style="vertical-align:top; padding:10px; border-bottom:1px solid #e2e8f0;">Analyse de documents, extraction clauses/risques, matrice de différences, recommandations.</td>
+                        <td style="vertical-align:top; padding:10px; border-bottom:1px solid #e2e8f0;">Matrice différences, note décisionnelle, liens preuves/extraits.</td>
+                        <td style="vertical-align:top; padding:10px; border-bottom:1px solid #e2e8f0;">Initiation, Planification</td>
+                        <td style="vertical-align:top; padding:10px; border-bottom:1px solid #e2e8f0;">Gestion contrats, risques, approbations</td>
+                    </tr>
+        
+
+                    <tr>
+                        <td style="vertical-align:top; padding:10px; border-bottom:1px solid #e2e8f0;">
+                          <code>IA-TPG-019</code><br/>VULCAN-PROC
+                        </td>
+                        <td style="vertical-align:top; padding:10px; border-bottom:1px solid #e2e8f0;">Procurement & RFP ops</td>
+                        <td style="vertical-align:top; padding:10px; border-bottom:1px solid #e2e8f0;">• Générer les exigences d'un RFP à partir de dossiers existants<br/>• Analyser le cycle time d'approvisionnement et proposer des améliorations<br/>• Standardiser un gabarit de contrat d'approvisionnement</td>
+                        <td style="vertical-align:top; padding:10px; border-bottom:1px solid #e2e8f0;">Extraction historique, KPIs cycle time, préparation pack RFP, gabarits et drafts.</td>
+                        <td style="vertical-align:top; padding:10px; border-bottom:1px solid #e2e8f0;">Pack exigences RFP, KPIs procurement, set de templates, drafts emails.</td>
+                        <td style="vertical-align:top; padding:10px; border-bottom:1px solid #e2e8f0;">Initiation, Planification</td>
+                        <td style="vertical-align:top; padding:10px; border-bottom:1px solid #e2e8f0;">Approvisionnement, standardisation, accélération cycle</td>
+                    </tr>
+        
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </details>
+    
+            <details open style="margin-bottom: 16px;">
+              <summary style="cursor:pointer; font-weight:800; font-size: 1.05rem;">CommsOps Pack — Objectif et flux</summary>
+              <div class="diagram-card" style="margin-top: 12px;">
+                <p>Communication et adoption : all-hands, kits de changement, messages, supports et suivi des actions.</p>
+                <div id="cyto-pack-commsops" style="width:100%; height:260px;"></div>
+              </div>
+
+              <div class="diagram-card">
+                <h3>CommsOps Pack — Agents et scénarios</h3>
+                <div style="overflow-x:auto;">
+                  <table style="width:100%; border-collapse:collapse; min-width: 980px;">
+                    <thead>
+                      <tr>
+                        <th style="text-align:left; padding:10px; border-bottom:1px solid #e2e8f0;">Agent</th>
+                        <th style="text-align:left; padding:10px; border-bottom:1px solid #e2e8f0;">Rôle</th>
+                        <th style="text-align:left; padding:10px; border-bottom:1px solid #e2e8f0;">Demandes utilisateur (exemples)</th>
+                        <th style="text-align:left; padding:10px; border-bottom:1px solid #e2e8f0;">Action attendue</th>
+                        <th style="text-align:left; padding:10px; border-bottom:1px solid #e2e8f0;">Retour attendu</th>
+                        <th style="text-align:left; padding:10px; border-bottom:1px solid #e2e8f0;">Phase BPMN</th>
+                        <th style="text-align:left; padding:10px; border-bottom:1px solid #e2e8f0;">Fonction solution</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+
+                    <tr>
+                        <td style="vertical-align:top; padding:10px; border-bottom:1px solid #e2e8f0;">
+                          <code>IA-TPG-008</code><br/>APOLLO-CHANGE
+                        </td>
+                        <td style="vertical-align:top; padding:10px; border-bottom:1px solid #e2e8f0;">Adoption & gestion du changement</td>
+                        <td style="vertical-align:top; padding:10px; border-bottom:1px solid #e2e8f0;">• Préparer un plan de communication pour un changement de processus<br/>• Générer une FAQ et des messages Teams pour l'adoption<br/>• Identifier les risques d'adoption et les actions</td>
+                        <td style="vertical-align:top; padding:10px; border-bottom:1px solid #e2e8f0;">Analyse impacts, plan d'adoption, contenus de communication, routage Comms.</td>
+                        <td style="vertical-align:top; padding:10px; border-bottom:1px solid #e2e8f0;">Change Plan, kit communication, recommandations d'adoption.</td>
+                        <td style="vertical-align:top; padding:10px; border-bottom:1px solid #e2e8f0;">Planification, Exécution</td>
+                        <td style="vertical-align:top; padding:10px; border-bottom:1px solid #e2e8f0;">Adoption, communication, formation</td>
+                    </tr>
+        
+
+                    <tr>
+                        <td style="vertical-align:top; padding:10px; border-bottom:1px solid #e2e8f0;">
+                          <code>IA-TPG-015</code><br/>CICERO-ALLHANDS
+                        </td>
+                        <td style="vertical-align:top; padding:10px; border-bottom:1px solid #e2e8f0;">Communication exécutive (all-hands)</td>
+                        <td style="vertical-align:top; padding:10px; border-bottom:1px solid #e2e8f0;">• Préparer une présentation all-hands sur l'état du portefeuille<br/>• Rédiger un speech et un recap après la rencontre<br/>• Produire la liste des actions et les assignations</td>
+                        <td style="vertical-align:top; padding:10px; border-bottom:1px solid #e2e8f0;">Synthèse multi-sources, génération deck/speech/recap, extraction messages clés.</td>
+                        <td style="vertical-align:top; padding:10px; border-bottom:1px solid #e2e8f0;">Deck all-hands, speech, recap, liste d'actions assignées.</td>
+                        <td style="vertical-align:top; padding:10px; border-bottom:1px solid #e2e8f0;">Suivi, Clôture</td>
+                        <td style="vertical-align:top; padding:10px; border-bottom:1px solid #e2e8f0;">Communication exécutive, alignement, suivi actions</td>
+                    </tr>
+        
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </details>
+    
+        </div>
+
+
+    <div class="footer">
+        <p><strong>Projet:</strong> idexia-xpm-pantheon | <strong>Solution:</strong> Reddixia</p>
+        <p>Dernière mise à jour: 11 décembre 2025 | Auteur: Idexia365</p>
+    </div>
+
+    <script>
+        const tabs = document.querySelectorAll('.tab');
+        const sections = document.querySelectorAll('.diagram-section');
+
+        tabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                const targetSection = tab.dataset.section;
+
+                tabs.forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+
+                sections.forEach(section => {
+                    section.classList.remove('active');
+                });
+
+                document.getElementById(targetSection).classList.add('active');
+            });
+        });
+    </script>
+
+<script src="https://unpkg.com/cytoscape@3.26.0/dist/cytoscape.min.js"></script>
+<script>
+(function(){
+  function styleBase(){
+    return [
+      { selector: 'node', style: {
+          'label': 'data(label)',
+          'text-wrap': 'wrap',
+          'text-max-width': 140,
+          'font-size': 12,
+          'background-color': '#ffffff',
+          'border-width': 1,
+          'border-color': '#cbd5e1',
+          'shape': 'round-rectangle',
+          'padding': '10px',
+          'text-valign': 'center',
+          'text-halign': 'center'
+        }},
+      { selector: 'edge', style: {
+          'curve-style': 'bezier',
+          'target-arrow-shape': 'triangle',
+          'arrow-scale': 0.8,
+          'line-color': '#94a3b8',
+          'target-arrow-color': '#94a3b8',
+          'width': 1.5
+        }},
+      { selector: '.hub', style: { 'border-width': 2 } },
+      { selector: '.stage', style: { 'font-weight': 700 } },
+      { selector: '.group', style: { 'shape': 'round-rectangle', 'background-opacity': 0.04, 'border-style': 'dashed' } },
+      { selector: '.optional', style: { 'border-style': 'dotted', 'border-color': '#94a3b8' } },
+      { selector: '.optionalEdge', style: { 'line-style': 'dashed' } },
+      { selector: '.accessEdge', style: { 'line-style': 'dotted', 'width': 1.2 } }
+    ];
+
+  }
+
+  function makeCy(containerId, elements, heightFallback){
+    var el = document.getElementById(containerId);
+    if(!el) return null;
+    // If the container is in a hidden tab, cytoscape may compute size as 0. Keep a minimum.
+    if(!el.style.height && heightFallback){ el.style.height = heightFallback; }
+    var cy = cytoscape({
+      container: el,
+      elements: elements,
+      style: styleBase(),
+      layout: { name: 'preset', padding: 20 }
+    });
+    return cy;
+  }
+
+  function cosmosElements(){
+    return [
+      // nodes
+      { data:{id:'U', label:'UTILISATEUR'}, position:{x:420,y:40}, classes:'stage' },
+      { data:{id:'RQ', label:'1. REQUÊTE'}, position:{x:420,y:110}, classes:'stage' },
+      { data:{id:'H', label:'IDEXIOS - HUB'}, position:{x:420,y:190}, classes:'hub stage' },
+
+      { data:{id:'A', label:'2. ANALYSE'}, position:{x:200,y:260}, classes:'stage' },
+      { data:{id:'RUB', label:'RUBRIQUES'}, position:{x:420,y:260}, classes:'stage' },
+      { data:{id:'RO', label:'3. ROUTAGE'}, position:{x:640,y:260}, classes:'stage' },
+
+      { data:{id:'Ptf', label:'Portefeuille'}, position:{x:340,y:340} },
+      { data:{id:'Cons', label:'Conseils'}, position:{x:420,y:340} },
+      { data:{id:'Scn', label:'Scenarios'}, position:{x:500,y:340} },
+      { data:{id:'Liv', label:'Livrables'}, position:{x:380,y:390} },
+      { data:{id:'Gov', label:'Gouvernance'}, position:{x:460,y:390} },
+
+      { data:{id:'S', label:'4. SOURCES'}, position:{x:220,y:460}, classes:'stage' },
+      { data:{id:'DV', label:'Dataverse TPG\n(tpg_*)'}, position:{x:140,y:540} },
+      { data:{id:'SP', label:'SharePoint\n(Idexios-Prime)'}, position:{x:220,y:540} },
+      { data:{id:'CUS', label:'Sources personnalisées\n(CRM, ERP, F&O...)'}, position:{x:300,y:540}, classes:'optional' },
+
+      { data:{id:'AG', label:'5. AGENTS'}, position:{x:640,y:460}, classes:'stage' },
+      { data:{id:'DP', label:'Domain Packs'}, position:{x:640,y:540} },
+      { data:{id:'FIN', label:'FinanceOps'}, position:{x:560,y:610} },
+      { data:{id:'PORT', label:'PortfolioOps'}, position:{x:640,y:610} },
+      { data:{id:'GOV', label:'GovernanceOps'}, position:{x:720,y:610} },
+      { data:{id:'DEL', label:'DeliveryOps'}, position:{x:560,y:670} },
+      { data:{id:'PROC', label:'ProcurementOps'}, position:{x:640,y:670} },
+      { data:{id:'COM', label:'CommsOps'}, position:{x:720,y:670} },
+
+      { data:{id:'T', label:'6. TRAITEMENT'}, position:{x:420,y:700}, classes:'stage' },
+
+      { data:{id:'O', label:'7. SORTIES'}, position:{x:420,y:780}, classes:'stage' },
+      { data:{id:'OC', label:'Conversation'}, position:{x:260,y:860} },
+      { data:{id:'OP', label:'Power Pages'}, position:{x:420,y:860} },
+      { data:{id:'PR', label:'Process'}, position:{x:580,y:860} },
+
+      // edges
+      { data:{id:'e1', source:'U', target:'RQ'}},
+      { data:{id:'e2', source:'RQ', target:'H'}},
+
+      { data:{id:'e3', source:'H', target:'A'}},
+      { data:{id:'e4', source:'H', target:'RUB'}},
+      { data:{id:'e5', source:'H', target:'RO'}},
+
+      { data:{id:'e6', source:'RUB', target:'Ptf'}},
+      { data:{id:'e7', source:'RUB', target:'Cons'}},
+      { data:{id:'e8', source:'RUB', target:'Scn'}},
+      { data:{id:'e9', source:'RUB', target:'Liv'}},
+      { data:{id:'e10', source:'RUB', target:'Gov'}},
+
+      { data:{id:'e11', source:'A', target:'S'}},
+      { data:{id:'e12', source:'S', target:'DV'}},
+      { data:{id:'e13', source:'S', target:'SP'}},
+      { data:{id:'e14', source:'S', target:'CUS'}, classes:'optionalEdge' },
+
+      { data:{id:'e15', source:'RO', target:'AG'}},
+      { data:{id:'e16', source:'AG', target:'DP'}},
+      { data:{id:'e17', source:'DP', target:'FIN'}},
+      { data:{id:'e18', source:'DP', target:'PORT'}},
+      { data:{id:'e19', source:'DP', target:'GOV'}},
+      { data:{id:'e20', source:'DP', target:'DEL'}},
+      { data:{id:'e21', source:'DP', target:'PROC'}},
+      { data:{id:'e22', source:'DP', target:'COM'}},
+
+      { data:{id:'e23', source:'DV', target:'T'}},
+      { data:{id:'e24', source:'SP', target:'T'}},
+      { data:{id:'e25', source:'CUS', target:'T'}, classes:'optionalEdge' },
+      { data:{id:'e26', source:'FIN', target:'T'}},
+      { data:{id:'e27', source:'PORT', target:'T'}},
+      { data:{id:'e28', source:'GOV', target:'T'}},
+      { data:{id:'e29', source:'DEL', target:'T'}},
+      { data:{id:'e30', source:'PROC', target:'T'}},
+      { data:{id:'e31', source:'COM', target:'T'}},
+
+      // pack access to sources (via connecteurs / actions)
+      { data:{id:'e36', source:'FIN', target:'DV'}, classes:'accessEdge' },
+      { data:{id:'e37', source:'FIN', target:'SP'}, classes:'accessEdge' },
+      { data:{id:'e38', source:'FIN', target:'CUS'}, classes:'accessEdge optionalEdge' },
+
+      { data:{id:'e39', source:'PORT', target:'DV'}, classes:'accessEdge' },
+
+      { data:{id:'e40', source:'GOV', target:'DV'}, classes:'accessEdge' },
+      { data:{id:'e41', source:'GOV', target:'SP'}, classes:'accessEdge' },
+      { data:{id:'e42', source:'GOV', target:'CUS'}, classes:'accessEdge optionalEdge' },
+
+      { data:{id:'e43', source:'DEL', target:'DV'}, classes:'accessEdge' },
+      { data:{id:'e44', source:'DEL', target:'SP'}, classes:'accessEdge' },
+
+      { data:{id:'e45', source:'PROC', target:'SP'}, classes:'accessEdge' },
+
+      { data:{id:'e46', source:'COM', target:'SP'}, classes:'accessEdge' },
+
+
+      { data:{id:'e32', source:'T', target:'O'}},
+      { data:{id:'e33', source:'O', target:'OC'}},
+      { data:{id:'e34', source:'O', target:'OP'}},
+      { data:{id:'e35', source:'O', target:'PR'}}
+    ];
+  }
+
+  function componentsElements(){
+    return [
+      { data:{id:'CS', label:'Microsoft Copilot Studio'}, position:{x:420,y:40}, classes:'stage'},
+      { data:{id:'TOP', label:'Rubriques / Topics'}, position:{x:420,y:110}},
+      { data:{id:'IDX', label:'Idexios\nOrchestrateur'}, position:{x:420,y:190}, classes:'hub'},
+      { data:{id:'ACT', label:'Actions / Connecteurs'}, position:{x:420,y:270}},
+
+      { data:{id:'DV', label:'Dataverse TPG\n(tpg_*)'}, position:{x:220,y:360}},
+      { data:{id:'SP', label:'SharePoint\n(Idexios-Prime)'}, position:{x:420,y:360}},
+      { data:{id:'CUS', label:'Sources personnalisées\n(CRM, ERP, F&O...)'}, position:{x:620,y:360}, classes:'optional'},
+
+      { data:{id:'CASE', label:'Case Management\nSharePoint List'}, position:{x:220,y:470}},
+      { data:{id:'RF', label:'Report Factory\nAzure Function / Logic App'}, position:{x:420,y:470}},
+      { data:{id:'CARD', label:'Adaptive Cards\nRenderer'}, position:{x:620,y:470}},
+      { data:{id:'PP', label:'Power Pages'}, position:{x:620,y:540}},
+
+      { data:{id:'PROC', label:'Process Integration\nUpdate tables/forms'}, position:{x:220,y:540}},
+      { data:{id:'OBS', label:'Observabilite\nLogs / traceId'}, position:{x:420,y:540}},
+      { data:{id:'SEC', label:'Security\nRBAC / DLP / Audit'}, position:{x:420,y:610}},
+
+      { data:{id:'e1', source:'CS', target:'TOP'}},
+      { data:{id:'e2', source:'TOP', target:'IDX'}},
+      { data:{id:'e3', source:'IDX', target:'ACT'}},
+
+      { data:{id:'e4', source:'ACT', target:'DV'}},
+      { data:{id:'e5', source:'ACT', target:'SP'}},
+      { data:{id:'e6', source:'ACT', target:'CUS'}, classes:'optionalEdge' },
+
+      { data:{id:'e7', source:'IDX', target:'CASE'}},
+      { data:{id:'e8', source:'IDX', target:'RF'}},
+      { data:{id:'e9', source:'IDX', target:'CARD'}},
+      { data:{id:'e10', source:'CARD', target:'PP'}},
+
+      { data:{id:'e11', source:'IDX', target:'PROC'}},
+      { data:{id:'e12', source:'PROC', target:'DV'}},
+      { data:{id:'e13', source:'PROC', target:'SP'}},
+
+      { data:{id:'e14', source:'IDX', target:'OBS'}},
+      { data:{id:'e15', source:'IDX', target:'SEC'}}
+    ];
+  }
+
+  function fluxElements(){
+    return [      { data:{id:'REQ', label:'Demande\nPlanification / Reddition'}, position:{x:140,y:80} },
+      { data:{id:'IDX', label:'Idexios\n(Hub)'}, position:{x:140,y:170}, classes:'hub' },
+
+      { data:{id:'TBM', label:'TBM\nJustification coût/valeur'}, position:{x:360,y:60}, classes:'stage' },
+      { data:{id:'VMO', label:'VMO\nPriorisation ROI/KPI'}, position:{x:360,y:140}, classes:'stage' },
+      { data:{id:'LPM', label:'Lean Portfolio Mgmt\nItérations + points de contrôle'}, position:{x:360,y:220}, classes:'stage' },
+
+      { data:{id:'DV', label:'Dataverse TPG\n(tpg_*)'}, position:{x:600,y:60}, classes:'stage' },
+      { data:{id:'SP', label:'SharePoint\n(Idexios-Prime)'}, position:{x:600,y:140}, classes:'stage' },
+      { data:{id:'FIN', label:'Systèmes financiers\n(optionnel: ERP/GL/Financials)'}, position:{x:600,y:220}, classes:'optional' },
+
+      { data:{id:'CALC', label:'Calculs\nEVM + allocation + variances'}, position:{x:840,y:140}, classes:'stage' },
+      { data:{id:'OUT', label:'Sorties'}, position:{x:1040,y:140}, classes:'stage' },
+      { data:{id:'OC', label:'Conversation'}, position:{x:940,y:240} },
+      { data:{id:'OP', label:'Power Pages\n(Cards/Rapports)'}, position:{x:1040,y:240} },
+      { data:{id:'OR', label:'Process\n(Ecritures DV/SP)'}, position:{x:1140,y:240} },
+
+      { data:{id:'e1', source:'REQ', target:'IDX'}},
+      { data:{id:'e2', source:'IDX', target:'TBM'}},
+      { data:{id:'e3', source:'TBM', target:'VMO'}},
+      { data:{id:'e4', source:'VMO', target:'LPM'}},
+
+      { data:{id:'e5', source:'LPM', target:'DV'}, classes:'accessEdge' },
+      { data:{id:'e6', source:'LPM', target:'SP'}, classes:'accessEdge' },
+      { data:{id:'e7', source:'LPM', target:'FIN'}, classes:'optionalEdge' },
+
+      { data:{id:'e8', source:'DV', target:'CALC'}},
+      { data:{id:'e9', source:'SP', target:'CALC'}},
+      { data:{id:'e10', source:'FIN', target:'CALC'}, classes:'optionalEdge' },
+
+      { data:{id:'e11', source:'CALC', target:'OUT'}},
+      { data:{id:'e12', source:'OUT', target:'OC'}},
+      { data:{id:'e13', source:'OUT', target:'OP'}},
+      { data:{id:'e14', source:'OUT', target:'OR'}}];
+  }
+
+  function overviewElements(){
+    return [
+      { data:{id:'A', label:'Initiation\nDemande / besoin'}, position:{x:140,y:100}, classes:'stage'},
+      { data:{id:'B', label:'Planification\nScenario + capacite'}, position:{x:340,y:100}, classes:'stage'},
+      { data:{id:'C', label:'Execution\nSuivi projet'}, position:{x:540,y:100}, classes:'stage'},
+      { data:{id:'D', label:'Suivi\nRisques + variances'}, position:{x:740,y:100}, classes:'stage'},
+      { data:{id:'E', label:'Cloture\nReddition + actions'}, position:{x:940,y:100}, classes:'stage'},
+      { data:{id:'IDX', label:'Idexios\nOrchestration'}, position:{x:540,y:220}, classes:'hub'},
+      { data:{id:'OUT', label:'Rapports / Cards / Cases'}, position:{x:540,y:340}},
+
+      { data:{id:'e1', source:'A', target:'B'}},
+      { data:{id:'e2', source:'B', target:'C'}},
+      { data:{id:'e3', source:'C', target:'D'}},
+      { data:{id:'e4', source:'D', target:'E'}},
+      { data:{id:'e5', source:'A', target:'IDX'}},
+      { data:{id:'e6', source:'B', target:'IDX'}},
+      { data:{id:'e7', source:'C', target:'IDX'}},
+      { data:{id:'e8', source:'D', target:'IDX'}},
+      { data:{id:'e9', source:'E', target:'IDX'}},
+      { data:{id:'e10', source:'IDX', target:'OUT'}}
+    ];
+  }
+
+
+  function rubriquesLoopElements(){
+    return [
+      { data:{id:'UQ', label:'Utilisateur'}, position:{x:80,y:70}, classes:'stage' },
+      { data:{id:'REQ', label:'Demande\n(texte libre)'}, position:{x:80,y:150}, classes:'stage' },
+
+      { data:{id:'IDX', label:'IDEXIOS\nOrchestrateur'}, position:{x:360,y:120}, classes:'hub stage' },
+
+      { data:{id:'RB', label:'Rubriques\nQualification intention'}, position:{x:640,y:70}, classes:'stage' },
+      { data:{id:'R1', label:'Portefeuille'}, position:{x:560,y:150} },
+      { data:{id:'R2', label:'Conseils'}, position:{x:640,y:150} },
+      { data:{id:'R3', label:'Scenarios'}, position:{x:720,y:150} },
+      { data:{id:'R4', label:'Livrables'}, position:{x:600,y:210} },
+      { data:{id:'R5', label:'Gouvernance'}, position:{x:680,y:210} },
+
+      { data:{id:'PK', label:'Domain Packs\nAgents specialises'}, position:{x:640,y:320}, classes:'stage' },
+      { data:{id:'P1', label:'FinanceOps'}, position:{x:520,y:390} },
+      { data:{id:'P2', label:'PortfolioOps'}, position:{x:640,y:390} },
+      { data:{id:'P3', label:'GovernanceOps'}, position:{x:760,y:390} },
+      { data:{id:'P4', label:'DeliveryOps'}, position:{x:520,y:450} },
+      { data:{id:'P5', label:'ProcurementOps'}, position:{x:640,y:450} },
+      { data:{id:'P6', label:'CommsOps'}, position:{x:760,y:450} },
+
+      { data:{id:'SRC', label:'Sources\n(donnees)'}, position:{x:200,y:330}, classes:'stage' },
+      { data:{id:'DV', label:'Dataverse TPG\n(tpg_*)'}, position:{x:120,y:410} },
+      { data:{id:'SP', label:'SharePoint\n(Idexios-Prime)'}, position:{x:240,y:410} },
+      { data:{id:'CS', label:'Sources personnalisees\n(CRM, ERP, F&O...)'}, position:{x:200,y:470}, classes:'optional' },
+
+      { data:{id:'OUT', label:'Sorties'}, position:{x:360,y:500}, classes:'stage' },
+      { data:{id:'O1', label:'Conversation'}, position:{x:220,y:580} },
+      { data:{id:'O2', label:'Power Pages\n(Cards/Rapports)'}, position:{x:360,y:580} },
+      { data:{id:'O3', label:'Process\n(MAJ tables/formulaires)'}, position:{x:500,y:580} },
+
+      // edges
+      { data:{id:'e1', source:'UQ', target:'REQ'}},
+      { data:{id:'e2', source:'REQ', target:'IDX'}},
+      { data:{id:'e3', source:'IDX', target:'RB'}},
+      { data:{id:'e4', source:'RB', target:'IDX'}, classes:'accessEdge' },
+
+      { data:{id:'e5', source:'RB', target:'R1'}},
+      { data:{id:'e6', source:'RB', target:'R2'}},
+      { data:{id:'e7', source:'RB', target:'R3'}},
+      { data:{id:'e8', source:'RB', target:'R4'}},
+      { data:{id:'e9', source:'RB', target:'R5'}},
+
+      { data:{id:'e10', source:'IDX', target:'PK'}},
+      { data:{id:'e11', source:'PK', target:'P1'}},
+      { data:{id:'e12', source:'PK', target:'P2'}},
+      { data:{id:'e13', source:'PK', target:'P3'}},
+      { data:{id:'e14', source:'PK', target:'P4'}},
+      { data:{id:'e15', source:'PK', target:'P5'}},
+      { data:{id:'e16', source:'PK', target:'P6'}},
+
+      // pack-to-source access (indirect via connecteurs)
+      { data:{id:'e17', source:'P1', target:'DV'}, classes:'accessEdge' },
+      { data:{id:'e18', source:'P1', target:'SP'}, classes:'accessEdge' },
+      { data:{id:'e19', source:'P2', target:'DV'}, classes:'accessEdge' },
+      { data:{id:'e20', source:'P3', target:'DV'}, classes:'accessEdge' },
+      { data:{id:'e21', source:'P3', target:'SP'}, classes:'accessEdge' },
+      { data:{id:'e22', source:'P4', target:'DV'}, classes:'accessEdge' },
+      { data:{id:'e23', source:'P4', target:'SP'}, classes:'accessEdge' },
+      { data:{id:'e24', source:'P5', target:'SP'}, classes:'accessEdge' },
+      { data:{id:'e25', source:'P6', target:'SP'}, classes:'accessEdge' },
+
+      // optional sources
+      { data:{id:'e26', source:'P1', target:'CS'}, classes:'optionalEdge' },
+      { data:{id:'e27', source:'P5', target:'CS'}, classes:'optionalEdge' },
+
+      // results loop back to Idexios
+      { data:{id:'e28', source:'P1', target:'IDX'}, classes:'accessEdge' },
+      { data:{id:'e29', source:'P2', target:'IDX'}, classes:'accessEdge' },
+      { data:{id:'e30', source:'P3', target:'IDX'}, classes:'accessEdge' },
+      { data:{id:'e31', source:'P4', target:'IDX'}, classes:'accessEdge' },
+      { data:{id:'e32', source:'P5', target:'IDX'}, classes:'accessEdge' },
+      { data:{id:'e33', source:'P6', target:'IDX'}, classes:'accessEdge' },
+
+      { data:{id:'e34', source:'IDX', target:'OUT'}},
+      { data:{id:'e35', source:'OUT', target:'O1'}},
+      { data:{id:'e36', source:'OUT', target:'O2'}},
+      { data:{id:'e37', source:'OUT', target:'O3'}},
+
+      // clarification loop with user
+      { data:{id:'e38', source:'IDX', target:'UQ'}, classes:'accessEdge' }
+    ];
+  }
+
+  var instances = {};
+
+  
+  function packElements_financeops(){
+    return [
+      { data:{id:'H', label:'Idexios\n(Hub)'}, position:{x:320,y:60}, classes:'hub' },
+      { data:{id:'P', label:'FinanceOps Pack'}, position:{x:320,y:140}, classes:'stage' },
+      { data:{id:'A', label:'Agents\nFinanceOps'}, position:{x:320,y:220} },
+      { data:{id:'DV', label:'Dataverse TPG\n(tpg_*)'}, position:{x:120,y:180} },
+      { data:{id:'SP', label:'SharePoint\n(Idexios-Prime)'}, position:{x:120,y:240} },
+      { data:{id:'CUS', label:'Sources personnalisées\n(CRM, ERP, F&O...)'}, position:{x:120,y:300}, classes:'optional' },
+      { data:{id:'VAL', label:'Cadre valeur\n(TBM/VMO/LPM)'}, position:{x:520,y:120}, classes:'stage' },
+      { data:{id:'T', label:'Traitement'}, position:{x:520,y:200}, classes:'stage' },
+      { data:{id:'O', label:'Sorties'}, position:{x:520,y:280}, classes:'stage' },
+      { data:{id:'OC', label:'Conversation'}, position:{x:420,y:360} },
+      { data:{id:'OP', label:'Power Pages'}, position:{x:520,y:360} },
+      { data:{id:'OR', label:'Process'}, position:{x:620,y:360} },
+
+      { data:{id:'e1', source:'H', target:'P'}},
+      { data:{id:'e2', source:'P', target:'A'}},
+      { data:{id:'e3', source:'A', target:'DV'}, classes:'accessEdge' },
+      { data:{id:'e4', source:'A', target:'SP'}, classes:'accessEdge' },
+      { data:{id:'e5', source:'A', target:'CUS'}, classes:'optionalEdge' },
+      { data:{id:'e6', source:'A', target:'VAL'}},
+      { data:{id:'e6b', source:'VAL', target:'T'}},
+      { data:{id:'e7', source:'T', target:'O'}},
+      { data:{id:'e8', source:'O', target:'OC'}},
+      { data:{id:'e9', source:'O', target:'OP'}},
+      { data:{id:'e10', source:'O', target:'OR'}},
+      { data:{id:'e11', source:'SP', target:'H'}, classes:'optionalEdge' }
+    ];
+  }
+
+  function packElements_portfolioops(){
+    return [
+      { data:{id:'H', label:'Idexios\n(Hub)'}, position:{x:320,y:60}, classes:'hub' },
+      { data:{id:'P', label:'PortfolioOps Pack'}, position:{x:320,y:140}, classes:'stage' },
+      { data:{id:'A', label:'Agents\nPortfolioOps'}, position:{x:320,y:220} },
+      { data:{id:'DV', label:'Dataverse TPG\n(tpg_*)'}, position:{x:120,y:180} },
+      { data:{id:'SP', label:'SharePoint\n(Idexios-Prime)'}, position:{x:120,y:240} },
+      { data:{id:'CUS', label:'Sources personnalisées\n(CRM, ERP, F&O...)'}, position:{x:120,y:300}, classes:'optional' },
+      { data:{id:'VAL', label:'Cadre valeur\n(TBM/VMO/LPM)'}, position:{x:520,y:120}, classes:'stage' },
+      { data:{id:'T', label:'Traitement'}, position:{x:520,y:200}, classes:'stage' },
+      { data:{id:'O', label:'Sorties'}, position:{x:520,y:280}, classes:'stage' },
+      { data:{id:'OC', label:'Conversation'}, position:{x:420,y:360} },
+      { data:{id:'OP', label:'Power Pages'}, position:{x:520,y:360} },
+      { data:{id:'OR', label:'Process'}, position:{x:620,y:360} },
+
+      { data:{id:'e1', source:'H', target:'P'}},
+      { data:{id:'e2', source:'P', target:'A'}},
+      { data:{id:'e3', source:'A', target:'DV'}, classes:'accessEdge' },
+      { data:{id:'e4', source:'A', target:'SP'}, classes:'accessEdge' },
+      { data:{id:'e5', source:'A', target:'CUS'}, classes:'optionalEdge' },
+      { data:{id:'e6', source:'A', target:'VAL'}},
+      { data:{id:'e6b', source:'VAL', target:'T'}},
+      { data:{id:'e7', source:'T', target:'O'}},
+      { data:{id:'e8', source:'O', target:'OC'}},
+      { data:{id:'e9', source:'O', target:'OP'}},
+      { data:{id:'e10', source:'O', target:'OR'}},
+      { data:{id:'e11', source:'SP', target:'H'}, classes:'optionalEdge' }
+    ];
+  }
+
+  function packElements_governanceops(){
+    return [
+      { data:{id:'H', label:'Idexios\n(Hub)'}, position:{x:320,y:60}, classes:'hub' },
+      { data:{id:'P', label:'GovernanceOps Pack'}, position:{x:320,y:140}, classes:'stage' },
+      { data:{id:'A', label:'Agents\nGovernanceOps'}, position:{x:320,y:220} },
+      { data:{id:'DV', label:'Dataverse TPG\n(tpg_*)'}, position:{x:120,y:180} },
+      { data:{id:'SP', label:'SharePoint\n(Idexios-Prime)'}, position:{x:120,y:240} },
+      { data:{id:'CUS', label:'Sources personnalisées\n(CRM, ERP, F&O...)'}, position:{x:120,y:300}, classes:'optional' },
+      { data:{id:'T', label:'Traitement'}, position:{x:520,y:200}, classes:'stage' },
+      { data:{id:'O', label:'Sorties'}, position:{x:520,y:280}, classes:'stage' },
+      { data:{id:'OC', label:'Conversation'}, position:{x:420,y:360} },
+      { data:{id:'OP', label:'Power Pages'}, position:{x:520,y:360} },
+      { data:{id:'OR', label:'Process'}, position:{x:620,y:360} },
+
+      { data:{id:'e1', source:'H', target:'P'}},
+      { data:{id:'e2', source:'P', target:'A'}},
+      { data:{id:'e3', source:'A', target:'DV'}, classes:'accessEdge' },
+      { data:{id:'e4', source:'A', target:'SP'}, classes:'accessEdge' },
+      { data:{id:'e5', source:'A', target:'CUS'}, classes:'optionalEdge' },
+      { data:{id:'e6', source:'A', target:'T'}},
+      { data:{id:'e7', source:'T', target:'O'}},
+      { data:{id:'e8', source:'O', target:'OC'}},
+      { data:{id:'e9', source:'O', target:'OP'}},
+      { data:{id:'e10', source:'O', target:'OR'}},
+      { data:{id:'e11', source:'SP', target:'H'}, classes:'optionalEdge' }
+    ];
+  }
+
+  function packElements_deliveryops(){
+    return [
+      { data:{id:'H', label:'Idexios\n(Hub)'}, position:{x:320,y:60}, classes:'hub' },
+      { data:{id:'P', label:'DeliveryOps Pack'}, position:{x:320,y:140}, classes:'stage' },
+      { data:{id:'A', label:'Agents\nDeliveryOps'}, position:{x:320,y:220} },
+      { data:{id:'DV', label:'Dataverse TPG\n(tpg_*)'}, position:{x:120,y:180} },
+      { data:{id:'SP', label:'SharePoint\n(Idexios-Prime)'}, position:{x:120,y:240} },
+      { data:{id:'CUS', label:'Sources personnalisées\n(CRM, ERP, F&O...)'}, position:{x:120,y:300}, classes:'optional' },
+      { data:{id:'T', label:'Traitement'}, position:{x:520,y:200}, classes:'stage' },
+      { data:{id:'O', label:'Sorties'}, position:{x:520,y:280}, classes:'stage' },
+      { data:{id:'OC', label:'Conversation'}, position:{x:420,y:360} },
+      { data:{id:'OP', label:'Power Pages'}, position:{x:520,y:360} },
+      { data:{id:'OR', label:'Process'}, position:{x:620,y:360} },
+
+      { data:{id:'e1', source:'H', target:'P'}},
+      { data:{id:'e2', source:'P', target:'A'}},
+      { data:{id:'e3', source:'A', target:'DV'}, classes:'accessEdge' },
+      { data:{id:'e4', source:'A', target:'SP'}, classes:'accessEdge' },
+      { data:{id:'e5', source:'A', target:'CUS'}, classes:'optionalEdge' },
+      { data:{id:'e6', source:'A', target:'T'}},
+      { data:{id:'e7', source:'T', target:'O'}},
+      { data:{id:'e8', source:'O', target:'OC'}},
+      { data:{id:'e9', source:'O', target:'OP'}},
+      { data:{id:'e10', source:'O', target:'OR'}},
+      { data:{id:'e11', source:'SP', target:'H'}, classes:'optionalEdge' }
+    ];
+  }
+
+  function packElements_procurementops(){
+    return [
+      { data:{id:'H', label:'Idexios\n(Hub)'}, position:{x:320,y:60}, classes:'hub' },
+      { data:{id:'P', label:'ProcurementOps Pack'}, position:{x:320,y:140}, classes:'stage' },
+      { data:{id:'A', label:'Agents\nProcurementOps'}, position:{x:320,y:220} },
+      { data:{id:'DV', label:'Dataverse TPG\n(tpg_*)'}, position:{x:120,y:180} },
+      { data:{id:'SP', label:'SharePoint\n(Idexios-Prime)'}, position:{x:120,y:240} },
+      { data:{id:'CUS', label:'Sources personnalisées\n(CRM, ERP, F&O...)'}, position:{x:120,y:300}, classes:'optional' },
+      { data:{id:'T', label:'Traitement'}, position:{x:520,y:200}, classes:'stage' },
+      { data:{id:'O', label:'Sorties'}, position:{x:520,y:280}, classes:'stage' },
+      { data:{id:'OC', label:'Conversation'}, position:{x:420,y:360} },
+      { data:{id:'OP', label:'Power Pages'}, position:{x:520,y:360} },
+      { data:{id:'OR', label:'Process'}, position:{x:620,y:360} },
+
+      { data:{id:'e1', source:'H', target:'P'}},
+      { data:{id:'e2', source:'P', target:'A'}},
+      { data:{id:'e3', source:'A', target:'DV'}, classes:'accessEdge' },
+      { data:{id:'e4', source:'A', target:'SP'}, classes:'accessEdge' },
+      { data:{id:'e5', source:'A', target:'CUS'}, classes:'optionalEdge' },
+      { data:{id:'e6', source:'A', target:'T'}},
+      { data:{id:'e7', source:'T', target:'O'}},
+      { data:{id:'e8', source:'O', target:'OC'}},
+      { data:{id:'e9', source:'O', target:'OP'}},
+      { data:{id:'e10', source:'O', target:'OR'}},
+      { data:{id:'e11', source:'SP', target:'H'}, classes:'optionalEdge' }
+    ];
+  }
+
+  function packElements_commsops(){
+    return [
+      { data:{id:'H', label:'Idexios\n(Hub)'}, position:{x:320,y:60}, classes:'hub' },
+      { data:{id:'P', label:'CommsOps Pack'}, position:{x:320,y:140}, classes:'stage' },
+      { data:{id:'A', label:'Agents\nCommsOps'}, position:{x:320,y:220} },
+      { data:{id:'DV', label:'Dataverse TPG\n(tpg_*)'}, position:{x:120,y:180} },
+      { data:{id:'SP', label:'SharePoint\n(Idexios-Prime)'}, position:{x:120,y:240} },
+      { data:{id:'CUS', label:'Sources personnalisées\n(CRM, ERP, F&O...)'}, position:{x:120,y:300}, classes:'optional' },
+      { data:{id:'T', label:'Traitement'}, position:{x:520,y:200}, classes:'stage' },
+      { data:{id:'O', label:'Sorties'}, position:{x:520,y:280}, classes:'stage' },
+      { data:{id:'OC', label:'Conversation'}, position:{x:420,y:360} },
+      { data:{id:'OP', label:'Power Pages'}, position:{x:520,y:360} },
+      { data:{id:'OR', label:'Process'}, position:{x:620,y:360} },
+
+      { data:{id:'e1', source:'H', target:'P'}},
+      { data:{id:'e2', source:'P', target:'A'}},
+      { data:{id:'e3', source:'A', target:'DV'}, classes:'accessEdge' },
+      { data:{id:'e4', source:'A', target:'SP'}, classes:'accessEdge' },
+      { data:{id:'e5', source:'A', target:'CUS'}, classes:'optionalEdge' },
+      { data:{id:'e6', source:'A', target:'T'}},
+      { data:{id:'e7', source:'T', target:'O'}},
+      { data:{id:'e8', source:'O', target:'OC'}},
+      { data:{id:'e9', source:'O', target:'OP'}},
+      { data:{id:'e10', source:'O', target:'OR'}},
+      { data:{id:'e11', source:'SP', target:'H'}, classes:'optionalEdge' }
+    ];
+  }
+
+  function rubriqueElements_portefeuille(){
+    return [
+      { data:{id:'U', label:'Utilisateur'}, position:{x:120,y:70} },
+      { data:{id:'H', label:'Idexios\n(Hub)'}, position:{x:320,y:70}, classes:'hub' },
+      { data:{id:'R', label:'Rubrique\nPortefeuille'}, position:{x:520,y:70}, classes:'stage' },
+      { data:{id:'P', label:'Domain Packs\nPortfolioOps / FinanceOps'}, position:{x:520,y:170} },
+      { data:{id:'DV', label:'Dataverse TPG\n(tpg_*)'}, position:{x:320,y:210} },
+      { data:{id:'SP', label:'SharePoint\n(Idexios-Prime)'}, position:{x:320,y:290} },
+      { data:{id:'CUS', label:'Sources personnalisées\n(optionnel)'}, position:{x:320,y:370}, classes:'optional' },
+      { data:{id:'VAL', label:'Cadre valeur\n(TBM/VMO/LPM)'}, position:{x:720,y:140}, classes:'stage' },
+      { data:{id:'T', label:'Traitement'}, position:{x:720,y:210}, classes:'stage' },
+      { data:{id:'O', label:'Sorties'}, position:{x:720,y:310}, classes:'stage' },
+      { data:{id:'OC', label:'Conversation'}, position:{x:620,y:390} },
+      { data:{id:'OP', label:'Power Pages'}, position:{x:720,y:390} },
+      { data:{id:'OR', label:'Process'}, position:{x:820,y:390} },
+
+      { data:{id:'e1', source:'U', target:'H'}},
+      { data:{id:'e2', source:'H', target:'R'}},
+      { data:{id:'e3', source:'R', target:'P'}},
+      { data:{id:'eVAL1', source:'P', target:'VAL'}},
+      { data:{id:'eVAL2', source:'VAL', target:'T'}},
+      { data:{id:'e4', source:'P', target:'DV'}, classes:'accessEdge' },
+      { data:{id:'e5', source:'P', target:'SP'}, classes:'accessEdge' },
+      { data:{id:'e6', source:'P', target:'CUS'}, classes:'optionalEdge' },
+      { data:{id:'e7', source:'DV', target:'T'}},
+      { data:{id:'e8', source:'SP', target:'T'}},
+      { data:{id:'e9', source:'T', target:'O'}},
+      { data:{id:'e10', source:'O', target:'OC'}},
+      { data:{id:'e11', source:'O', target:'OP'}},
+      { data:{id:'e12', source:'O', target:'OR'}},
+      { data:{id:'e13', source:'H', target:'U'}, classes:'optionalEdge' }
+    ];
+  }
+
+  function rubriqueElements_conseils(){
+    return [
+      { data:{id:'U', label:'Utilisateur'}, position:{x:120,y:70} },
+      { data:{id:'H', label:'Idexios\n(Hub)'}, position:{x:320,y:70}, classes:'hub' },
+      { data:{id:'R', label:'Rubrique\nConseils'}, position:{x:520,y:70}, classes:'stage' },
+      { data:{id:'P', label:'Domain Packs\nPortfolioOps / GovernanceOps'}, position:{x:520,y:170} },
+      { data:{id:'DV', label:'Dataverse TPG\n(tpg_*)'}, position:{x:320,y:210} },
+      { data:{id:'SP', label:'SharePoint\n(Idexios-Prime)'}, position:{x:320,y:290} },
+      { data:{id:'CUS', label:'Sources personnalisées\n(optionnel)'}, position:{x:320,y:370}, classes:'optional' },
+      { data:{id:'T', label:'Traitement'}, position:{x:720,y:210}, classes:'stage' },
+      { data:{id:'O', label:'Sorties'}, position:{x:720,y:310}, classes:'stage' },
+      { data:{id:'OC', label:'Conversation'}, position:{x:620,y:390} },
+      { data:{id:'OP', label:'Power Pages'}, position:{x:720,y:390} },
+      { data:{id:'OR', label:'Process'}, position:{x:820,y:390} },
+
+      { data:{id:'e1', source:'U', target:'H'}},
+      { data:{id:'e2', source:'H', target:'R'}},
+      { data:{id:'e3', source:'R', target:'P'}},
+      { data:{id:'e4', source:'P', target:'DV'}, classes:'accessEdge' },
+      { data:{id:'e5', source:'P', target:'SP'}, classes:'accessEdge' },
+      { data:{id:'e6', source:'P', target:'CUS'}, classes:'optionalEdge' },
+      { data:{id:'e7', source:'DV', target:'T'}},
+      { data:{id:'e8', source:'SP', target:'T'}},
+      { data:{id:'e9', source:'T', target:'O'}},
+      { data:{id:'e10', source:'O', target:'OC'}},
+      { data:{id:'e11', source:'O', target:'OP'}},
+      { data:{id:'e12', source:'O', target:'OR'}},
+      { data:{id:'e13', source:'H', target:'U'}, classes:'optionalEdge' }
+    ];
+  }
+
+  function rubriqueElements_scenarios(){
+    return [
+      { data:{id:'U', label:'Utilisateur'}, position:{x:120,y:70} },
+      { data:{id:'H', label:'Idexios\n(Hub)'}, position:{x:320,y:70}, classes:'hub' },
+      { data:{id:'R', label:'Rubrique\nScénarios'}, position:{x:520,y:70}, classes:'stage' },
+      { data:{id:'P', label:'Domain Packs\nPortfolioOps'}, position:{x:520,y:170} },
+      { data:{id:'DV', label:'Dataverse TPG\n(tpg_*)'}, position:{x:320,y:210} },
+      { data:{id:'SP', label:'SharePoint\n(Idexios-Prime)'}, position:{x:320,y:290} },
+      { data:{id:'CUS', label:'Sources personnalisées\n(optionnel)'}, position:{x:320,y:370}, classes:'optional' },
+      { data:{id:'VAL', label:'Cadre valeur\n(TBM/VMO/LPM)'}, position:{x:720,y:140}, classes:'stage' },
+      { data:{id:'T', label:'Traitement'}, position:{x:720,y:210}, classes:'stage' },
+      { data:{id:'O', label:'Sorties'}, position:{x:720,y:310}, classes:'stage' },
+      { data:{id:'OC', label:'Conversation'}, position:{x:620,y:390} },
+      { data:{id:'OP', label:'Power Pages'}, position:{x:720,y:390} },
+      { data:{id:'OR', label:'Process'}, position:{x:820,y:390} },
+
+      { data:{id:'e1', source:'U', target:'H'}},
+      { data:{id:'e2', source:'H', target:'R'}},
+      { data:{id:'e3', source:'R', target:'P'}},
+      { data:{id:'eVAL1', source:'P', target:'VAL'}},
+      { data:{id:'eVAL2', source:'VAL', target:'T'}},
+      { data:{id:'e4', source:'P', target:'DV'}, classes:'accessEdge' },
+      { data:{id:'e5', source:'P', target:'SP'}, classes:'accessEdge' },
+      { data:{id:'e6', source:'P', target:'CUS'}, classes:'optionalEdge' },
+      { data:{id:'e7', source:'DV', target:'T'}},
+      { data:{id:'e8', source:'SP', target:'T'}},
+      { data:{id:'e9', source:'T', target:'O'}},
+      { data:{id:'e10', source:'O', target:'OC'}},
+      { data:{id:'e11', source:'O', target:'OP'}},
+      { data:{id:'e12', source:'O', target:'OR'}},
+      { data:{id:'e13', source:'H', target:'U'}, classes:'optionalEdge' }
+    ];
+  }
+
+  function rubriqueElements_livrables(){
+    return [
+      { data:{id:'U', label:'Utilisateur'}, position:{x:120,y:70} },
+      { data:{id:'H', label:'Idexios\n(Hub)'}, position:{x:320,y:70}, classes:'hub' },
+      { data:{id:'R', label:'Rubrique\nLivrables'}, position:{x:520,y:70}, classes:'stage' },
+      { data:{id:'P', label:'Domain Packs\nDeliveryOps / CommsOps'}, position:{x:520,y:170} },
+      { data:{id:'DV', label:'Dataverse TPG\n(tpg_*)'}, position:{x:320,y:210} },
+      { data:{id:'SP', label:'SharePoint\n(Idexios-Prime)'}, position:{x:320,y:290} },
+      { data:{id:'CUS', label:'Sources personnalisées\n(optionnel)'}, position:{x:320,y:370}, classes:'optional' },
+      { data:{id:'T', label:'Traitement'}, position:{x:720,y:210}, classes:'stage' },
+      { data:{id:'O', label:'Sorties'}, position:{x:720,y:310}, classes:'stage' },
+      { data:{id:'OC', label:'Conversation'}, position:{x:620,y:390} },
+      { data:{id:'OP', label:'Power Pages'}, position:{x:720,y:390} },
+      { data:{id:'OR', label:'Process'}, position:{x:820,y:390} },
+
+      { data:{id:'e1', source:'U', target:'H'}},
+      { data:{id:'e2', source:'H', target:'R'}},
+      { data:{id:'e3', source:'R', target:'P'}},
+      { data:{id:'e4', source:'P', target:'DV'}, classes:'accessEdge' },
+      { data:{id:'e5', source:'P', target:'SP'}, classes:'accessEdge' },
+      { data:{id:'e6', source:'P', target:'CUS'}, classes:'optionalEdge' },
+      { data:{id:'e7', source:'DV', target:'T'}},
+      { data:{id:'e8', source:'SP', target:'T'}},
+      { data:{id:'e9', source:'T', target:'O'}},
+      { data:{id:'e10', source:'O', target:'OC'}},
+      { data:{id:'e11', source:'O', target:'OP'}},
+      { data:{id:'e12', source:'O', target:'OR'}},
+      { data:{id:'e13', source:'H', target:'U'}, classes:'optionalEdge' }
+    ];
+  }
+
+  function rubriqueElements_gouvernance(){
+    return [
+      { data:{id:'U', label:'Utilisateur'}, position:{x:120,y:70} },
+      { data:{id:'H', label:'Idexios\n(Hub)'}, position:{x:320,y:70}, classes:'hub' },
+      { data:{id:'R', label:'Rubrique\nGouvernance'}, position:{x:520,y:70}, classes:'stage' },
+      { data:{id:'P', label:'Domain Packs\nGovernanceOps'}, position:{x:520,y:170} },
+      { data:{id:'DV', label:'Dataverse TPG\n(tpg_*)'}, position:{x:320,y:210} },
+      { data:{id:'SP', label:'SharePoint\n(Idexios-Prime)'}, position:{x:320,y:290} },
+      { data:{id:'CUS', label:'Sources personnalisées\n(optionnel)'}, position:{x:320,y:370}, classes:'optional' },
+      { data:{id:'T', label:'Traitement'}, position:{x:720,y:210}, classes:'stage' },
+      { data:{id:'O', label:'Sorties'}, position:{x:720,y:310}, classes:'stage' },
+      { data:{id:'OC', label:'Conversation'}, position:{x:620,y:390} },
+      { data:{id:'OP', label:'Power Pages'}, position:{x:720,y:390} },
+      { data:{id:'OR', label:'Process'}, position:{x:820,y:390} },
+
+      { data:{id:'e1', source:'U', target:'H'}},
+      { data:{id:'e2', source:'H', target:'R'}},
+      { data:{id:'e3', source:'R', target:'P'}},
+      { data:{id:'e4', source:'P', target:'DV'}, classes:'accessEdge' },
+      { data:{id:'e5', source:'P', target:'SP'}, classes:'accessEdge' },
+      { data:{id:'e6', source:'P', target:'CUS'}, classes:'optionalEdge' },
+      { data:{id:'e7', source:'DV', target:'T'}},
+      { data:{id:'e8', source:'SP', target:'T'}},
+      { data:{id:'e9', source:'T', target:'O'}},
+      { data:{id:'e10', source:'O', target:'OC'}},
+      { data:{id:'e11', source:'O', target:'OP'}},
+      { data:{id:'e12', source:'O', target:'OR'}},
+      { data:{id:'e13', source:'H', target:'U'}, classes:'optionalEdge' }
+    ];
+  }
+function initAll(){
+instances.arch = makeCy('cyto-architecture', cosmosElements(), '860px');
+    instances.flux = makeCy('cyto-flux', fluxElements(), '520px');
+    instances.rbl  = makeCy('cyto-rubriques-loop', rubriquesLoopElements(), '460px');
+    instances.comp = makeCy('cyto-components', componentsElements(), '560px');
+    instances.ovw  = makeCy('cyto-overview', overviewElements(), '520px');
+    instances.pack_financeops = makeCy('cyto-pack-financeops', packElements_financeops(), '260px');
+    instances.pack_portfolioops = makeCy('cyto-pack-portfolioops', packElements_portfolioops(), '260px');
+    instances.pack_governanceops = makeCy('cyto-pack-governanceops', packElements_governanceops(), '260px');
+    instances.pack_deliveryops = makeCy('cyto-pack-deliveryops', packElements_deliveryops(), '260px');
+    instances.pack_procurementops = makeCy('cyto-pack-procurementops', packElements_procurementops(), '260px');
+    instances.pack_commsops = makeCy('cyto-pack-commsops', packElements_commsops(), '260px');
+    instances.rub_portefeuille  = makeCy('cyto-rubrique-portefeuille', rubriqueElements_portefeuille(), '320px');
+    instances.rub_conseils  = makeCy('cyto-rubrique-conseils', rubriqueElements_conseils(), '320px');
+    instances.rub_scenarios  = makeCy('cyto-rubrique-scenarios', rubriqueElements_scenarios(), '320px');
+    instances.rub_livrables  = makeCy('cyto-rubrique-livrables', rubriqueElements_livrables(), '320px');
+    instances.rub_gouvernance  = makeCy('cyto-rubrique-gouvernance', rubriqueElements_gouvernance(), '320px');
+
+  }
+
+  function resizeVisible(){
+    Object.keys(instances).forEach(function(k){
+      var cy = instances[k];
+      if(!cy) return;
+      try { cy.resize(); cy.fit(undefined, 20); } catch(e){}
+    });
+  }
+
+  document.addEventListener('DOMContentLoaded', function(){
+    initAll();
+    // Resize after initial paint
+    setTimeout(resizeVisible, 300);
+
+    // Hook tab clicks (without modifying existing tab logic)
+    var tabs = document.querySelectorAll('.tab');
+    tabs.forEach(function(btn){
+      btn.addEventListener('click', function(){
+        // give time for section to become visible
+        setTimeout(resizeVisible, 120);
+      });
+    });
+  });
+})();
+</script>
+
+</body>
+</html>
