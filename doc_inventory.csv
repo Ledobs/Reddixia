@@ -1,0 +1,7 @@
+Nom du fichier,Répertoire,Description,Statut
+INDEX.md,docs/agents/HUB/IDEXIOS,Index du Hub Idexios,
+INDEX.md,docs/agents/DELIVERYOPS/HERMES-PROJ,Index Hermes Project,
+INDEX.md,docs/agents/FINANCEOPS/ATLAS-CTRL,Index Atlas Controller,
+INDEX.md,docs/agents/PORTFOLIOOPS/ATHENA-PORTF,Index Athena Portfolio,
+README.md,docs/agents,Agent registry readme,
+README.md,docs/templates,Templates documentation,
