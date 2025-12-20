@@ -1,4 +1,4 @@
-# Gabarits réutilisables et prompts standards
+# Gabarits réutilisables et prompts standards
 
 ## Description
 Templates SharePoint, gabarits architecture agents, prompts Cytoscape, checklists qualité.
