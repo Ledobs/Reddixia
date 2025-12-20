@@ -1,86 +1,116 @@
 # Reddixia
 
-Reddixia est la boîte à outils d'Idexia dédiée au soutien de la reddition de comptes, de la reddition contractuelle et de la reddition de projets. Elle regroupe une famille d'agents spécialisés construits dans le projet idexia-xpm-pantheon, chacun inspiré des mythologies grecque et romaine, pour accompagner la gestion de projet, de portefeuille, des risques, des données et de l'adoption autour de TPG.
+Reddixia est le **toolbox agentique** d’Idexia pour soutenir la **gestion de portefeuille / programmes / projets (TPG)**, la reddition de comptes (finances, performance, gouvernance) et la production de livrables (rapports, cartes, dossiers de décision) dans une approche **xPM (équipes hybrides humains + agents IA)**.
 
-Les agents interagissent par l'intermédiaire de l'orchestrateur Idexios. Nommé en référence à son étymologie (ce qui extrait et déploie les concepts), Idexios est l'agent orchestrateur central qui transforme les intentions stratégiques en actions coordonnées, servant de hub intelligent pour l'ensemble de l'écosystème d'agents de gestion de projet.
-
----
-
-## Contexte : idexia-xpm-pantheon
-
-`idexia-xpm-pantheon` est le projet de référence qui héberge la famille d'agents Reddixia (Idexios : ATLAS-CTRL, HERMES-PROJ, ATHENA-PORTF, THEMIS-GOV, IRIS-RISK, GAIA-DATA, APOLLO-CHANGE, etc.).  
-Il définit le modèle **xPM (eXtended Project Management)** d'Idexia, où la gestion de projet et de portefeuille est augmentée par une constellation d'agents spécialisés, coordonnés par **Idexios**.
+Le cœur de la solution est **Idexios (IA-TPG-001)**, orchestrateur conversationnel dans **Microsoft Copilot Studio**, qui :
+- qualifie l’intention (rubrique),
+- résout le contexte (projet / programme / portefeuille + période),
+- route vers le **Domain Pack** pertinent,
+- assemble les sorties (conversation, Power Pages, process),
+- et trace les décisions (observabilité, cases).
 
 ---
 
-## Objectifs du projet
+## Liens rapides
 
-- Outiller la reddition de comptes, contractuelle et projet dans un contexte TPG.  
-- Structurer une constellation d'agents spécialisés, chacun ciblant un rôle métier précis.  
-- Proposer une architecture de référence xPM réutilisable sur d'autres mandats.  
-- Faciliter l'intégration avec Microsoft 365 (SharePoint Online, Teams, Dataverse, etc.).  
-
----
-
-## Famille d'agents Reddixia
-
-| Code        | Nom           | Rôle principal                                                       | Mission synthèse                                                                                          | Statut       |
-|------------|---------------|----------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------|-------------|
-| IA-TPG-001 | ATLAS-CTRL    | Contrôleur / analyste PCO                                           | Consolider efforts, coûts, échéanciers et risques, détecter les anomalies et soutenir la reddition.       | En cours    |
-| IA-TPG-002 | HERMES-PROJ   | Compagnon des chefs de projet                                        | Générer MOP, comptes rendus, registres et plans d'action à partir des données TPG et des gabarits.        | En cours    |
-| IA-TPG-003 | ATHENA-PORTF  | Conseiller portefeuille (scénarios, priorisation)                    | Analyser le portefeuille, préparer les synthèses pour comités et proposer des scénarios de priorisation.  | En essais   |
-| IA-TPG-004 | THEMIS-GOV    | Auditeur de conformité & qualité solution                            | Surveiller paramètres, configurations et qualité des données TPG pour soutenir la gouvernance.            | En cours    |
-| IA-TPG-005 | Idexios       | Hub / méta-orchestrateur                                             | Router les questions vers les bons agents et assembler une vue intégrée du portefeuille et de la solution.| En cours    |
-| IA-TPG-006 | IRIS-RISK     | Analyste et gardien du registre des risques                          | Structurer et exploiter les registres de risques, croiser signaux et produire des synthèses risques.      | Non démarré |
-| IA-TPG-007 | GAIA-DATA     | Gardienne des données de référence et du modèle d'information        | Veiller à la qualité, cohérence et stabilité des données maîtres entre TPG et systèmes connexes.          | Non démarré |
-| IA-TPG-008 | APOLLO-CHANGE | Conseiller adoption et gestion du changement autour de la solution   | Traduire les décisions techniques en plans de communication, formation et accompagnement concrets.        | Non démarré |
+- **Devis d’architecture (HTML v11)** : `./archi.html`
+- **Solution Copilot Studio (xPM-Pantheon)** :  
+  https://copilotstudio.preview.microsoft.com/environments/14a51a38-b4c0-eb5b-9089-fcef1e4b79f5/solutions/89228855-0fd5-f011-8544-7ced8d0679f6
 
 ---
 
-## Structure du dépôt
+## Architecture – principes clés (v11)
+
+### Sources par défaut
+- **Dataverse TPG (`tpg_*`)** : données portefeuille/programmes/projets, tâches (WBS), finances par période, registres (risques, enjeux, changements, décisions, actions), etc.
+- **SharePoint – Idexios-Prime** : procédures, gabarits, listes de “cases” (exceptions/anomalies/approbations), preuves et documentation opératoire.
+
+> Des **sources personnalisées** (CRM, ERP, F&O, etc.) peuvent être arrimées au besoin via connecteurs, sans être requises par défaut.
+
+### Rubriques Idexios (routage d’intention)
+- **Portefeuille**
+- **Conseils**
+- **Scénarios**
+- **Livrables**
+- **Gouvernance**
+
+Idexios qualifie l’intention et sélectionne le **Domain Pack utile**. Selon le domaine, d’autres rubriques ou sources complémentaires peuvent être exploitées.
+
+### Sorties (3 formats)
+1. **Conversation** (Copilot Studio) : réponse structurée, justification, liens.
+2. **Power Pages** : objets de rapports et **Adaptive Cards** (navigation/drill-down).
+3. **Process** : création/mise à jour d’items (Dataverse / SharePoint) quand un workflow doit être déclenché.
+
+---
+
+## Domain Packs (Toolbox agentique)
+
+Les agents sont regroupés par packs afin de **séparer les responsabilités**, stabiliser les contrats d’entrées/sorties et limiter les croisements.
+
+- **FinanceOps Pack** : analyse financière, variances, clôture, exceptions, contrôle et reddition.
+- **PortfolioOps Pack** : pilotage portefeuille, priorisation, arbitrage, alignement capacité/valeur/risque.
+- **GovernanceOps Pack** : conformité, qualité, contrôles, preuves, politiques/procédures.
+- **DeliveryOps Pack** : pilotage projet, livrables, comptes rendus, reporting standardisé.
+- **ProcurementOps Pack** : approvisionnement/RFP, analyse contrats, standardisation gabarits.
+- **CommsOps Pack** : communication exécutive et adoption (kits, all-hands, messages).
+
+> Le détail complet des agents (IA-TPG-001 à IA-TPG-019) est maintenu dans `docs/agents/`.
+
+---
+
+## Cadres méthodologiques – Finance & Planification
+
+Les agents du domaine **Financiers & Planification** appliquent un comportement de **Coordinateur de Valeur IA** :
+
+- **TBM (Technology Business Management)** : toute action “coûteuse” (requêtes, calcul, génération) doit être justifiée par l’objectif métier et la valeur attendue.
+- **VMO (Value Management Office)** : priorisation des actions qui maximisent ROI/KPI et capacité à rapporter la valeur générée à chaque jalon.
+- **Lean Portfolio Management (LPM)** : itérations courtes, points de contrôle, réallocation rapide (“fail fast”) si la valeur n’est pas démontrée.
+
+### Seuils CPI/SPI (RAG)
+- 🟢 **Vert** : **≥ 0.95** (cible nominale 1.00)
+- 🟡 **Ambre** : **0.85 – 0.95**
+- 🔴 **Rouge** : **< 0.85**
+
+---
+
+## Structure du dépôt (cible)
 
 ```
 Reddixia/
-├─ README.md
-├─ docs/
-│  ├─ architecture-xpm.md
-│  ├─ agents.md
-│  └─ scenarios/
-├─ agents/
-│  ├─ atlas-ctrl/
-│  ├─ hermes-proj/
-│  ├─ athena-portf/
-│  ├─ themis-gov/
-│  ├─ idexios/
-│  ├─ iris-risk/
-│  ├─ gaia-data/
-│  └─ apollo-change/
-└─ .github/
-   └─ workflows/
+│
+├── README.md
+├── archi.html                    # Devis d’architecture (v11)
+│
+└── docs/
+    ├── architecture/             # README complet
+    │   └── adr/                  # INDEX léger (décisions)
+    ├── agents/                   # README complet (registre agents/packs)
+    ├── data/                     # README complet (modèle + mapping)
+    ├── rubriques/                # INDEX léger (1 doc par rubrique)
+    ├── ui/                       # INDEX léger (contrats cartes/rapports)
+    ├── finance/                  # INDEX léger (cadres TBM/VMO/LPM, RAG, etc.)
+    ├── templates/                # README complet (gabarits réutilisables)
+    ├── tech/                     # INDEX léger (composantes, observabilité, sécurité)
+    ├── governance/               # INDEX léger (politiques, contrôles)
+    └── roadmap/                  # INDEX léger (évolutions futures)
 ```
 
-- `docs/` : documentation fonctionnelle et technique, diagrammes, scénarios d'usage.  
-- `agents/` : configuration, prompts, scripts d'intégration et tests pour chaque agent.  
-
 ---
 
-## Pré-requis (cible M365/TPG)
+## Documentation (où trouver quoi)
 
-- Environnement Microsoft 365 avec SharePoint Online et Teams pour héberger procédures, gabarits et manuels d'opération.  
-- Accès aux données TPG (portefeuille, projets, registres de risques, référentiels maîtres) et, au besoin, à Dataverse ou autres sources connexes.  
-- Modèles d'IA (par ex. GPT-5 Auto) et connecteurs nécessaires (Microsoft 365, Dataverse, etc.).  
-
----
-
-## Roadmap (indicative)
-
-- Stabilisation des agents de base : ATLAS-CTRL, HERMES-PROJ, ATHENA-PORTF, THEMIS-GOV, Idexios.  
-- Ajout progressif des agents IRIS-RISK, GAIA-DATA et APOLLO-CHANGE.  
-- Publication de scénarios de référence (démonstrations TPG, ateliers, guides d'implantation).  
+- `docs/architecture/` : état de l’architecture, décisions (ADR), conventions de diagrammes.
+- `docs/agents/` : registre agents, Domain Packs, contrats d’entrées/sorties.
+- `docs/rubriques/` : scénarios + spécifications des sorties par rubrique.
+- `docs/data/` : modèle de données TPG, mapping Dataverse, structure SharePoint Idexios-Prime.
+- `docs/ui/` : catalogue Adaptive Cards + rapports.
+- `docs/finance/` : TBM/VMO/LPM, RAG, définitions et règles financières (agnostiques du système).
+- `docs/tech/` : composantes Copilot Studio, connecteurs/actions, sécurité, observabilité.
+- `docs/roadmap/` : évolutions et backlog.
 
 ---
 
 ## Licence
 
 **Propriétaire Idexia.**  
-Ce dépôt est destiné aux collaborateurs Idexia autorisés. Toute utilisation, reproduction ou distribution est soumise à une autorisation écrite préalable d'Idexia.
+Ce dépôt est destiné aux collaborateurs Idexia autorisés. Toute utilisation, reproduction ou distribution est soumise à une autorisation écrite préalable d’Idexia.
