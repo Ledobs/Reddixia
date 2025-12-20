@@ -10,7 +10,7 @@ Templates SharePoint, gabarits architecture agents, prompts Cytoscape, checklist
 - [prompt-generation-graphes.md](prompt-generation-graphes.md) - Prompts Cytoscape
 - [checklist-coherence-architecture.md](checklist-coherence-architecture.md) - Checklist qualité
 - [archi_[CODE]_[NAME]_v1.1.html](archi_[CODE]_[NAME]_v1.1.html) - Modèle d'architecture v1.1
-- [Branding.png](Branding.png) - Éléments visuels de la marque : logo, palette de couleurs et usages
+- [Branding.jpg](Branding.jpg) - Éléments visuels de la marque : logo, palette de couleurs et usages
 
 ---
 **Projet**: Reddixia  
