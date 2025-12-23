@@ -14,9 +14,7 @@ Le cœur de la solution est **Idexios (IA-TPG-001)**, orchestrateur conversation
 ## Liens rapides
 
 - **Devis d’architecture (HTML v11)** : `./archi.html`
-- **Solution Copilot Studio (xPM-Pantheon)** :  
-  https://copilotstudio.preview.microsoft.com/environments/14a51a38-b4c0-eb5b-9089-fcef1e4b79f5/solutions/89228855-0fd5-f011-8544-7ced8d0679f6
-
+- **Solution Copilot Studio (xPM-Pantheon)** : `https://copilotstudio.preview.microsoft.com/environments/14a51a38-b4c0-eb5b-9089-fcef1e4b79f5/solutions/89228855-0fd5-f011-8544-7ced8d0679f6`
 ---
 
 ## Architecture – principes clés (v11)
