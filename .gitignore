@@ -5,11 +5,15 @@ node_modules/
 .env
 .env.*
 
-# Admin Tools & Scripts (Repo config folder)
-# These tools are for local administration only and should NOT sync to Git
+# Repo config (Git Repository Administration Scripts)
+# This folder contains Git repository administration scripts and should NOT sync to Git
 Repo config/
 normalize_csv.py
 *.local.ps1
+
+# Red-Share (Integration Tools)
+# This folder contains integration tools and should NOT sync to Git
+Red-Share/
 
 # Session Reports & Logs
 session-reports/
