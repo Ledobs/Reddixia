@@ -21,11 +21,17 @@
 [CmdletBinding()]
 param(
     [Parameter(Position=0)]
-    [string]$RepoPath = (Get-Location).Path,
+    [string]$RepoPath,
     
     [Parameter()]
     [switch]$DryRun
 )
+
+# Auto-déterminer le chemin du repo parent si non fourni
+if ([string]::IsNullOrWhiteSpace($RepoPath)) {
+    $scriptPath = Split-Path -Parent $MyInvocation.MyCommand.Path
+    $RepoPath = Split-Path -Parent $scriptPath
+}
 
 $ErrorActionPreference = "Stop"
 Set-StrictMode -Version Latest

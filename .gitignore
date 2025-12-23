@@ -1,2 +1,22 @@
+# Dependencies
 node_modules/
+
+# Environment & Credentials
 .env
+.env.*
+
+# Admin Tools & Scripts (Repo config folder)
+# These tools are for local administration only and should NOT sync to Git
+Repo config/
+normalize_csv.py
+*.local.ps1
+
+# Session Reports & Logs
+session-reports/
+*.log
+
+# IDE & OS
+.vscode/
+.DS_Store
+Thumbs.db
+*.swp
