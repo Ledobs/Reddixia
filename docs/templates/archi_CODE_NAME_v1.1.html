@@ -1,0 +1,899 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Architecture — Template Agent (Reddixia)</title>
+
+  <!--
+    TEMPLATE DE DEVIS TECHNIQUE (Reddixia)
+    Convention:
+      - Hub Idexios (racine):            /archi_Idexios.html
+      - Devis agent (par agent):         /agents/<NOM_DE_CODE>/archi_<CODE_IA>_<NOM_DE_CODE>.html
+
+    Zones à modifier:
+      1) PAGE_META (titre, sous-titre, code, pack, etc.)
+      2) DIAGRAM FUNCTIONS (architectureElements/componentsElements/overviewElements/rubriquesLoopElements)
+  -->
+
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body{
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+      color:#0f172a;
+      line-height: 1.55;
+    }
+    a{ color: inherit; }
+    code{ background:#f1f5f9; padding:.1rem .25rem; border-radius:6px; }
+
+    /* Header */
+    .header{
+      background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%);
+      color:#fff;
+      padding: 1.25rem 2rem 2.25rem;
+      box-shadow: 0 4px 8px rgba(0,0,0,.10);
+    }
+    .header-content{ max-width: 1400px; margin: 0 auto; }
+
+    .topbar{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap: 1rem;
+      margin-bottom: 1rem;
+      flex-wrap: wrap;
+    }
+    .brand{
+      display:flex;
+      align-items:center;
+      gap: .75rem;
+      text-decoration:none;
+      font-weight: 900;
+      letter-spacing: .02em;
+    }
+    .brand-badge{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      width: 34px; height: 34px;
+      border-radius:10px;
+      background: rgba(255,255,255,.16);
+      border: 1px solid rgba(255,255,255,.20);
+      backdrop-filter: blur(10px);
+      font-weight: 900;
+    }
+
+    .menu-wrap{
+      display:flex;
+      align-items:center;
+      gap: .6rem;
+      flex-wrap: wrap;
+    }
+    .menu-label{
+      font-size: .85rem;
+      opacity: .92;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: .06em;
+    }
+
+    .menu-select{
+      appearance: none;
+      border: 1px solid rgba(255,255,255,.25);
+      background: rgba(255,255,255,.12);
+      color:#fff;
+      padding: .55rem .85rem;
+      border-radius: 10px;
+      font-weight: 800;
+      min-width: 320px;
+      outline: none;
+      cursor: pointer;
+    }
+    .menu-select option{ color:#0f172a; }
+    /* optgroup: visibilité des packs */
+    .menu-select optgroup{ color:#0f172a; font-weight: 900; }
+    .menu-select optgroup option{ font-weight: 700; }
+
+    .meta-right{
+      display:flex;
+      gap: .5rem;
+      flex-wrap: wrap;
+      align-items:center;
+    }
+    .pill{
+      display:inline-flex;
+      align-items:center;
+      gap:.5rem;
+      background: rgba(255,255,255,0.12);
+      padding: .45rem .8rem;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.18);
+      backdrop-filter: blur(10px);
+      font-size: .9rem;
+      white-space: nowrap;
+    }
+    .pill strong{ font-weight: 900; }
+    .pill a{ text-decoration: none; }
+
+    h1{ font-size: 2.15rem; font-weight: 950; margin-bottom: .25rem; }
+    .subtitle{ font-size: 1.05rem; opacity: .92; font-weight: 350; }
+
+    .agent-info{
+      display:flex;
+      gap: .75rem;
+      margin-top: 1.25rem;
+      flex-wrap: wrap;
+    }
+    .info-badge{
+      display:flex;
+      align-items:center;
+      gap: .45rem;
+      background: rgba(255,255,255,.12);
+      padding: .5rem .9rem;
+      border-radius: 12px;
+      border: 1px solid rgba(255,255,255,.18);
+      backdrop-filter: blur(10px);
+      text-decoration:none;
+      color: inherit;
+    }
+    .info-label{
+      font-weight: 900;
+      font-size: .82rem;
+      text-transform: uppercase;
+      letter-spacing: .06em;
+      opacity: .95;
+    }
+    .info-value{ font-weight: 500; opacity: .98; }
+
+    /* Layout */
+    .container{
+      max-width: 1400px;
+      margin: -1.6rem auto 2rem;
+      padding: 0 2rem;
+    }
+    .tabs{
+      display:flex;
+      gap: .5rem;
+      background:#fff;
+      padding: .5rem;
+      border-radius: 14px;
+      box-shadow: 0 6px 12px rgba(0,0,0,.08);
+      margin-bottom: 1.25rem;
+      overflow-x: auto;
+    }
+    .tab{
+      flex: 1;
+      min-width: 190px;
+      padding: 1rem 1.2rem;
+      background: transparent;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      font-size: 1rem;
+      font-weight: 900;
+      color: #64748b;
+      transition: all .22s ease;
+      white-space: nowrap;
+    }
+    .tab:hover{ background:#f1f5f9; color:#2563eb; }
+    .tab.active{
+      background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+      color:#fff;
+      box-shadow: 0 6px 12px rgba(59,130,246,.25);
+    }
+
+    .section{
+      display:none;
+      background:#fff;
+      padding: 1.7rem;
+      border-radius: 14px;
+      box-shadow: 0 6px 12px rgba(0,0,0,.08);
+      margin-bottom: 1.25rem;
+      animation: fadeIn .18s ease;
+    }
+    .section.active{ display:block; }
+    @keyframes fadeIn{
+      from { opacity:0; transform: translateY(8px); }
+      to   { opacity:1; transform: translateY(0); }
+    }
+
+    .section-header{
+      margin-bottom: 1.25rem;
+      padding-bottom: 1rem;
+      border-bottom: 2px solid #e2e8f0;
+    }
+    .section-title{
+      font-size: 1.6rem;
+      font-weight: 950;
+      color:#0f172a;
+      margin-bottom: .35rem;
+    }
+    .section-subtitle{
+      color:#64748b;
+      font-size: 1rem;
+      line-height: 1.8;
+    }
+
+    .diagram-card{
+      border: 1px solid #e2e8f0;
+      background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+      border-radius: 14px;
+      padding: 1.1rem 1.2rem;
+      margin-top: 1rem;
+      box-shadow: 0 1px 2px rgba(0,0,0,.04);
+    }
+    .diagram-card h3{ font-size: 1.2rem; margin-bottom: .35rem; }
+    .diagram-card h4{ font-size: 1.05rem; margin: .65rem 0 .25rem; }
+    .muted{ color:#64748b; }
+
+    .features-list{ list-style: none; margin-top: .7rem; }
+    .features-list li{
+      padding: .55rem 0;
+      padding-left: 1.7rem;
+      position: relative;
+      color:#334155;
+    }
+    .features-list li:before{
+      content: "✓";
+      position:absolute;
+      left:0;
+      color:#10b981;
+      font-weight: 900;
+    }
+
+    .grid-2{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+    @media (max-width: 980px){
+      .grid-2{ grid-template-columns: 1fr; }
+    }
+
+    .data-table{
+      width:100%;
+      border-collapse: collapse;
+      margin: .6rem 0 .2rem;
+    }
+    .data-table th, .data-table td{
+      border: 1px solid #e2e8f0;
+      padding: .55rem .6rem;
+      vertical-align: top;
+    }
+    .data-table th{
+      background:#f8fafc;
+      text-align:left;
+      font-weight: 950;
+    }
+
+    .footer{
+      text-align:center;
+      padding: 2rem;
+      color:#64748b;
+      font-size: .9rem;
+    }
+
+    /* Print */
+    @media print{
+      body{ background:#fff; }
+      .header{ box-shadow:none; }
+      .tabs{ display:none; }
+      .container{ margin: 0; }
+      .section{ display:block !important; box-shadow:none; border: 1px solid #e2e8f0; }
+      .footer{ page-break-after: avoid; }
+    }
+
+    /* Cytoscape containers */
+    .cyto{
+      width: 100%;
+      height: 700px;
+      border: 1px solid #e2e8f0;
+      border-radius: 14px;
+      background: #ffffff;
+      overflow: hidden;
+    }
+    .cyto.small{ height: 520px; }
+  </style>
+</head>
+
+<body>
+  <div class="header">
+    <div class="header-content">
+      <div class="topbar">
+        <a class="brand" id="hubLink" href="#">
+          <span class="brand-badge">R</span>
+          <span>Reddixia — Architecture</span>
+        </a>
+
+        <div class="menu-wrap" id="menuWrap">
+          <span class="menu-label">Aller à</span>
+          <select class="menu-select" id="agentsMenu" aria-label="Menu des architectures">
+            <option value="">(menu)</option>
+          </select>
+        </div>
+
+        <div class="meta-right">
+          <span class="pill"><strong id="metaVersion">v1.0</strong></span>
+          <span class="pill"><span>Dernière mise à jour:</span> <strong id="metaUpdated">YYYY-MM-DD</strong></span>
+          <span class="pill"><a id="repoLink" href="#" target="_blank" rel="noopener">Repo Git</a></span>
+        </div>
+      </div>
+
+      <h1 id="agentTitle">[AGENT] — Devis d'architecture</h1>
+      <p class="subtitle" id="agentSubtitle">Description courte orientée livrables.</p>
+
+      <div class="agent-info">
+        <div class="info-badge"><span class="info-label">Code</span><span class="info-value" id="metaCode">IA-TPG-XXX</span></div>
+        <div class="info-badge"><span class="info-label">Pack</span><span class="info-value" id="metaPack">DeliveryOps</span></div>
+        <div class="info-badge"><span class="info-label">Modèle</span><span class="info-value" id="metaModel">GPT-x</span></div>
+        <div class="info-badge"><span class="info-label">Statut</span><span class="info-value" id="metaStatus">En cours</span></div>
+        <div class="info-badge"><span class="info-label">Plateforme</span><span class="info-value" id="metaPlatform">Microsoft Copilot Studio</span></div>
+
+        <a class="info-badge" id="metaSolutionLink" href="#" target="_blank" rel="noopener" style="display:none;">
+          <span class="info-label">Solution</span><span class="info-value" id="metaSolutionLabel">xPM-Pantheon</span>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <div class="container">
+
+    <div class="tabs" role="tablist" aria-label="Sections du devis d'architecture">
+      <button class="tab active" data-section="architecture" role="tab">Architecture Globale</button>
+      <button class="tab" data-section="flux" role="tab">Flux des Rubriques</button>
+      <button class="tab" data-section="composantes" role="tab">Composantes Système</button>
+      <button class="tab" data-section="overview" role="tab">Vue d'ensemble</button>
+      <button class="tab" data-section="information" role="tab">Modèle de données</button>
+      <button class="tab" data-section="agentic" role="tab">Flux Agentique</button>
+    </div>
+
+    <section class="section active" id="architecture" role="tabpanel">
+      <div class="section-header">
+        <h2 class="section-title">Architecture globale</h2>
+        <p class="section-subtitle">Contexte → rubriques → agent → sources → livrables. (Graphe preset, positions stables)</p>
+      </div>
+      <div id="cyto-architecture" class="cyto"></div>
+
+      <div class="diagram-card">
+        <h3>Description</h3>
+        <p class="muted">Résume ici l’intention, les dépendances et les sorties standardisées.</p>
+        <ul class="features-list">
+          <li>Routage par rubrique (Livrables, Conseils, etc.)</li>
+          <li>Accès aux sources (Dataverse, SharePoint, connecteurs)</li>
+          <li>Traçabilité (traceId, liens vers preuves)</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="section" id="flux" role="tabpanel">
+      <div class="section-header">
+        <h2 class="section-title">Flux des rubriques</h2>
+        <p class="section-subtitle">Boucle Idexios ↔ agent + étapes internes (qualification, extraction, mise en forme, restitution).</p>
+      </div>
+
+      <div class="grid-2">
+        <div class="diagram-card">
+          <h3>Flux de la rubrique (local)</h3>
+          <p class="muted">Étapes internes de l’agent, version “lecture simple”.</p>
+          <div id="cyto-rubrique-local" class="cyto small"></div>
+        </div>
+
+        <div class="diagram-card">
+          <h3>Flux d’orchestration (Idexios ↔ agent)</h3>
+          <p class="muted">Allers-retours et accès aux sources.</p>
+          <div id="cyto-rubriques-loop" class="cyto small"></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="composantes" role="tabpanel">
+      <div class="section-header">
+        <h2 class="section-title">Composantes système</h2>
+        <p class="section-subtitle">Copilot Studio, topics, connecteurs, bibliothèques SharePoint, services optionnels.</p>
+      </div>
+      <div id="cyto-components" class="cyto"></div>
+    </section>
+
+    <section class="section" id="overview" role="tabpanel">
+      <div class="section-header">
+        <h2 class="section-title">Vue d’ensemble</h2>
+        <p class="section-subtitle">Intention → collecte → règles → livrables (flux lisible).</p>
+      </div>
+      <div id="cyto-overview" class="cyto"></div>
+    </section>
+
+    <section class="section" id="information" role="tabpanel">
+      <div class="section-header">
+        <h2 class="section-title">Modèle de données</h2>
+        <p class="section-subtitle">Tables Dataverse / objets consommés, à adapter par agent.</p>
+      </div>
+
+      <div class="diagram-card">
+        <h3>Entités principales</h3>
+        <table class="data-table">
+          <thead><tr><th>Entité</th><th>Usage</th><th>Champs clés</th><th>Notes</th></tr></thead>
+          <tbody>
+            <tr><td><code>tpg_project</code></td><td>Projet</td><td><code>tpg_projectid</code></td><td>RLS / contexte</td></tr>
+            <tr><td><code>tpg_projecttask</code></td><td>Tâches</td><td><code>tpg_projecttaskid</code></td><td>Dates, effort</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="section" id="agentic" role="tabpanel">
+      <div class="section-header">
+        <h2 class="section-title">Flux agentique</h2>
+        <p class="section-subtitle">Boucles de clarification, appels outils/serveurs, et restitution structurée.</p>
+      </div>
+
+      <div class="diagram-card">
+        <h3>Diagramme agentique (optionnel)</h3>
+        <p class="muted">À utiliser si tu veux montrer les boucles d’outils (MCP) et la remontée de preuves.</p>
+        <div id="cyto-agentic" class="cyto"></div>
+      </div>
+    </section>
+
+    <div class="footer">
+      <p><strong>Projet:</strong> idexia-xpm-pantheon | <strong>Solution:</strong> Reddixia</p>
+      <p id="footerLine">Dernière mise à jour: YYYY-MM-DD | Auteur: (à compléter)</p>
+    </div>
+  </div>
+
+  <!-- Cytoscape: local first, CDN fallback -->
+  <script src="./libs/cytoscape.min.js"
+          onerror="(function(){var s=document.createElement('script');s.src='https://unpkg.com/cytoscape@3.26.0/dist/cytoscape.min.js';document.head.appendChild(s);})();">
+  </script>
+
+  <script>
+    /* =========================
+       1) MÉTADONNÉES À MODIFIER
+       ========================= */
+    const PAGE_META = {
+      agent: {
+        title: "NOM DE L'AGENT",
+        subtitle: "Description courte orientée livrables.",
+        code: "IA-TPG-XXX",
+        pack: "DeliveryOps",
+        model: "GPT-x",
+        status: "En cours",
+        platform: "Microsoft Copilot Studio",
+        version: "v1.0",
+        updated: "YYYY-MM-DD",
+        author: "(à compléter)",
+        solutionLabel: "xPM-Pantheon",
+        solutionHref: ""
+      }
+    };
+
+    /* =========================
+       2) MENU — ALLER À (prépeuplé)
+       ========================= */
+    const REPO_README_URL = "https://github.com/Ledobs/Reddixia/blob/main/README.md";
+
+    const PACK_LABELS = {
+      "PortfolioOps": "PortfolioOps — Pilotage de portefeuille",
+      "DeliveryOps": "DeliveryOps — Exécution projet",
+      "FinanceOps": "FinanceOps — Finance & contrôle",
+      "GovernanceOps": "GovernanceOps — Gouvernance & conformité",
+      "ProcurementOps": "ProcurementOps — Achats & contrats",
+      "CommsOps": "CommsOps — Adoption & communications",
+      "DataOps": "DataOps — Données & intégration",
+      "RiskOps": "RiskOps — Risques & suivi"
+    };
+
+    const PACK_ORDER = ["PortfolioOps","DeliveryOps","RiskOps","FinanceOps","ProcurementOps","GovernanceOps","DataOps","CommsOps","Autres"];
+
+    const NAV_ITEMS = [
+      { type:"hub", label:"Idexios (Hub)", href:"archi_Idexios.html" },
+
+      { pack:"DeliveryOps", code:"IA-TPG-002", name:"HERMES-PROJ" },
+      { pack:"PortfolioOps", code:"IA-TPG-003", name:"ATHENA-PORTF" },
+      { pack:"GovernanceOps", code:"IA-TPG-004", name:"THEMIS-GOV" },
+      { pack:"PortfolioOps", code:"IA-TPG-005", name:"ATLAS-CTRL" },
+      { pack:"RiskOps", code:"IA-TPG-006", name:"IRIS-RISK" },
+      { pack:"DataOps", code:"IA-TPG-007", name:"GAIA-DATA" },
+      { pack:"FinanceOps", code:"IA-TPG-010", name:"VESTA-INVOICE" },
+      { pack:"RiskOps", code:"IA-TPG-011", name:"PLUTUS-ANOM" },
+      { pack:"FinanceOps", code:"IA-TPG-018", name:"CERES-BUDGET" }
+    ];
+
+    function pathPrefix(){
+      var p = (location.pathname || "").replace(/\\/g, "/").toLowerCase();
+      if(p.indexOf("/agents/") >= 0){ return "../../"; }
+      return "./";
+    }
+
+    function agentHref(prefix, code, name){
+      return prefix + "agents/" + name + "/archi_" + code + "_" + name + ".html";
+    }
+
+    function buildMenu(){
+      var prefix = pathPrefix();
+      var hubHref = prefix + "archi_Idexios.html";
+
+      var hubLink = document.getElementById("hubLink");
+      if(hubLink){ hubLink.href = hubHref; }
+
+      var repoLink = document.getElementById("repoLink");
+      if(repoLink){ repoLink.href = REPO_README_URL; }
+
+      var select = document.getElementById("agentsMenu");
+      if(!select){ return; }
+
+      // options
+      select.innerHTML = "";
+
+      // Hub
+      var hubOpt = document.createElement("option");
+      hubOpt.value = hubHref;
+      hubOpt.textContent = "Idexios (Hub)";
+      select.appendChild(hubOpt);
+
+      // Group by pack
+      var groups = {};
+      for(var i=0;i<NAV_ITEMS.length;i++){
+        var it = NAV_ITEMS[i];
+        if(it.type === "hub"){ continue; }
+        var pack = it.pack || "Autres";
+        if(!groups[pack]){ groups[pack] = []; }
+        groups[pack].push(it);
+      }
+
+      var packKeys = Object.keys(groups);
+      packKeys.sort(function(a,b){
+        var ia = PACK_ORDER.indexOf(a); var ib = PACK_ORDER.indexOf(b);
+        if(ia === -1) ia = 999; if(ib === -1) ib = 999;
+        if(ia !== ib) return ia - ib;
+        return a.localeCompare(b);
+      });
+
+      for(var pk=0; pk<packKeys.length; pk++){
+        var packName = packKeys[pk];
+        var og = document.createElement("optgroup");
+        og.label = PACK_LABELS[packName] ? PACK_LABELS[packName] : packName;
+
+        groups[packName].sort(function(x,y){
+          var lx = (x.name || ""); var ly = (y.name || "");
+          return lx.localeCompare(ly);
+        });
+
+        for(var j=0;j<groups[packName].length;j++){
+          var a = groups[packName][j];
+          var opt = document.createElement("option");
+          opt.value = agentHref(prefix, a.code, a.name);
+          opt.textContent = "\u00A0\u00A0\u00A0" + a.name + " (" + a.code + ")";
+          og.appendChild(opt);
+        }
+        select.appendChild(og);
+      }
+
+      // Auto-select current page
+      try{
+        var currentFile = (location.pathname || "").split("/").pop();
+        var options = select.querySelectorAll("option");
+        for(var k=0;k<options.length;k++){
+          if((options[k].value || "").indexOf(currentFile) >= 0){
+            select.value = options[k].value;
+            break;
+          }
+        }
+      }catch(e){}
+
+      select.addEventListener("change", function(){
+        if(select.value){ window.location.href = select.value; }
+      });
+    }
+
+    /* =========================
+       3) DIAGRAMMES (À MODIFIER)
+       - Format demandé: function XElements(){ return { nodes:[...], edges:[...] }; }
+       - Layout preset (positions x/y)
+       ========================= */
+
+    function architectureElements(){
+      return {
+        nodes: [
+          { data:{ id:"IDX", label:"Idexios\n(Orchestrateur)" }, position:{ x: 520, y: 70 }, classes:"hub" },
+          { data:{ id:"RUB_LIV", label:"Rubrique\nLIVRABLES" }, position:{ x: 260, y: 130 } },
+          { data:{ id:"RUB_CONS", label:"Rubrique\nCONSEILS" }, position:{ x: 780, y: 130 } },
+
+          { data:{ id:"AGENT", label:"[AGENT]\nHub de l’agent" }, position:{ x: 520, y: 240 }, classes:"stage" },
+
+          { data:{ id:"DV_PRJ", label:"Dataverse\n(tpg_project)" }, position:{ x: 210, y: 360 } },
+          { data:{ id:"DV_TASK", label:"Dataverse\n(tpg_projecttask)" }, position:{ x: 210, y: 460 } },
+          { data:{ id:"SP_TPL", label:"SharePoint\nIdexios-Prime\n(Gabarits)" }, position:{ x: 210, y: 560 } },
+
+          { data:{ id:"EXT_OPT", label:"Sources externes\n(CRM/ERP...)" }, position:{ x: 830, y: 430 }, classes:"optional" },
+
+          { data:{ id:"OUT_DOCX", label:"Livrable\nDOCX/PPTX/XLSX" }, position:{ x: 520, y: 640 }, classes:"stage" }
+        ],
+        edges: [
+          { data:{ id:"e1", source:"IDX", target:"AGENT" } },
+          { data:{ id:"e2", source:"RUB_LIV", target:"AGENT" } },
+          { data:{ id:"e3", source:"RUB_CONS", target:"AGENT" } },
+
+          { data:{ id:"e4", source:"AGENT", target:"DV_PRJ" }, classes:"accessEdge" },
+          { data:{ id:"e5", source:"AGENT", target:"DV_TASK" }, classes:"accessEdge" },
+          { data:{ id:"e6", source:"AGENT", target:"SP_TPL" }, classes:"accessEdge" },
+
+          { data:{ id:"e7", source:"AGENT", target:"EXT_OPT" }, classes:"optionalEdge accessEdge" },
+          { data:{ id:"e8", source:"AGENT", target:"OUT_DOCX" } }
+        ]
+      };
+    }
+
+    function componentsElements(){
+      return {
+        nodes: [
+          { data:{ id:"CS_AGENT", label:"Copilot Studio\nAgent" }, position:{ x: 520, y: 140 }, classes:"stage" },
+          { data:{ id:"TOPICS", label:"Topics / Rubriques\n(spécialisés)" }, position:{ x: 250, y: 140 } },
+          { data:{ id:"CONN", label:"Actions & Connecteurs\n(Dataverse/SharePoint)" }, position:{ x: 520, y: 290 } },
+
+          { data:{ id:"DV", label:"Dataverse\nTPG (tpg_*)" }, position:{ x: 240, y: 450 } },
+          { data:{ id:"SP", label:"SharePoint\nBibliothèque gabarits" }, position:{ x: 520, y: 450 } },
+
+          { data:{ id:"DOC_FACTORY", label:"Générateur\nDocs/Decks\n(optionnel)" }, position:{ x: 820, y: 450 }, classes:"optional" },
+          { data:{ id:"AUDIT", label:"Audit/Logs\n(traceId)" }, position:{ x: 520, y: 610 }, classes:"stage" }
+        ],
+        edges: [
+          { data:{ id:"c1", source:"TOPICS", target:"CS_AGENT" } },
+          { data:{ id:"c2", source:"CS_AGENT", target:"CONN" } },
+
+          { data:{ id:"c3", source:"CONN", target:"DV" }, classes:"accessEdge" },
+          { data:{ id:"c4", source:"CONN", target:"SP" }, classes:"accessEdge" },
+          { data:{ id:"c5", source:"CONN", target:"DOC_FACTORY" }, classes:"optionalEdge" },
+
+          { data:{ id:"c6", source:"CS_AGENT", target:"AUDIT" } }
+        ]
+      };
+    }
+
+    function overviewElements(){
+      return {
+        nodes: [
+          { data:{ id:"REQ", label:"Demande utilisateur\n(ex: livrable)" }, position:{ x: 150, y: 240 }, classes:"stage" },
+          { data:{ id:"RUB", label:"Routage\n(Rubrique)" }, position:{ x: 360, y: 240 } },
+          { data:{ id:"FETCH", label:"Collecte données\n(Projet, tâches...)" }, position:{ x: 570, y: 240 } },
+          { data:{ id:"FORMAT", label:"Mise en forme\n(règles, structure)" }, position:{ x: 780, y: 240 } },
+          { data:{ id:"OUT", label:"Sortie\n(DOCX/PPTX/XLSX)" }, position:{ x: 990, y: 240 }, classes:"stage" }
+        ],
+        edges: [
+          { data:{ id:"o1", source:"REQ", target:"RUB" } },
+          { data:{ id:"o2", source:"RUB", target:"FETCH" } },
+          { data:{ id:"o3", source:"FETCH", target:"FORMAT" } },
+          { data:{ id:"o4", source:"FORMAT", target:"OUT" } }
+        ]
+      };
+    }
+
+    function rubriquesLoopElements(){
+      return {
+        nodes: [
+          { data:{ id:"USR", label:"Utilisateur" }, position:{ x: 160, y: 210 } },
+          { data:{ id:"IDX", label:"Idexios\nOrchestrateur" }, position:{ x: 380, y: 210 }, classes:"hub stage" },
+          { data:{ id:"RUB_LIV", label:"Rubrique\nLIVRABLES" }, position:{ x: 600, y: 130 } },
+          { data:{ id:"RUB_CONS", label:"Rubrique\nCONSEILS" }, position:{ x: 600, y: 290 } },
+          { data:{ id:"AG", label:"Agent\nspécialisé" }, position:{ x: 820, y: 210 }, classes:"stage" },
+          { data:{ id:"OUT", label:"Livrable\n/ Action / Registre" }, position:{ x: 1040, y: 210 }, classes:"stage" }
+        ],
+        edges: [
+          { data:{ id:"r1", source:"USR", target:"IDX" } },
+          { data:{ id:"r2", source:"IDX", target:"RUB_LIV" } },
+          { data:{ id:"r3", source:"IDX", target:"RUB_CONS" } },
+          { data:{ id:"r4", source:"RUB_LIV", target:"AG" } },
+          { data:{ id:"r5", source:"RUB_CONS", target:"AG" } },
+          { data:{ id:"r6", source:"AG", target:"IDX" } },
+          { data:{ id:"r7", source:"IDX", target:"OUT" } }
+        ]
+      };
+    }
+
+    function rubriqueLocalElements(){
+      return {
+        nodes: [
+          { data:{ id:"Q", label:"Qualification\n(intention)" }, position:{ x: 220, y: 160 }, classes:"stage" },
+          { data:{ id:"C", label:"Clarification\n(contexte)" }, position:{ x: 480, y: 160 } },
+          { data:{ id:"X", label:"Extraction\n(sources)" }, position:{ x: 740, y: 160 } },
+          { data:{ id:"K", label:"Calculs\n(KPI/règles)" }, position:{ x: 480, y: 320 } },
+          { data:{ id:"R", label:"Restitution\n(structure)" }, position:{ x: 740, y: 320 }, classes:"stage" }
+        ],
+        edges: [
+          { data:{ id:"l1", source:"Q", target:"C" } },
+          { data:{ id:"l2", source:"C", target:"X" } },
+          { data:{ id:"l3", source:"X", target:"K" } },
+          { data:{ id:"l4", source:"K", target:"R" } }
+        ]
+      };
+    }
+
+    function agenticElements(){
+      return {
+        nodes: [
+          { data:{ id:"IDX", label:"Idexios" }, position:{ x: 180, y: 220 }, classes:"hub stage" },
+          { data:{ id:"AG", label:"Agent" }, position:{ x: 420, y: 220 }, classes:"stage" },
+          { data:{ id:"TOOLS", label:"Outils\n(actions/MCP)" }, position:{ x: 660, y: 140 } },
+          { data:{ id:"PROOF", label:"Preuves\n(données + liens)" }, position:{ x: 660, y: 300 } },
+          { data:{ id:"RESP", label:"Réponse\nstructurée" }, position:{ x: 900, y: 220 }, classes:"stage" }
+        ],
+        edges: [
+          { data:{ id:"a1", source:"IDX", target:"AG" } },
+          { data:{ id:"a2", source:"AG", target:"TOOLS" } },
+          { data:{ id:"a3", source:"TOOLS", target:"PROOF" } },
+          { data:{ id:"a4", source:"PROOF", target:"AG" } },
+          { data:{ id:"a5", source:"AG", target:"RESP" } }
+        ]
+      };
+    }
+
+    /* =========================
+       4) CYTOSCAPE RENDER
+       ========================= */
+    function applyMeta(){
+      var a = PAGE_META.agent || {};
+
+      document.getElementById("agentTitle").textContent = (a.title || "[AGENT]") + " — Devis d'architecture";
+      document.getElementById("agentSubtitle").textContent = a.subtitle || "";
+
+      document.getElementById("metaCode").textContent = a.code || "";
+      document.getElementById("metaPack").textContent = a.pack || "";
+      document.getElementById("metaModel").textContent = a.model || "";
+      document.getElementById("metaStatus").textContent = a.status || "";
+      document.getElementById("metaPlatform").textContent = a.platform || "";
+
+      document.getElementById("metaVersion").textContent = a.version || "v1.0";
+      document.getElementById("metaUpdated").textContent = a.updated || "";
+      document.getElementById("footerLine").textContent = "Dernière mise à jour: " + (a.updated || "") + " | Auteur: " + (a.author || "");
+
+      var sol = document.getElementById("metaSolutionLink");
+      if(sol && a.solutionHref){
+        sol.style.display = "inline-flex";
+        sol.href = a.solutionHref;
+        document.getElementById("metaSolutionLabel").textContent = a.solutionLabel || "Solution";
+      }
+    }
+
+    function styleBase(){
+      return [
+        { selector: "node", style: {
+          "label": "data(label)",
+          "text-wrap": "wrap",
+          "text-max-width": 160,
+          "font-size": 12,
+          "background-color": "#ffffff",
+          "border-width": 1,
+          "border-color": "#cbd5e1",
+          "shape": "round-rectangle",
+          "padding": "10px",
+          "text-valign": "center",
+          "text-halign": "center"
+        }},
+        { selector: "edge", style: {
+          "curve-style": "bezier",
+          "target-arrow-shape": "triangle",
+          "arrow-scale": 0.8,
+          "line-color": "#94a3b8",
+          "target-arrow-color": "#94a3b8",
+          "width": 1.6
+        }},
+        { selector: ".hub", style: { "border-width": 2 } },
+        { selector: ".stage", style: { "font-weight": 900 } },
+
+        /* Required selectors */
+        { selector: "node.optional", style: { "border-style": "dotted", "border-color": "#94a3b8" } },
+        { selector: "edge.optionalEdge", style: { "line-style": "dashed" } },
+        { selector: "edge.accessEdge", style: { "line-style": "dotted" } }
+      ];
+    }
+
+    function waitForCytoscape(timeoutMs){
+      var ms = timeoutMs || 6000;
+      return new Promise(function(resolve, reject){
+        var start = Date.now();
+        var t = setInterval(function(){
+          if(window.cytoscape){
+            clearInterval(t);
+            resolve(true);
+            return;
+          }
+          if(Date.now() - start > ms){
+            clearInterval(t);
+            reject(new Error("Cytoscape non disponible (script non chargé)."));
+          }
+        }, 50);
+      });
+    }
+
+    var CY_INSTANCES = new Map();
+
+    function toCyElements(payload){
+      var out = [];
+      var nodes = (payload && payload.nodes) ? payload.nodes : [];
+      var edges = (payload && payload.edges) ? payload.edges : [];
+
+      for(var i=0;i<nodes.length;i++){
+        out.push({ data: nodes[i].data, position: nodes[i].position, classes: nodes[i].classes || "" });
+      }
+      for(var j=0;j<edges.length;j++){
+        out.push({ data: edges[j].data, classes: edges[j].classes || "" });
+      }
+      return out;
+    }
+
+    function makeCy(containerId, elementsProvider){
+      var el = document.getElementById(containerId);
+      if(!el || !window.cytoscape){ return null; }
+
+      var payload = (typeof elementsProvider === "function") ? elementsProvider() : elementsProvider;
+      var elements = toCyElements(payload);
+
+      var cy = window.cytoscape({
+        container: el,
+        elements: elements,
+        style: styleBase(),
+        layout: { name:"preset", padding: 30 },
+        wheelSensitivity: 0.18
+      });
+
+      CY_INSTANCES.set(containerId, cy);
+      return cy;
+    }
+
+    function resizeVisibleCytos(){
+      CY_INSTANCES.forEach(function(cy, id){
+        var el = document.getElementById(id);
+        if(!el){ return; }
+        var isVisible = el.offsetParent !== null;
+        if(isVisible){
+          cy.resize();
+          cy.fit(undefined, 20);
+        }
+      });
+    }
+
+    function setupTabs(){
+      var tabs = document.querySelectorAll(".tab");
+      var sections = document.querySelectorAll(".section");
+      for(var i=0;i<tabs.length;i++){
+        tabs[i].addEventListener("click", function(){
+          var target = this.dataset.section;
+          for(var j=0;j<tabs.length;j++){ tabs[j].classList.remove("active"); }
+          this.classList.add("active");
+
+          for(var k=0;k<sections.length;k++){ sections[k].classList.remove("active"); }
+          var s = document.getElementById(target);
+          if(s){ s.classList.add("active"); }
+
+          setTimeout(resizeVisibleCytos, 40);
+        });
+      }
+    }
+
+    async function init(){
+      applyMeta();
+      buildMenu();
+      setupTabs();
+
+      await waitForCytoscape();
+
+      makeCy("cyto-architecture", architectureElements);
+      makeCy("cyto-rubrique-local", rubriqueLocalElements);
+      makeCy("cyto-rubriques-loop", rubriquesLoopElements);
+      makeCy("cyto-components", componentsElements);
+      makeCy("cyto-overview", overviewElements);
+      makeCy("cyto-agentic", agenticElements);
+
+      setTimeout(resizeVisibleCytos, 80);
+      window.addEventListener("resize", function(){ setTimeout(resizeVisibleCytos, 80); });
+    }
+
+    document.addEventListener("DOMContentLoaded", function(){
+      init().catch(function(err){
+        console.error(err);
+      });
+    });
+  </script>
+</body>
+</html>

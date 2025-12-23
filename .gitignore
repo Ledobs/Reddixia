@@ -1,2 +1,26 @@
+# Dependencies
 node_modules/
+
+# Environment & Credentials
 .env
+.env.*
+
+# Repo config (Git Repository Administration Scripts)
+# This folder contains Git repository administration scripts and should NOT sync to Git
+Repo config/
+normalize_csv.py
+*.local.ps1
+
+# Red-Share (Integration Tools)
+# This folder contains integration tools and should NOT sync to Git
+Red-Share/
+
+# Session Reports & Logs
+session-reports/
+*.log
+
+# IDE & OS
+.vscode/
+.DS_Store
+Thumbs.db
+*.swp
