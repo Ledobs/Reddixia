@@ -23,10 +23,10 @@ Registre complet des 19 agents organisés en 6 domain packs fonctionnels.
 
 ## Fichiers clés
 - [agents-registry.md](agents-registry.md) - Registre complet IA-TPG-001→019
-- [inventaire-agents.md](inventaire-agents.md) - Versions v0.03/v0.09/v1.03
-- [domain-packs-architecture.md](domain-packs-architecture.md) - 6 domain packs
-- [flux-agentique-par-pack.md](flux-agentique-par-pack.md) - Flux standards
-- [contrat-agentique.md](contrat-agentique.md) - Clés transversales
+- [inventaire-agents.md](inventaire-agents.md) - à intégrer fichier ToolboxAgents
+- [domain-packs-architecture.md](domain-packs-architecture.md) - à créer contrat :  BUS-APP-DEV-TECH-DATA
+- [flux-agentique-par-pack.md](flux-agentique-par-pack.md) - à créer schéma standard utilisation des composantes transversales
+- [contrat-agentique.md](contrat-agentique.md) - à créer index des clés transversales
 
 ---
 **Projet**: Reddixia  
