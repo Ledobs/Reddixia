@@ -1,4 +1,7 @@
 ﻿# Documentation des agents IA (IA-TPG-001 à IA-TPG-019)
+## État
+- Backlog: [workload_pending.md](backlog/workload_pending.md) - Description de l'état
+- Evolution: [evolutions-futures.md](backlog/evolutions-futures.md)
 
 ## Vue d'ensemble
 Registre complet des 19 agents organisés en 6 domain packs fonctionnels.
