@@ -1,0 +1,278 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>Reddixia — Scenarios</title>
+  <link rel="stylesheet" href="assets/css/style.css"/>
+  <script defer src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+  <script defer src="https://unpkg.com/cytoscape@3.29.0/dist/cytoscape.min.js"></script>
+  <script defer src="assets/js/app.js"></script>
+</head>
+<body>
+  <div class="topbar">
+    <div class="brand">
+      <div class="mark"></div>
+      <div class="title">
+        <b>Reddixia — devis technique</b>
+        <span>Rubrique · Scenarios</span>
+      </div>
+    </div>
+    <div class="toplinks">
+      <a class="badge" href="index-tech.html" title="Ouvrir l’index technique">Ouvrir l’index technique</a>
+      <a class="badge" href="index.html" title="Revenir à l’index">Index</a>
+      <a class="badge" href="https://github.com/Ledobs/Reddixia/blob/main/README.md" target="_blank" rel="noopener">Repo Git</a>
+      <span class="badge" data-tip="Preuve de concept Reddixia v0.9">Preuve de concept Reddixia v0.9</span>
+    </div>
+  </div>
+
+  <div class="layout">
+    <aside class="sidebar">
+      <h3>Aller à</h3>
+      <div class="navbox">
+  <select id="navSelect" aria-label="Aller à">
+    <option value="index.html">Index — Vue d’ensemble</option>
+<option value="index-tech.html">Index technique — Architecture &amp; intégrations</option>
+<option disabled>──────────</option>
+<option disabled>Domain Packs</option>
+<option value="DOM-CommsOps.html">DOM — CommsOps</option>
+<option value="DOM-DeliveryOps.html">DOM — DeliveryOps</option>
+<option value="DOM-FinanceOps.html">DOM — FinanceOps</option>
+<option value="DOM-GovernanceOps.html">DOM — GovernanceOps</option>
+<option value="DOM-PortfolioOps.html">DOM — PortfolioOps</option>
+<option value="DOM-ProcurementOps.html">DOM — ProcurementOps</option>
+<option disabled>──────────</option>
+<option disabled>Rubriques</option>
+<option value="DOM-Portefeuille.html">DOM — Portefeuille</option>
+<option value="DOM-Conseils.html">DOM — Conseils</option>
+<option value="DOM-Scenarios.html">DOM — Scenarios</option>
+<option value="DOM-Livrables.html">DOM — Livrables</option>
+<option disabled>──────────</option>
+<option disabled>Composantes (agents)</option>
+<option value="CMP-IA-TPG-001-Idexios.html">IA-TPG-001 — IDEXIOS-HUB</option>
+<option value="CMP-IA-TPG-002-Hermes.html">IA-TPG-002 — HERMES-PROJ</option>
+<option value="CMP-IA-TPG-003-Athena.html">IA-TPG-003 — ATHENA-PORT</option>
+<option value="CMP-IA-TPG-004-Themis.html">IA-TPG-004 — THEMIS-GOV</option>
+<option value="CMP-IA-TPG-005-Atlas.html">IA-TPG-005 — ATLAS-CTRL</option>
+<option value="CMP-IA-TPG-006-Gaia.html">IA-TPG-006 — GAIA-RISK</option>
+<option value="CMP-IA-TPG-007-Vesta.html">IA-TPG-007 — VESTA-WORK</option>
+<option value="CMP-IA-TPG-008-Apollo.html">IA-TPG-008 — APOLLO-CHANGE</option>
+<option value="CMP-IA-TPG-009-Mercury.html">IA-TPG-009 — MERCURY-COLLECT</option>
+<option value="CMP-IA-TPG-010-Plutus.html">IA-TPG-010 — PLUTUS-ANOM</option>
+<option value="CMP-IA-TPG-011-Janus.html">IA-TPG-011 — JANUS-CLOSE</option>
+<option value="CMP-IA-TPG-012-Cassandra.html">IA-TPG-012 — CASSANDRA-FQA</option>
+<option value="CMP-IA-TPG-013-Cerberus.html">IA-TPG-013 — CERBERUS-SEC</option>
+<option value="CMP-IA-TPG-014-Orpheus.html">IA-TPG-014 — ORPHEUS-ADOPT</option>
+<option value="CMP-IA-TPG-015-Cicero.html">IA-TPG-015 — CICERO-ALLHANDS</option>
+<option value="CMP-IA-TPG-016-Poseidon.html">IA-TPG-016 — POSEIDON-CASH</option>
+<option value="CMP-IA-TPG-017-Juno.html">IA-TPG-017 — JUNO-PROC</option>
+<option value="CMP-IA-TPG-018-Ceres.html">IA-TPG-018 — CERES-BUDGET</option>
+<option value="CMP-IA-TPG-019-Vulcan.html">IA-TPG-019 — VULCAN-DEV</option>
+  </select>
+  <div class="navlinks">
+    <a href="index.html">Index</a>
+    <a href="index-tech.html">Index technique</a>
+  </div>
+</div>
+      <div style="margin-top:14px" class="small">Dernière génération : <span class="small">2025-12-29 17:21:39 EST</span></div>
+    </aside>
+
+    <main class="main">
+      <section class="hero">
+        <h1>DOM — Scenarios</h1>
+        <p>Vue rubrique : contributeurs, assemblage des sorties et traçabilité.</p>
+        <div class="meta"><span class="chip">Rubrique: <b>Scenarios</b></span><span class="chip">Modèles: <b>Mermaid · Cytoscape</b></span><span class="chip">Statut: <b>Draft</b></span><span class="chip">Dernière génération: <b>2025-12-29 17:21:39 EST</b></span></div>
+      </section>
+
+      <section class="grid">
+        <div class="card">
+  <h2>Global</h2>
+  
+<p>La rubrique <b>Scenarios</b> correspond au type de sortie attendu. IDEXIOS-HUB route la demande vers les agents pertinents et assemble le résultat (conversation + artefacts).</p>
+<div class="diagram"><pre class="mermaid">flowchart TB
+  U[Utilisateur] --&gt; HUB[IDEXIOS-HUB]
+  HUB --&gt;|Sélection rubrique| R[Scenarios]
+  R --&gt; A[Agents contributeurs]
+  A --&gt; DV[(Dataverse)]
+  A --&gt; SP[(SharePoint)]
+  R --&gt; OUT[Sortie Scenarios]
+  OUT --&gt; U
+</pre></div>
+
+</div>
+<div class="two card">
+  <h2>Agents contributeurs</h2>
+  <ul><li><a href='CMP-IA-TPG-003-Athena.html'>ATHENA-PORT</a> — Conseillère portefeuille : propose des analyses et recommandations sur la santé du portefeuille.</li><li><a href='CMP-IA-TPG-007-Vesta.html'>VESTA-WORK</a> — Capacité &amp; charge : consolide la capacité, l’effort et les allocations pour soutenir la planification.</li><li><a href='CMP-IA-TPG-005-Atlas.html'>ATLAS-CTRL</a> — Agent de contrôle financier : il suit coûts vs budget, analyse les écarts, qualifie les dérives et propose des actions de correction.</li><li><a href='CMP-IA-TPG-016-Poseidon.html'>POSEIDON-CASH</a> — Agent de trésorerie : il prépare des vues de liquidité et de flux de trésorerie liés aux engagements du portefeuille (décaissements prévus, engagements, risques).</li><li><a href='CMP-IA-TPG-010-Plutus.html'>PLUTUS-ANOM</a> — Agent de détection d’anomalies financières : il repère des patterns atypiques (dépenses, allocations, temps) et propose une priorisation des vérifications.</li></ul>
+</div>
+<div class="two card">
+  <h2>Qualité &amp; traçabilité</h2>
+  
+<ul>
+  <li>Chaque recommandation doit être traçable (source Dataverse/SharePoint).</li>
+  <li>Lorsque l’information est incomplète : marquer <b>À confirmer</b> plutôt que de laisser un vide.</li>
+  <li>Sorties : texte structuré, cartes, gabarits, et liens vers les livrables.</li>
+</ul>
+
+</div>
+<div class="card">
+  <h2>Relations</h2>
+  
+<div class="diagram">
+  <div class="toolbar">
+    <button class="btn" data-cy-zoom="in">+</button>
+    <button class="btn" data-cy-zoom="out">−</button>
+    <button class="btn" data-cy-zoom="fit">Ajuster</button>
+  </div>
+  <div class="cy" data-cy-data="cy-rub-data"></div>
+</div>
+<script type="application/json" id="cy-rub-data">{
+  "elements": {
+    "nodes": [
+      {
+        "data": {
+          "id": "Scenarios",
+          "label": "Scenarios",
+          "type": "pack"
+        }
+      },
+      {
+        "data": {
+          "id": "ATHENA-PORT",
+          "label": "ATHENA-PORT",
+          "type": "agent"
+        }
+      },
+      {
+        "data": {
+          "id": "VESTA-WORK",
+          "label": "VESTA-WORK",
+          "type": "agent"
+        }
+      },
+      {
+        "data": {
+          "id": "ATLAS-CTRL",
+          "label": "ATLAS-CTRL",
+          "type": "agent"
+        }
+      },
+      {
+        "data": {
+          "id": "POSEIDON-CASH",
+          "label": "POSEIDON-CASH",
+          "type": "agent"
+        }
+      },
+      {
+        "data": {
+          "id": "PLUTUS-ANOM",
+          "label": "PLUTUS-ANOM",
+          "type": "agent"
+        }
+      },
+      {
+        "data": {
+          "id": "Dataverse",
+          "label": "Dataverse (tpg_*)",
+          "type": "system"
+        }
+      },
+      {
+        "data": {
+          "id": "SharePoint",
+          "label": "SharePoint Idexios-Prime",
+          "type": "system"
+        }
+      }
+    ],
+    "edges": [
+      {
+        "data": {
+          "id": "r_ATHENA-PORT",
+          "source": "Scenarios",
+          "target": "ATHENA-PORT",
+          "label": "contribue"
+        }
+      },
+      {
+        "data": {
+          "id": "r_VESTA-WORK",
+          "source": "Scenarios",
+          "target": "VESTA-WORK",
+          "label": "contribue"
+        }
+      },
+      {
+        "data": {
+          "id": "r_ATLAS-CTRL",
+          "source": "Scenarios",
+          "target": "ATLAS-CTRL",
+          "label": "contribue"
+        }
+      },
+      {
+        "data": {
+          "id": "r_POSEIDON-CASH",
+          "source": "Scenarios",
+          "target": "POSEIDON-CASH",
+          "label": "contribue"
+        }
+      },
+      {
+        "data": {
+          "id": "r_PLUTUS-ANOM",
+          "source": "Scenarios",
+          "target": "PLUTUS-ANOM",
+          "label": "contribue"
+        }
+      },
+      {
+        "data": {
+          "id": "rdv_ATHENA-PORT",
+          "source": "ATHENA-PORT",
+          "target": "Dataverse",
+          "label": "données"
+        }
+      },
+      {
+        "data": {
+          "id": "rdv_VESTA-WORK",
+          "source": "VESTA-WORK",
+          "target": "Dataverse",
+          "label": "données"
+        }
+      },
+      {
+        "data": {
+          "id": "rdv_ATLAS-CTRL",
+          "source": "ATLAS-CTRL",
+          "target": "Dataverse",
+          "label": "données"
+        }
+      },
+      {
+        "data": {
+          "id": "rdv_POSEIDON-CASH",
+          "source": "POSEIDON-CASH",
+          "target": "Dataverse",
+          "label": "données"
+        }
+      },
+      {
+        "data": {
+          "id": "rdv_PLUTUS-ANOM",
+          "source": "PLUTUS-ANOM",
+          "target": "Dataverse",
+          "label": "données"
+        }
+      }
+    ]
+  }
+}</script>
+
+</div>
+      </section>
+    </main>
+  </div>
+</body>
+</html>

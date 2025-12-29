@@ -1,0 +1,225 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>Reddixia — Index technique</title>
+  <link rel="stylesheet" href="assets/css/style.css"/>
+  <script defer src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+  <script defer src="https://unpkg.com/cytoscape@3.29.0/dist/cytoscape.min.js"></script>
+  <script defer src="assets/js/app.js"></script>
+</head>
+<body>
+  <div class="topbar">
+    <div class="brand">
+      <div class="mark"></div>
+      <div class="title">
+        <b>Reddixia — devis technique</b>
+        <span>Architecture &amp; intégrations</span>
+      </div>
+    </div>
+    <div class="toplinks">
+      <a class="badge" href="index-tech.html" title="Ouvrir l’index technique">Ouvrir l’index technique</a>
+      <a class="badge" href="index.html" title="Revenir à l’index">Index</a>
+      <a class="badge" href="https://github.com/Ledobs/Reddixia/blob/main/README.md" target="_blank" rel="noopener">Repo Git</a>
+      <span class="badge" data-tip="Preuve de concept Reddixia v0.9">Preuve de concept Reddixia v0.9</span>
+    </div>
+  </div>
+
+  <div class="layout">
+    <aside class="sidebar">
+      <h3>Aller à</h3>
+      <div class="navbox">
+  <select id="navSelect" aria-label="Aller à">
+    <option value="index.html">Index — Vue d’ensemble</option>
+<option value="index-tech.html">Index technique — Architecture &amp; intégrations</option>
+<option disabled>──────────</option>
+<option disabled>Domain Packs</option>
+<option value="DOM-CommsOps.html">DOM — CommsOps</option>
+<option value="DOM-DeliveryOps.html">DOM — DeliveryOps</option>
+<option value="DOM-FinanceOps.html">DOM — FinanceOps</option>
+<option value="DOM-GovernanceOps.html">DOM — GovernanceOps</option>
+<option value="DOM-PortfolioOps.html">DOM — PortfolioOps</option>
+<option value="DOM-ProcurementOps.html">DOM — ProcurementOps</option>
+<option disabled>──────────</option>
+<option disabled>Rubriques</option>
+<option value="DOM-Portefeuille.html">DOM — Portefeuille</option>
+<option value="DOM-Conseils.html">DOM — Conseils</option>
+<option value="DOM-Scenarios.html">DOM — Scenarios</option>
+<option value="DOM-Livrables.html">DOM — Livrables</option>
+<option disabled>──────────</option>
+<option disabled>Composantes (agents)</option>
+<option value="CMP-IA-TPG-001-Idexios.html">IA-TPG-001 — IDEXIOS-HUB</option>
+<option value="CMP-IA-TPG-002-Hermes.html">IA-TPG-002 — HERMES-PROJ</option>
+<option value="CMP-IA-TPG-003-Athena.html">IA-TPG-003 — ATHENA-PORT</option>
+<option value="CMP-IA-TPG-004-Themis.html">IA-TPG-004 — THEMIS-GOV</option>
+<option value="CMP-IA-TPG-005-Atlas.html">IA-TPG-005 — ATLAS-CTRL</option>
+<option value="CMP-IA-TPG-006-Gaia.html">IA-TPG-006 — GAIA-RISK</option>
+<option value="CMP-IA-TPG-007-Vesta.html">IA-TPG-007 — VESTA-WORK</option>
+<option value="CMP-IA-TPG-008-Apollo.html">IA-TPG-008 — APOLLO-CHANGE</option>
+<option value="CMP-IA-TPG-009-Mercury.html">IA-TPG-009 — MERCURY-COLLECT</option>
+<option value="CMP-IA-TPG-010-Plutus.html">IA-TPG-010 — PLUTUS-ANOM</option>
+<option value="CMP-IA-TPG-011-Janus.html">IA-TPG-011 — JANUS-CLOSE</option>
+<option value="CMP-IA-TPG-012-Cassandra.html">IA-TPG-012 — CASSANDRA-FQA</option>
+<option value="CMP-IA-TPG-013-Cerberus.html">IA-TPG-013 — CERBERUS-SEC</option>
+<option value="CMP-IA-TPG-014-Orpheus.html">IA-TPG-014 — ORPHEUS-ADOPT</option>
+<option value="CMP-IA-TPG-015-Cicero.html">IA-TPG-015 — CICERO-ALLHANDS</option>
+<option value="CMP-IA-TPG-016-Poseidon.html">IA-TPG-016 — POSEIDON-CASH</option>
+<option value="CMP-IA-TPG-017-Juno.html">IA-TPG-017 — JUNO-PROC</option>
+<option value="CMP-IA-TPG-018-Ceres.html">IA-TPG-018 — CERES-BUDGET</option>
+<option value="CMP-IA-TPG-019-Vulcan.html">IA-TPG-019 — VULCAN-DEV</option>
+  </select>
+  <div class="navlinks">
+    <a href="index.html">Index</a>
+    <a href="index-tech.html">Index technique</a>
+  </div>
+</div>
+      <div style="margin-top:14px" class="small">Dernière génération : <span class="small">2025-12-29 17:21:39 EST</span></div>
+    </aside>
+
+    <main class="main">
+      <section class="hero">
+        <h1>Index technique</h1>
+        <p>Référentiel technique : architecture, intégrations, modèle de données, identité/autorisation et qualité opérationnelle.</p>
+        <div class="meta"><span class="chip">Plateforme: <b>M365 + Power Platform</b></span><span class="chip">Moteur: <b>Copilot Studio + MCP</b></span><span class="chip">Données: <b>Dataverse (tpg_*) + SharePoint</b></span><span class="chip">Dernière génération: <b>2025-12-29 17:21:39 EST</b></span></div>
+      </section>
+
+      <section class="grid">
+        <div class="card">
+  <h2>Architecture technique (vue d’ensemble)</h2>
+  
+<p>Cette page met l’accent sur la plateforme : Copilot Studio, Dataverse, SharePoint, Power Automate et les serveurs MCP. Le pack est pensé pour fonctionner en local (<code>file://</code>) ou hébergé, sans dépendre d’un <code>fetch()</code> obligatoire.</p>
+<div class="diagram"><pre class="mermaid">flowchart TB
+  subgraph Canaux
+    Teams[Teams / Outlook] --&gt; CS[Copilot Studio]
+    Web[Power Pages] --&gt; CS
+  end
+
+  subgraph Orchestration
+    CS --&gt; HUB[IDEXIOS-HUB]
+    HUB --&gt; AG[Agents de domaine]
+  end
+
+  subgraph Données
+    DV[(Dataverse TPG\n(tpg_*))]
+    SP[(SharePoint\nIdexios-Prime)]
+  end
+
+  subgraph Automatisation
+    PA[Power Automate] --&gt; MCP[Serveurs MCP]
+    MCP --&gt; EXT[Services / APIs]
+  end
+
+  subgraph Gouvernance
+    ENTRA[Entra ID] --&gt; OAuth[OAuth / OIDC]
+    Purview[Purview / DLP] --&gt; DV
+    Log[Log Analytics] --&gt; HUB
+  end
+
+  AG --&gt; DV
+  AG --&gt; SP
+  HUB --&gt; PA
+  AG --&gt; Log
+  OAuth --&gt; CS
+</pre></div>
+
+</div>
+<div class="card">
+  <h2>Modèle de données (repères)</h2>
+  
+<p>Repères Dataverse simplifiés (noms génériques). Le détail exact dépend du schéma TPG (tables <code>tpg_*</code>).</p>
+<div class="diagram"><pre class="mermaid">classDiagram
+  class tpg_project {
+    +projectId
+    +name
+    +status
+    +startDate
+    +finishDate
+    +cpi
+    +spi
+  }
+  class tpg_portfolio {
+    +portfolioId
+    +name
+    +owner
+  }
+  class tpg_financial {
+    +txnId
+    +date
+    +amount
+    +taxes
+    +category
+  }
+  class tpg_risk {
+    +riskId
+    +probability
+    +impact
+    +mitigation
+  }
+  class tpg_capacity {
+    +resourceId
+    +period
+    +available
+    +allocated
+  }
+
+  tpg_portfolio &quot;1&quot; --&gt; &quot;many&quot; tpg_project : contient
+  tpg_project &quot;1&quot; --&gt; &quot;many&quot; tpg_financial : coûts
+  tpg_project &quot;1&quot; --&gt; &quot;many&quot; tpg_risk : risques
+  tpg_project &quot;1&quot; --&gt; &quot;many&quot; tpg_capacity : charge
+</pre></div>
+
+</div>
+<div class="two card">
+  <h2>Identité, autorisation et actions outillées</h2>
+  
+<p>Le principe : les actions d’agents doivent rester <b>scopées</b> (least privilege) et <b>journalisées</b>. Les patterns SCIM/OAuth/MCP sont représentés à haut niveau.</p>
+<div class="diagram"><pre class="mermaid">sequenceDiagram
+  autonumber
+  participant U as Utilisateur
+  participant CS as Copilot Studio
+  participant EN as Entra ID
+  participant HUB as IDEXIOS-HUB
+  participant MCP as Serveur MCP
+  U-&gt;&gt;CS: Démarre une demande
+  CS-&gt;&gt;EN: Authentification (OIDC)
+  EN--&gt;&gt;CS: Jeton (scopes)
+  CS-&gt;&gt;HUB: Contexte + jeton
+  HUB-&gt;&gt;MCP: Action outillée (scopée)
+  MCP--&gt;&gt;HUB: Résultat (journalisé)
+  HUB--&gt;&gt;CS: Réponse + artefacts
+</pre></div>
+<ul>
+  <li><b>Entra ID</b> : identité, groupes, accès conditionnel.</li>
+  <li><b>OAuth/OIDC</b> : jetons et scopes (selon l’intégration retenue).</li>
+  <li><b>MCP</b> : orchestration des outils/connexions, traces et contrôles.</li>
+</ul>
+
+</div>
+<div class="two card">
+  <h2>Seuils de performance (CPI/SPI)</h2>
+  
+<div class="kpi">
+  <div class="pill good"><b>Vert</b> : CPI/SPI ≥ 0.95</div>
+  <div class="pill warn"><b>Ambre</b> : 0.85 ≤ CPI/SPI &lt; 0.95</div>
+  <div class="pill bad"><b>Rouge</b> : CPI/SPI &lt; 0.85</div>
+</div>
+<p>Ces seuils servent de repères pour la visualisation et les alertes. Ils peuvent être ajustés selon le MRNF/TPG et la tolérance au risque.</p>
+
+</div>
+<div class="card">
+  <h2>Observabilité &amp; qualité</h2>
+  
+<ul>
+  <li>Journalisation par agent : entrées, sorties, décisions, erreurs.</li>
+  <li>Traçabilité livrables : versioning dans SharePoint, liens dans Dataverse.</li>
+  <li>Tests : jeux de données de validation, scénarios nominal/anomalie.</li>
+  <li>Évitement des aberrations : contrôles de dates, montants, catégories; champ « À confirmer » lorsque nécessaire.</li>
+</ul>
+
+</div>
+      </section>
+    </main>
+  </div>
+</body>
+</html>
