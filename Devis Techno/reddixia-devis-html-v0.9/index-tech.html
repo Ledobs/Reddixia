@@ -21,6 +21,7 @@
     <div class="toplinks">
       <a class="badge" href="index-tech.html" title="Ouvrir l’index technique">Ouvrir l’index technique</a>
       <a class="badge" href="index.html" title="Revenir à l’index">Index</a>
+      <a class="badge" href="https://copilotstudio.preview.microsoft.com/environments/14a51a38-b4c0-eb5b-9089-fcef1e4b79f5/solutions/89228855-0fd5-f011-8544-7ced8d0679f6" target="_blank" rel="noopener">Solution (Idexia365)</a>
       <a class="badge" href="https://github.com/Ledobs/Reddixia/blob/main/README.md" target="_blank" rel="noopener">Repo Git</a>
       <span class="badge" data-tip="Preuve de concept Reddixia v0.9">Preuve de concept Reddixia v0.9</span>
     </div>
@@ -82,9 +83,117 @@
         <h1>Index technique</h1>
         <p>Référentiel technique : architecture, intégrations, modèle de données, identité/autorisation et qualité opérationnelle.</p>
         <div class="meta"><span class="chip">Plateforme: <b>M365 + Power Platform</b></span><span class="chip">Moteur: <b>Copilot Studio + MCP</b></span><span class="chip">Données: <b>Dataverse (tpg_*) + SharePoint</b></span><span class="chip">Dernière génération: <b>2025-12-29 17:21:39 EST</b></span></div>
+        <p class="small" style="margin-top:10px">
+          <b>Prototypes (Copilot Studio)</b> :
+          <a href="https://copilotstudio.microsoft.com/environments/14a51a38-b4c0-eb5b-9089-fcef1e4b79f5/bots/b53b46a2-15d5-f011-8544-7c1e52408748/overview" target="_blank" rel="noopener">IDEXIOS-HUB</a>
+          ·
+          <a href="https://copilotstudio.microsoft.com/environments/14a51a38-b4c0-eb5b-9089-fcef1e4b79f5/bots/d295c02c-f2dd-f011-8406-7ced8d0595a6" target="_blank" rel="noopener">HERMES-PROJ</a>
+        </p>
       </section>
 
       <section class="grid">
+        <div class="card">
+  <h2>GitGraph — repère d’évolution</h2>
+  
+<p>Repère visuel (illustratif) : l’implémentation et la stratégie Git restent gérées dans le repo, pas dans la roadmap de contenu.</p>
+<div class="diagram">
+  <pre class="mermaid">gitGraph
+  commit id:"init"
+  branch dev
+  checkout dev
+  commit id:"poc-ui"
+  commit id:"packs-dom"
+  branch feature/mcp
+  checkout feature/mcp
+  commit id:"mcp-socle"
+  checkout dev
+  merge feature/mcp
+  commit id:"hardening"
+  branch release
+  checkout release
+  commit id:"pilot"
+</pre>
+</div>
+
+<h3 style="margin-top:16px">Domain Packs — sommaire</h3>
+<table style="width:100%; border-collapse:collapse; font-size:13px">
+  <thead>
+    <tr>
+      <th style="text-align:left; padding:8px; border-bottom:1px solid rgba(39,53,95,.6)">Domaine</th>
+      <th style="text-align:left; padding:8px; border-bottom:1px solid rgba(39,53,95,.6)">Description</th>
+      <th style="text-align:left; padding:8px; border-bottom:1px solid rgba(39,53,95,.6)">Agents</th>
+      <th style="text-align:left; padding:8px; border-bottom:1px solid rgba(39,53,95,.6)">Prototypes</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="padding:8px; border-bottom:1px solid rgba(39,53,95,.35)"><b>Transversal</b></td>
+      <td style="padding:8px; border-bottom:1px solid rgba(39,53,95,.35)">Orchestration conversationnelle et routage vers les agents.</td>
+      <td style="padding:8px; border-bottom:1px solid rgba(39,53,95,.35)"><a href="CMP-IA-TPG-001-Idexios.html">IA-TPG-001 — IDEXIOS-HUB</a></td>
+      <td style="padding:8px; border-bottom:1px solid rgba(39,53,95,.35)"><a href="https://copilotstudio.microsoft.com/environments/14a51a38-b4c0-eb5b-9089-fcef1e4b79f5/bots/b53b46a2-15d5-f011-8544-7c1e52408748/overview" target="_blank" rel="noopener">IDEXIOS-HUB</a></td>
+    </tr>
+    <tr>
+      <td style="padding:8px; border-bottom:1px solid rgba(39,53,95,.35)"><b>DeliveryOps</b></td>
+      <td style="padding:8px; border-bottom:1px solid rgba(39,53,95,.35)">Suivi d’exécution, statuts, dépendances, risques/enjeux.</td>
+      <td style="padding:8px; border-bottom:1px solid rgba(39,53,95,.35)"><a href="CMP-IA-TPG-002-Hermes.html">IA-TPG-002 — HERMES-PROJ</a></td>
+      <td style="padding:8px; border-bottom:1px solid rgba(39,53,95,.35)"><a href="https://copilotstudio.microsoft.com/environments/14a51a38-b4c0-eb5b-9089-fcef1e4b79f5/bots/d295c02c-f2dd-f011-8406-7ced8d0595a6" target="_blank" rel="noopener">HERMES-PROJ</a></td>
+    </tr>
+    <tr>
+      <td style="padding:8px; border-bottom:1px solid rgba(39,53,95,.35)"><b>PortfolioOps</b></td>
+      <td style="padding:8px; border-bottom:1px solid rgba(39,53,95,.35)">Analyse portefeuille, capacité, scénarios et priorisation.</td>
+      <td style="padding:8px; border-bottom:1px solid rgba(39,53,95,.35)">
+        <a href="CMP-IA-TPG-003-Athena.html">IA-TPG-003 — ATHENA-PORT</a><br/>
+        <a href="CMP-IA-TPG-006-Gaia.html">IA-TPG-006 — GAIA-RISK</a>
+      </td>
+      <td style="padding:8px; border-bottom:1px solid rgba(39,53,95,.35)">—</td>
+    </tr>
+    <tr>
+      <td style="padding:8px; border-bottom:1px solid rgba(39,53,95,.35)"><b>GovernanceOps</b></td>
+      <td style="padding:8px; border-bottom:1px solid rgba(39,53,95,.35)">Contrôles, gouvernance, conformité, adoption et sécurité.</td>
+      <td style="padding:8px; border-bottom:1px solid rgba(39,53,95,.35)">
+        <a href="CMP-IA-TPG-004-Themis.html">IA-TPG-004 — THEMIS-GOV</a><br/>
+        <a href="CMP-IA-TPG-007-Vesta.html">IA-TPG-007 — VESTA-WORK</a><br/>
+        <a href="CMP-IA-TPG-014-Orpheus.html">IA-TPG-014 — ORPHEUS-ADOPT</a>
+      </td>
+      <td style="padding:8px; border-bottom:1px solid rgba(39,53,95,.35)">—</td>
+    </tr>
+    <tr>
+      <td style="padding:8px; border-bottom:1px solid rgba(39,53,95,.35)"><b>FinanceOps</b></td>
+      <td style="padding:8px; border-bottom:1px solid rgba(39,53,95,.35)">Collecte, contrôle, anomalies, clôture, trésorerie et budget.</td>
+      <td style="padding:8px; border-bottom:1px solid rgba(39,53,95,.35)">
+        <a href="CMP-IA-TPG-005-Atlas.html">IA-TPG-005 — ATLAS-CTRL</a><br/>
+        <a href="CMP-IA-TPG-009-Mercury.html">IA-TPG-009 — MERCURY-COLLECT</a><br/>
+        <a href="CMP-IA-TPG-010-Plutus.html">IA-TPG-010 — PLUTUS-ANOM</a><br/>
+        <a href="CMP-IA-TPG-011-Janus.html">IA-TPG-011 — JANUS-CLOSE</a><br/>
+        <a href="CMP-IA-TPG-012-Cassandra.html">IA-TPG-012 — CASSANDRA-FQA</a><br/>
+        <a href="CMP-IA-TPG-016-Poseidon.html">IA-TPG-016 — POSEIDON-CASH</a><br/>
+        <a href="CMP-IA-TPG-018-Ceres.html">IA-TPG-018 — CERES-BUDGET</a><br/>
+        <a href="CMP-IA-TPG-013-Cerberus.html">IA-TPG-013 — CERBERUS-SEC</a>
+      </td>
+      <td style="padding:8px; border-bottom:1px solid rgba(39,53,95,.35)">—</td>
+    </tr>
+    <tr>
+      <td style="padding:8px"><b>CommsOps</b></td>
+      <td style="padding:8px">Communications, changement, kits d’adoption et all-hands.</td>
+      <td style="padding:8px">
+        <a href="CMP-IA-TPG-008-Apollo.html">IA-TPG-008 — APOLLO-CHANGE</a><br/>
+        <a href="CMP-IA-TPG-015-Cicero.html">IA-TPG-015 — CICERO-ALLHANDS</a>
+      </td>
+      <td style="padding:8px">—</td>
+    </tr>
+    <tr>
+      <td style="padding:8px"><b>ProcurementOps</b></td>
+      <td style="padding:8px">Achats, demandes, conformité fournisseur, suivi.</td>
+      <td style="padding:8px">
+        <a href="CMP-IA-TPG-017-Juno.html">IA-TPG-017 — JUNO-PROC</a><br/>
+        <a href="CMP-IA-TPG-019-Vulcan.html">IA-TPG-019 — VULCAN-DEV</a>
+      </td>
+      <td style="padding:8px">—</td>
+    </tr>
+  </tbody>
+</table>
+
+</div>
         <div class="card">
   <h2>Architecture technique (vue d’ensemble)</h2>
   
@@ -100,9 +209,9 @@
     HUB --&gt; AG[Agents de domaine]
   end
 
-  subgraph Données
-    DV[(Dataverse TPG\n(tpg_*))]
-    SP[(SharePoint\nIdexios-Prime)]
+  subgraph Donnees
+    DV[(Dataverse TPG<br/>(tpg_*))]
+    SP[(SharePoint<br/>Idexios-Prime)]
   end
 
   subgraph Automatisation
@@ -128,6 +237,7 @@
   <h2>Modèle de données (repères)</h2>
   
 <p>Repères Dataverse simplifiés (noms génériques). Le détail exact dépend du schéma TPG (tables <code>tpg_*</code>).</p>
+<p><a href="https://dbdiagram.io/d/TPG_PPPandS_DEC2025-69459a734bbde0fd74d8852f" target="_blank" rel="noopener">Ouvrir le schéma de référence (dbdiagram)</a></p>
 <div class="diagram"><pre class="mermaid">classDiagram
   class tpg_project {
     +projectId
@@ -204,7 +314,11 @@
   <div class="pill warn"><b>Ambre</b> : 0.85 ≤ CPI/SPI &lt; 0.95</div>
   <div class="pill bad"><b>Rouge</b> : CPI/SPI &lt; 0.85</div>
 </div>
-<p>Ces seuils servent de repères pour la visualisation et les alertes. Ils peuvent être ajustés selon le MRNF/TPG et la tolérance au risque.</p>
+<p>Ces seuils servent de repères pour la visualisation et les alertes. Ils peuvent être ajustés dans la solution TPG selon la tolérance au risque.</p>
+<ul>
+  <li>Les seuils CPI/SPI ne sont qu’un indicateur : compléter avec la qualité des données (complétude, cohérence), la variance coûts/délais et les exceptions documentées.</li>
+  <li>Les seuils servent à classer, prioriser et déclencher des contrôles (pas à « corriger » automatiquement les données).</li>
+</ul>
 
 </div>
 <div class="card">
