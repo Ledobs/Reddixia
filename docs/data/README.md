@@ -16,6 +16,7 @@ Schéma TPG/PPPS Dataverse, mappings de champs, structure SharePoint Idexios-Pri
 
 ## Connaissance
 - [Références Copilot](https://github.com/microsoft/CopilotStudioSamples/tree/main/MCPSamples)
+- [Exemple Adaptives cards](https://github.com/microsoft/CopilotStudioSamples/tree/main/AdaptiveCardSamples)
 - [Lab MCP Copilot](https://github.com/microsoft/mcsmcp)
 - [SDK MCP](https://github.com/modelcontextprotocol) 
 - [Auto Detect Language for Generative Responses](https://github.com/microsoft/CopilotStudioSamples/tree/main/AutoDetectLanguageSample)
