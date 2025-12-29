@@ -1,38 +1,53 @@
-# Sources de données — Mercury
+# DAT — MERCURY-COLLECT (IA-TPG-013)
 
-> **Agent** : MERCURY-COLLECT (IA-TPG-013)
-> **Domaine** : FinanceOps
-> **Dernière mise à jour** : 29 décembre 2025
-> **Statut** : Brouillon (à compléter)
+> **Agent** : MERCURY-COLLECT  
+> **Code** : IA-TPG-013 — à confirmer  
+> **Identifiant** : MERCURY-COLLECT  
+> **Domain Pack** : FinanceOps  
+> **Statut** : Draft  
+> **Dernière mise à jour** : 2025-12-29 16:56:16 EST
 
-## Vue d'ensemble
+## Rôle
+Agent de collecte : il normalise et consolide les données financières et d’efforts provenant de différentes sources (factures, temps, achats) vers les structures TPG.
 
-MERCURY-COLLECT structure et suit les actions de recouvrement/AR (si applicable) : priorisation, planification de relances et production d’un plan d’actions.
+## Mission
+Assurer une chaîne de données propre : ingestion, normalisation, contrôles, puis publication vers les vues de suivi.
 
-## Sources attendues (à confirmer)
+## Déclencheurs typiques
+- Arrivée de nouveaux fichiers (factures) ou exports
+- Fin de semaine / fin de mois : lot de consolidation
+- Besoin ponctuel d’aligner des sources hétérogènes
 
-### SharePoint
-- **Site** : Idexios-Prime
-- **Bibliothèque / chemin** : `/Idexios-Prime/Procedures/Finance/` (d’après `agents-registry.md`)
-- **Types de contenus** : procédures AR/recouvrement, scripts de relance, gabarits plan d’action.
+## Données d’entrée
+- Fichiers sources (SharePoint / OneDrive) — à confirmer
+- Exports système (ERP / finance) — à confirmer
+- Référentiels (projets, centres de coût, fournisseurs) — à confirmer
+- SharePoint Idexios‑Prime : `/Idexios-Prime/Procedures/Finance/` (d’après `agents-registry.md`)
 
-### Dataverse (TPG)
-- **Finances / périodes** : `[À confirmer]` `tpg_financials`, `tpg_financial_snap`, `tpg_period`
-- **AR spécifique** : `[À confirmer]` (si une table AR existe, sinon source externe)
+## Données de sortie
+- Données consolidées prêtes pour contrôle (ATLAS) et budget (CERES)
+- Journal de qualité (rejets, corrections, doublons)
+- Mapping / dictionnaire de correspondance mis à jour — à confirmer
 
-### Autres systèmes
-- `[À confirmer]` ERP/AR (si hors Dataverse) + mode d’accès.
+## Sources / Tables (Dataverse TPG)
+- tpg_actual / tpg_cost / tpg_timesheet — à confirmer
+- tpg_vendor / tpg_costcenter — à confirmer
+- tpg_project
 
-## Permissions requises (à confirmer)
-- Lecture SharePoint procédures finance.
-- Lecture Dataverse finances (et entités AR si existantes).
+## Règles de validation et contrôles
+- Déduplication (facture #, date, fournisseur)
+- Devise/taxes cohérentes
+- Traçabilité : conserver la référence au document source
 
-## Points à clarifier
-- Le périmètre AR est-il dans Dataverse ou externe ?
-- Où consigner les actions de relance (Dataverse action items vs SharePoint) ?
+## Lignes d’action BPMN candidates
+| Ligne d’action | Déclencheur | Entrées | Traitement | Sorties |
+|---|---|---|---|---|
+| FIN-30 • Ingestion et normalisation | Nouveaux réels | Sources brutes | Nettoyer + mapper + valider + charger | Réels consolidés + log |
 
-## Flux de données (brouillon)
-1. Charger éléments AR par période.
-2. Prioriser relances (âge, montant, risque).
-3. Produire plan d’action + calendrier.
-4. Suivre l’exécution et produire synthèse.
+## Hypothèses et points à confirmer
+- Sources exactes (SharePoint libraries, connecteurs) à confirmer
+- Format des logs attendu (JSONL/Dataverse) à confirmer
+
+## Accès / permissions (à confirmer)
+- SharePoint : lecture sur sources brutes + gabarits
+- Dataverse : droits de lecture/écriture selon mécanisme de chargement

@@ -1,35 +1,53 @@
-# Sources de données — Plutus
+# DAT — PLUTUS-ANOM (IA-TPG-011)
 
-> **Agent** : PLUTUS-ANOM (IA-TPG-011)
-> **Domaine** : FinanceOps
-> **Dernière mise à jour** : 29 décembre 2025
-> **Statut** : Brouillon (à compléter)
+> **Agent** : PLUTUS-ANOM  
+> **Code** : IA-TPG-011 — à confirmer  
+> **Identifiant** : PLUTUS-ANOM  
+> **Domain Pack** : FinanceOps  
+> **Statut** : Draft  
+> **Dernière mise à jour** : 2025-12-29 16:56:16 EST
 
-## Vue d'ensemble
+## Rôle
+Agent de détection d’anomalies financières : il repère des patterns atypiques (dépenses, allocations, temps) et propose une priorisation des vérifications.
 
-PLUTUS-ANOM identifie des anomalies de dépenses et signaux faibles : tendances atypiques, priorisation des investigations, ouverture de cases de suivi.
+## Mission
+Réduire le risque d’erreurs de données ou de dérives non vues, sans générer d’alertes inutiles.
 
-## Sources attendues (à confirmer)
+## Déclencheurs typiques
+- Chargement de nouveaux réels
+- Pic soudain sur un poste budgétaire
+- Audit ponctuel demandé par contrôle
 
-### SharePoint
-- **Site** : Idexios-Prime
-- **Bibliothèque / chemin** : `/Idexios-Prime/Procedures/Finance/` (d’après `agents-registry.md`)
-- **Types de contenus** : règles d’analyse, politiques, gabarits de dossier d’investigation, preuves.
+## Données d’entrée
+- Réels et historiques (Dataverse TPG) — à confirmer
+- Budget / lignes budgétaires — à confirmer
+- Règles métier (seuils, exclusions) — à confirmer
+- SharePoint Idexios‑Prime : `/Idexios-Prime/Procedures/Finance/` (d’après `agents-registry.md`)
 
-### Dataverse (TPG)
-- **Finances / périodes** : `[À confirmer]` `tpg_financials`, `tpg_financial_snap`, `tpg_period`
-- **Dimensions** : `[À confirmer]` (projet, département, catégories, fournisseurs si existants)
+## Données de sortie
+- Liste d’anomalies classées (priorité/impact)
+- Justification (comparatif historique, outlier, règle déclenchée)
+- Recommandations : vérifier, corriger, documenter
 
-## Permissions requises (à confirmer)
-- Dataverse: lecture finances + périodes.
-- SharePoint: lecture procédures finance + gabarits.
+## Sources / Tables (Dataverse TPG)
+- tpg_actual / tpg_cost / tpg_timesheet — à confirmer
+- tpg_budgetline — à confirmer
+- tpg_project
 
-## Points à clarifier
-- Quelles métriques “dépense” sont disponibles (capex/opex, engagements, réel) ?
-- Où créer/consigner les “cases de suivi” (Dataverse: issue/actionitem/change ?) 
+## Règles de validation et contrôles
+- Explicabilité : chaque alerte doit dire « pourquoi »
+- Seuils configurables (éviter l’alarme permanente)
+- Marquer les faux positifs et apprendre (si mécanisme prévu) — à confirmer
 
-## Flux de données (brouillon)
-1. Charger dépenses par période/dimension.
-2. Détecter anomalies (outliers, ruptures, dérives).
-3. Prioriser investigations + proposer actions.
-4. Documenter et ouvrir le suivi.
+## Lignes d’action BPMN candidates
+| Ligne d’action | Déclencheur | Entrées | Traitement | Sorties |
+|---|---|---|---|---|
+| FIN-40 • Détecter anomalies | Nouveaux réels / audit | Réels + historique | Règles + stats simples + priorisation | Liste anomalies + raisons |
+
+## Hypothèses et points à confirmer
+- Jeu de règles initial (seuils par poste) à confirmer
+- Boucle d’apprentissage (feedback) à confirmer
+
+## Accès / permissions (à confirmer)
+- SharePoint : lecture sur procédures finance
+- Dataverse : lecture sur réels/budgets si disponibles

@@ -1,35 +1,53 @@
-# Sources de données — Cassandra
+# DAT — CASSANDRA-FQA (IA-TPG-012)
 
-> **Agent** : CASSANDRA-FQA (IA-TPG-012)
-> **Domaine** : FinanceOps
-> **Dernière mise à jour** : 29 décembre 2025
-> **Statut** : Brouillon (à compléter)
+> **Agent** : CASSANDRA-FQA  
+> **Code** : IA-TPG-012 — à confirmer  
+> **Identifiant** : CASSANDRA-FQA  
+> **Domain Pack** : FinanceOps  
+> **Statut** : Draft  
+> **Dernière mise à jour** : 2025-12-29 16:56:16 EST
 
-## Vue d'ensemble
+## Rôle
+Agent d’assurance qualité des prévisions : il évalue la fiabilité des forecasts (coûts/délais), repère les incohérences et documente un niveau de confiance.
 
-CASSANDRA-FQA répond aux questions financières avec traçabilité des sources et règles; escalade vers des analyses approfondies au besoin.
+## Mission
+Améliorer la confiance dans les prévisions en détectant rapidement les signaux faibles et les écarts anormaux.
 
-## Sources attendues (à confirmer)
+## Déclencheurs typiques
+- Nouvelle prévision soumise / mise à jour EAC
+- Écart prévision vs réel dépasse un seuil
+- Audit périodique de qualité (mensuel)
 
-### SharePoint
-- **Site** : Idexios-Prime
-- **Bibliothèque / chemin** : `/Idexios-Prime/Procedures/Finance/` (d’après `agents-registry.md`)
-- **Types de contenus** : politiques/règles, définitions KPI, gabarits réponses, procédures d’escalade.
+## Données d’entrée
+- Prévisions / EAC / ETC (Dataverse TPG) — à confirmer
+- Réels (temps/coûts) — à confirmer
+- Historique des versions de prévisions — à confirmer
+- SharePoint Idexios‑Prime : `/Idexios-Prime/Procedures/Finance/` (d’après `agents-registry.md`)
 
-### Dataverse (TPG)
-- **Finances / périodes** : `[À confirmer]` `tpg_financials`, `tpg_financial_snap`, `tpg_period`
-- **Référentiels** : `[À confirmer]` (départements, portfolios, programmes, projets)
+## Données de sortie
+- Score de confiance par projet/programme
+- Liste d’anomalies (valeurs manquantes, sauts brusques, outliers)
+- Recommandations de correction (données à compléter, hypothèses à revoir)
 
-## Permissions requises (à confirmer)
-- Lecture Dataverse sur finances + référentiels.
-- Lecture SharePoint sur procédures finance.
+## Sources / Tables (Dataverse TPG)
+- tpg_forecast / tpg_eac — à confirmer
+- tpg_actual / tpg_cost / tpg_timesheet — à confirmer
+- tpg_project
 
-## Points à clarifier
-- Glossaire / dictionnaire finance (où est-il ?)
-- Règles d’arrondi, seuils, RAG, CPI/SPI (documentation exacte).
+## Règles de validation et contrôles
+- Comparer sur la même période et la même devise
+- Tracer la source de chaque écart (ligne de données)
+- Ne pas modifier les chiffres : proposer, annoter, prioriser
 
-## Flux de données (brouillon)
-1. Identifier la question et le périmètre (période, projet/portefeuille).
-2. Collecter données (Dataverse) + règles (SharePoint).
-3. Calculer/répondre avec traçabilité + hypothèses.
-4. Escalader si données manquantes ou analyse avancée.
+## Lignes d’action BPMN candidates
+| Ligne d’action | Déclencheur | Entrées | Traitement | Sorties |
+|---|---|---|---|---|
+| FIN-20 • Évaluer qualité forecast | Prévision mise à jour | Forecast + réels | Calcul écarts + score confiance + anomalies | Score + liste anomalies |
+
+## Hypothèses et points à confirmer
+- Définition exacte de FQA (Forecast QA ou autre) à confirmer
+- Seuils de détection et méthode de scoring à confirmer
+
+## Accès / permissions (à confirmer)
+- SharePoint Idexios‑Prime : lecture sur procédures finance
+- Dataverse : lecture sur prévisions/réels/historique si disponibles

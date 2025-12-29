@@ -1,43 +1,57 @@
-# Sources de données — Apollo
+# DAT — APOLLO-CHANGE (IA-TPG-008)
 
-> **Agent** : APOLLO-CHANGE (IA-TPG-008)
-> **Domaine** : CommsOps
-> **Dernière mise à jour** : 29 décembre 2025
-> **Statut** : Brouillon (à compléter)
+> **Agent** : APOLLO-CHANGE  
+> **Code** : IA-TPG-008  
+> **Identifiant** : APOLLO-CHANGE  
+> **Domain Pack** : CommsOps  
+> **Statut** : Draft  
+> **Dernière mise à jour** : 2025-12-29 16:56:16 EST
 
-## Vue d'ensemble
+## Rôle
+Agent de conduite du changement et de communication : il transforme les décisions et évolutions du portefeuille en messages clairs, cohérents et ciblés (gestion des annonces, kits de communication, FAQ, messages Teams/Outlook).
 
-APOLLO-CHANGE aide à transformer des décisions/évolutions en plans de changement concrets (communication, formation, accompagnement), avec messages clés, FAQ, guides et métriques d’adoption.
+## Mission
+Soutenir l’adoption et la compréhension des changements liés au portefeuille, en assurant la cohérence du narratif, la segmentation des audiences et la traçabilité des communications.
 
-## Sources attendues (à confirmer)
+## Déclencheurs typiques
+- Nouvelle décision / changement approuvé (jalon, scope, priorités, budget)
+- Publication d’un statut de portefeuille ou d’un projet majeur
+- Préparation d’un comité (message d’ouverture, points clés, FAQ)
 
-### SharePoint
-- **Site** : Idexios-Prime
-- **Bibliothèque / chemin** : `/Idexios-Prime/Procedures/Communication/` (d’après `agents-registry.md`)
-- **Types de contenus** : gabarits de communication (all-hands, FAQ, annonces), plans de com/formation, guides d’adoption.
+## Données d’entrée
+- Décisions et jalons (Dataverse TPG)
+- Indicateurs de santé / risques (Dataverse TPG)
+- Bibliothèque SharePoint Idexios‑Prime (gabarits, charte, visuels)
+- SharePoint Idexios‑Prime : `/Idexios-Prime/Procedures/Communication/` (d’après `agents-registry.md`)
+- Répertoire des parties prenantes / audiences (M365 / Dataverse) — à confirmer
 
-### Dataverse (TPG)
-- **Tables candidates** : `[À confirmer]` (ex: projets/portefeuille pour listes de diffusion ou segmentation par unités/équipes).
-- **Champs candidats** : `[À confirmer]` (statut, sponsor, parties prenantes, calendrier jalons).
+## Données de sortie
+- Messages d’annonce (Teams / Outlook) prêts à diffuser
+- Kits de communication (FAQ, points de discussion, visuels à référencer)
+- Calendrier / log de communications (trace, version, audience) — à confirmer
 
-### Autres sources
-- **Feedback utilisateurs** : `[À confirmer]` (tickets, sondages, Teams, commentaires) + modalités d’accès.
+## Sources / Tables (Dataverse TPG)
+- tpg_project, tpg_program
+- tpg_decision (ou équivalent) — à confirmer
+- tpg_risk, tpg_issue
+- tpg_stakeholder (ou équivalent) — à confirmer
 
-## Permissions requises (à confirmer)
+## Règles de validation et contrôles
+- Chaque message référence un objet source (projet/programme/décision) et une date de diffusion
+- Audience obligatoire (ex.: direction, gestionnaires, équipes, partenaires)
+- Vocabulaire et ton conformes au lexique Idexios / organisation
+- Éviter les termes non confirmés : marquer « À confirmer » quand nécessaire
 
-### SharePoint
-- Lecture sur Idexios-Prime (au minimum) + accès aux bibliothèques de gabarits.
+## Lignes d’action BPMN candidates
+| Ligne d’action | Déclencheur | Entrées | Traitement | Sorties |
+|---|---|---|---|---|
+| COMMS-01 • Transformer une décision en annonce | Décision approuvée | Décision + projet/programme | Générer message + FAQ + audience | Annonce prête + log |
+| COMMS-02 • Préparer kit d’adoption | Changement majeur | Impacts + calendrier | Construire kit (FAQ, points clés, supports) | Kit + plan diffusion |
 
-### Dataverse
-- Lecture sur tables pertinentes projet/portefeuille si utilisées.
+## Hypothèses et points à confirmer
+- Schéma d’audience (groupes M365, canaux Teams) à confirmer
+- Format attendu des logs (Dataverse vs SharePoint) à confirmer
 
-## Points à clarifier
-- Quelles sources “feedback” (Teams, ITSM, forms) sont officiellement accessibles et où ?
-- Existe-t-il un registre des parties prenantes/canaux (Dataverse vs SharePoint vs autre) ?
-- Quels KPIs d’adoption sont attendus (baseline + fréquence) ?
-
-## Flux de données (brouillon)
-1. Lire la décision/changement (source: comité / note / ticket).
-2. Identifier impacts & personas (référentiel parties prenantes).
-3. Produire kit de com/formation (gabarits SharePoint).
-4. Publier / suivre adoption (feedback + métriques).
+## Accès / permissions (à confirmer)
+- SharePoint Idexios‑Prime : lecture sur les bibliothèques de gabarits
+- Dataverse : lecture sur les tables pertinentes projet/portefeuille si utilisées

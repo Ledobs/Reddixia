@@ -1,25 +1,37 @@
-# Sources de données — Hermes
+# DAT — HERMES-PROJ (IA-TPG-002)
 
-> **Agent** : Hermes  
-> **Environment** : DEMO_Partage  
-> **Dernière mise à jour** : 23 décembre 2025  
-> **Statut** : Publié
+> **Agent** : HERMES-PROJ  
+> **Code** : IA-TPG-002  
+> **Identifiant** : HERMES-PROJ  
+> **Domain Pack** : DeliveryOps  
+> **Statut** : Draft  
+> **Dernière mise à jour** : 2025-12-29 16:56:16 EST
 
-## Vue d'ensemble
+## Rôle
+Agent de suivi de livraison : il consolide l’avancement des projets, le plan (tâches/jalons), les dépendances, et produit des statuts de projet avec alertes.
 
-Agent Hermes est spécialisé dans la gestion et le suivi des données de projet, incluant les tâches, les affectations de ressources, les exigences et les aspects financiers. Il centralise l'accès aux informations TPG et aux documents de référence via SharePoint.
+## Mission
+Réduire le bruit dans le suivi : produire un statut fiable et actionnable, orienté dépendances, risques et prochaines étapes.
 
-**Statistiques** :
-- **SharePoint** : 1 site
-- **Dataverse** : 12 tables TPG
-- **Total sources** : 13
+## Déclencheurs typiques
+- Cycle de statut hebdo/bimensuel
+- Changement majeur au plan (jalon déplacé, charge, dépendance)
+- Demande de synthèse pour comité (direction/VMO)
 
----
+## Données d’entrée
+- Plan projet : tâches, jalons, charges (Dataverse TPG / Planner Premium) — à confirmer
+- Risques, enjeux, décisions (Dataverse TPG)
+- Dépendances et impacts croisés (Dataverse TPG)
+- Site SharePoint Idexios‑Prime : https://idexia365.sharepoint.com/sites/Idexios/Prime
 
-## 📊 Sources Dataverse
+## Données de sortie
+- Statut projet (texte + indicateurs) prêt à publier
+- Liste des alertes (dérives, dépendances bloquantes, jalons à risque)
+- Mise à jour / consolidation du plan (si autorisé) — à confirmer
 
-### Tables TPG (12 tables)
+## Sources / Tables (Dataverse TPG)
 
+### Tables TPG (inventaire existant)
 | # | Nom d'affichage | Nom technique | Type | Usage |
 |---|-----------------|---------------|------|-------|
 | 1 | Aperçu de la tâche du projet | `tpg_projecttask_snap` | Snapshot | Historique des tâches |
@@ -35,50 +47,28 @@ Agent Hermes est spécialisé dans la gestion et le suivi des données de projet
 | 11 | Tâche (TPG) | `tpg_projecttask` | Maître | Tâches de projet TPG |
 | 12 | Task Label | `tpg_tasklabel` | Référence | Étiquettes de tâches |
 
-### Classification par domaine
+### Tables candidates (à confirmer)
+- tpg_task (ou msdyn_task)
+- tpg_milestone
+- tpg_dependency
+- tpg_risk, tpg_issue, tpg_decision
 
-**Gestion de projet** (4 tables)
-- `tpg_project` - Données projet principales
-- `tpg_project_snap` - Snapshots historiques projet
-- `tpg_projectteam` - Membres de l'équipe
-- `tpg_requirement` - Exigences du projet
+## Règles de validation et contrôles
+- Statut = période (date début/fin) + source de plan identifiée
+- Dépendances bloquantes mises en évidence (owner + date)
+- Quand une info manque : marquer « À confirmer » et remonter un besoin de clarification
 
-**Gestion des tâches** (4 tables)
-- `tpg_projecttask` - Tâches TPG
-- `tpg_projecttask_snap` - Snapshots historiques tâches
-- `Task` - Tâches Microsoft Planner
-- `tpg_tasklabel` - Étiquettes et catégories
+## Lignes d’action BPMN candidates
+| Ligne d’action | Déclencheur | Entrées | Traitement | Sorties |
+|---|---|---|---|---|
+| DELIV-01 • Émettre statut projet | Cycle statut | Plan + risques + décisions | Consolider + calculer tendances + rédiger | Statut + alertes |
+| DELIV-02 • Suivre dépendances | Nouvelle dépendance / blocage | Dépendance + owners | Qualifier impact + notifier + proposer action | Alerte dépendance |
 
-**Gestion des ressources** (2 tables)
-- `tpg_assignment` - Attribution des ressources
-- `tpg_timesheet` - Saisie du temps
+## Hypothèses et points à confirmer
+- Règles de calcul CPI/SPI côté Delivery (si applicable) à confirmer
+- Autorisation d’écriture sur le plan (read‑only vs write) à confirmer
 
-**Données financières** (2 tables)
-- `tpg_financials` - Données financières actuelles
-- `tpg_financial_snap` - Snapshots historiques financiers
-
----
-
-## 📁 Sources SharePoint
-
-### Site : Idexios-Prime
-
-**URL** : `https://idexia365.sharepoint.com/sites/Idexios/Prime`  
-**Rôle** : Site de référence documentaire pour l'agent Hermes
-
-| Type | Nom | Description | Accès |
-|------|-----|-------------|-------|
-| Site | Idexios-Prime | Documentation et ressources centralisées | Lecture |
-
-**Contenu typique** :
-- Documents de référence projet
-- Templates et modèles
-- Procédures et guides
-- Documentation technique
-
----
-
-## 🔐 Permissions requises
+## Accès / permissions (à confirmer)
 
 ### Dataverse
 - `prvReadTPGProject` - Lecture des projets TPG
@@ -89,10 +79,12 @@ Agent Hermes est spécialisé dans la gestion et le suivi des données de projet
 - `prvReadTPGRequirement` - Lecture des exigences
 - `prvReadTask` - Lecture des tâches Planner
 
-### SharePoint  
+### SharePoint
 - Site Member (Idexios-Prime) - Lecture
 
----
-
-## 🔄 Flux de données
+## Flux de données (brouillon)
+1. Charger plan + référentiels (projet, tâches, ressources).
+2. Consolider risques/enjeux/décisions et dépendances.
+3. Calculer tendances et détecter alertes.
+4. Produire statut + liste d’actions.
 

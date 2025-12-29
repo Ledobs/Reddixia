@@ -1,35 +1,55 @@
-# Sources de données — Ceres
+# DAT — CERES-BUDGET (IA-TPG-018)
 
-> **Agent** : CERES-BUDGET (IA-TPG-018)
-> **Domaine** : FinanceOps
-> **Dernière mise à jour** : 29 décembre 2025
-> **Statut** : Brouillon (à compléter)
+> **Agent** : CERES-BUDGET  
+> **Code** : IA-TPG-018  
+> **Identifiant** : CERES-BUDGET  
+> **Domain Pack** : FinanceOps  
+> **Statut** : Draft  
+> **Dernière mise à jour** : 2025-12-29 16:56:16 EST
 
-## Vue d'ensemble
+## Rôle
+Agent de planification budgétaire : il prépare les budgets, scénarios et allocations en lien avec le portefeuille et les contraintes de capacité.
 
-CERES-BUDGET contrôle l’adhérence budgétaire : budget vs prévision, dashboards, alertes, notes de politiques et soutien aux arbitrages.
+## Mission
+Accélérer la préparation budgétaire et les scénarios, avec des hypothèses explicites et une justification traçable.
 
-## Sources attendues (à confirmer)
+## Déclencheurs typiques
+- Cycle budgétaire annuel / révision trimestrielle
+- Demande de scénario (augmentation/réduction, priorisation)
+- Changement majeur de portefeuille (entrée/sortie de projets)
 
-### SharePoint
-- **Site** : Idexios-Prime
-- **Bibliothèque / chemin** : `/Idexios-Prime/Procedures/Finance/` (d’après `agents-registry.md`)
-- **Types de contenus** : politiques budgétaires, règles d’arbitrage, gabarits alertes/dashboards.
+## Données d’entrée
+- Portefeuille : projets, priorités, dépendances (Dataverse TPG)
+- Historique coûts / réels (Dataverse TPG) — à confirmer
+- Contraintes de capacité (TPG / Power Platform) — à confirmer
+- SharePoint Idexios‑Prime : `/Idexios-Prime/Procedures/Finance/` (d’après `agents-registry.md`)
 
-### Dataverse (TPG)
-- **Finances / périodes** : `[À confirmer]` `tpg_financials`, `tpg_financial_snap`, `tpg_period`
-- **Budgets / prévisions** : `[À confirmer]` (où stockés ? tables/champs)
+## Données de sortie
+- Scénarios budgétaires (baseline + variantes)
+- Proposition d’allocation par programme/projet/poste
+- Justificatifs : hypothèses + impacts (risques, délais) — à confirmer
 
-## Permissions requises (à confirmer)
-- Dataverse: lecture finances + périodes.
-- SharePoint: lecture procédures finance.
+## Sources / Tables (Dataverse TPG)
+- tpg_budget, tpg_budgetline
+- tpg_allocation — à confirmer
+- tpg_project, tpg_program
+- tpg_capacity — à confirmer
 
-## Points à clarifier
-- Où se trouvent les budgets (dans TPG vs externe) ?
-- Seuils d’alerte et règles de gouvernance (documentation).
+## Règles de validation et contrôles
+- Chaque scénario documente hypothèses (taux, volumes, périmètre)
+- Allocation = somme cohérente (totaux par niveau)
+- Marquer « À confirmer » pour toute donnée manquante ou hypothèse forte
 
-## Flux de données (brouillon)
-1. Charger budget/prévision/réel par période.
-2. Calculer écarts et tendances.
-3. Déclencher alertes selon seuils.
-4. Produire dashboards et notes d’arbitrage.
+## Lignes d’action BPMN candidates
+| Ligne d’action | Déclencheur | Entrées | Traitement | Sorties |
+|---|---|---|---|---|
+| FIN-10 • Construire scénario budgétaire | Demande de scénario | Portefeuille + contraintes | Varier hypothèses + recalculer allocations | Scénario + impacts |
+| FIN-11 • Proposer allocation | Cycle budgétaire | Budgets cibles + projets | Répartir + justifier + vérifier totaux | Allocation + justificatifs |
+
+## Hypothèses et points à confirmer
+- Règles de priorisation (VMO/LPM) à confirmer
+- Structure officielle de postes budgétaires (capex/opex, centres de coût) à confirmer
+
+## Accès / permissions (à confirmer)
+- SharePoint Idexios‑Prime : lecture sur procédures finance
+- Dataverse : lecture sur budgets/allocations/capacité si utilisés

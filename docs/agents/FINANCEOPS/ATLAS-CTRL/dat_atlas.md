@@ -1,41 +1,56 @@
-# Sources de données — Atlas
+# DAT — ATLAS-CTRL (IA-TPG-015)
 
-> **Agent** : ATLAS-CTRL (IA-TPG-005)
-> **Domaine** : FinanceOps
-> **Dernière mise à jour** : 29 décembre 2025
-> **Statut** : Brouillon (à compléter)
+> **Agent** : ATLAS-CTRL  
+> **Code** : IA-TPG-015  
+> **Identifiant** : ATLAS-CTRL  
+> **Domain Pack** : FinanceOps  
+> **Statut** : Draft  
+> **Dernière mise à jour** : 2025-12-29 16:56:16 EST
 
-## Vue d'ensemble
+## Rôle
+Agent de contrôle financier : il suit coûts vs budget, analyse les écarts, qualifie les dérives et propose des actions de correction.
 
-ATLAS-CTRL consolide effort/coûts/délais/risques pour vérifier l’intégrité des plans, détecter des anomalies et préparer des rapports d’avancement (profil PCO/contrôleur).
+## Mission
+Offrir une vue de contrôle simple et défendable : où ça dérive, pourquoi, et quoi faire ensuite.
 
-## Sources attendues (à confirmer)
+## Déclencheurs typiques
+- Chargement de nouveaux réels (dépenses, temps, factures)
+- Fin de période (mensuel) : analyse des écarts
+- Seuils CPI/SPI franchis (vert/ambre/rouge)
 
-### SharePoint
-- **Site** : Idexios-Prime
-- **Bibliothèque / chemin** : `/Idexios-Prime/Procedures/Pilotage/` (d’après `agents-registry.md`)
-- **Types de contenus** : procédures PCO, gabarits de reddition, manuel d’opération, preuves (factures/contrats si déposés).
+## Données d’entrée
+- Budget et lignes budgétaires (Dataverse TPG)
+- Réels : temps / coûts / achats (Dataverse TPG ou systèmes connectés) — à confirmer
+- Prévisions / EAC / ETC (Dataverse TPG) — à confirmer
+- SharePoint Idexios‑Prime : `/Idexios-Prime/Procedures/Pilotage/` (d’après `agents-registry.md`) — à confirmer
 
-### Dataverse (TPG)
-- **Table candidates (communes)** : `[À confirmer]` `tpg_project`, `tpg_projecttask`, `tpg_assignment`, `tpg_timesheet`
-- **Finances (si applicable)** : `[À confirmer]` `tpg_financials`, `tpg_financial_snap`, `tpg_period`
-- **Contrôles / registres** : `[À confirmer]` (risques, enjeux, actions, décisions, changements)
+## Données de sortie
+- Rapport d’écarts (budget vs réel vs prévision)
+- Alertes (seuils CPI/SPI, dérives, postes sensibles)
+- Recommandations (actions correctives, hypothèses à valider)
 
-## Permissions requises (à confirmer)
+## Sources / Tables (Dataverse TPG)
+- tpg_budget, tpg_budgetline — à confirmer
+- tpg_actual, tpg_cost, tpg_timesheet — à confirmer
+- tpg_forecast / tpg_eac — à confirmer
+- tpg_project (référence)
 
-### SharePoint
-- Lecture Idexios-Prime + accès aux gabarits/procédures Pilotage.
+## Règles de validation et contrôles
+- Écart = source + période + devise cohérente
+- Traçabilité : chaque recommandation pointe vers des lignes de données
+- Gestion des valeurs manquantes : ne pas extrapoler sans le marquer
 
-### Dataverse
-- Lecture sur projets/tâches/affectations/temps + finances si utilisées.
+## Lignes d’action BPMN candidates
+| Ligne d’action | Déclencheur | Entrées | Traitement | Sorties |
+|---|---|---|---|---|
+| FIN-01 • Analyser écarts | Fin de période | Budget + réels + prévisions | Calcul écarts + classification (vert/ambre/rouge) | Rapport écarts |
+| FIN-02 • Émettre alerte dérive | Seuil CPI/SPI franchi | KPIs + lignes coût | Qualifier dérive + causes probables + action | Alerte + recommandation |
 
-## Points à clarifier
-- Où est la source-of-truth contrats/factures (Dataverse vs SharePoint) ?
-- Règles RAG CPI/SPI appliquées et où sont-elles documentées ?
-- Périmètre exact des contrôles (PCO vs Finance) : entités disponibles.
+## Hypothèses et points à confirmer
+- Liste exacte des tables financières TPG (noms) à confirmer
+- Règles CPI/SPI par type de projet/programme à confirmer
+- Code agent à valider (une version précédente mentionnait IA-TPG-005)
 
-## Flux de données (brouillon)
-1. Charger référentiel projet (projets, WBS, périodes).
-2. Consolider (effort, coûts, échéancier, risques).
-3. Détecter anomalies (complétude, cohérence, écarts).
-4. Produire rapports + recommandations (sans modifier les données).
+## Accès / permissions (à confirmer)
+- SharePoint Idexios‑Prime : lecture sur procédures/gabarits pertinents
+- Dataverse : lecture sur budgets/réels/prévisions si utilisés

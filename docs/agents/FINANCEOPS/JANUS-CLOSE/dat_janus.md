@@ -1,39 +1,54 @@
-# Sources de données — Janus
+# DAT — JANUS-CLOSE (IA-TPG-009)
 
-> **Agent** : JANUS-CLOSE (IA-TPG-009)
-> **Domaine** : FinanceOps
-> **Dernière mise à jour** : 29 décembre 2025
-> **Statut** : Brouillon (à compléter)
+> **Agent** : JANUS-CLOSE  
+> **Code** : IA-TPG-009 — à confirmer  
+> **Identifiant** : JANUS-CLOSE  
+> **Domain Pack** : GovernanceOps  
+> **Statut** : Draft  
+> **Dernière mise à jour** : 2025-12-29 16:56:16 EST
 
-## Vue d'ensemble
+## Rôle
+Agent de clôture et de gouvernance : il prépare les éléments de fermeture de phase/projet (livrables, décisions, leçons apprises) et vérifie la complétude des dossiers.
 
-JANUS-CLOSE accélère la clôture de période : rapprochement des écarts, analyse des causes, préparation du pack de clôture et création de cases d’exception/validation.
+## Mission
+Fiabiliser les transitions (fin de phase, clôture) en s’assurant que les décisions, livrables et métriques sont documentés.
 
-## Sources attendues (à confirmer)
+## Déclencheurs typiques
+- Fin de phase / fin de projet
+- Demande de fermeture par le VMO
+- Audit / revue de conformité
 
-### SharePoint
-- **Site** : Idexios-Prime
-- **Bibliothèque / chemin** : `/Idexios-Prime/Procedures/Finance/` (d’après `agents-registry.md`)
-- **Types de contenus** : procédures de clôture, gabarits pack de clôture, règles de conciliation, preuves.
+## Données d’entrée
+- Liste des livrables et statuts (Dataverse TPG / SharePoint) — à confirmer
+- Décisions, risques résiduels, approbations (Dataverse TPG) — à confirmer
+- Rétrospective / leçons apprises (Teams/Forms/SharePoint) — à confirmer
+- SharePoint Idexios‑Prime : `/Idexios-Prime/Procedures/Finance/` (d’après `agents-registry.md`) — à confirmer
 
-### Dataverse (TPG)
-- **Finances / périodes** : `[À confirmer]` `tpg_financials`, `tpg_financial_snap`, `tpg_period`
-- **Dimensions d’imputation** : `[À confirmer]` (département, portefeuille, programme, projet, centres de coûts, etc.)
+## Données de sortie
+- Dossier de clôture (checklist + preuves)
+- Résumé de leçons apprises et recommandations
+- Statut de conformité (complet / incomplet + éléments manquants)
 
-## Permissions requises (à confirmer)
+## Sources / Tables (Dataverse TPG)
+- tpg_deliverable — à confirmer
+- tpg_decision, tpg_risk, tpg_issue — à confirmer
+- tpg_project
 
-### Dataverse
-- Lecture sur finances + périodes + dimensions.
+## Règles de validation et contrôles
+- Checklist de clôture : livrables obligatoires présents et approuvés
+- Traçabilité : lien vers preuves (URL SharePoint / enregistrement) — à confirmer
+- Tout manquant doit être listé clairement (owner + date cible)
 
-### SharePoint
-- Lecture sur procédures/gabarits finance.
+## Lignes d’action BPMN candidates
+| Ligne d’action | Déclencheur | Entrées | Traitement | Sorties |
+|---|---|---|---|---|
+| GOV-01 • Préparer dossier de clôture | Fin phase/projet | Livrables + décisions + preuves | Vérifier complétude + compiler | Dossier + manquants |
 
-## Points à clarifier
-- Définitions des écarts (formules, seuils, RAG) et où elles sont documentées.
-- Liste des exceptions et workflow d’approbation (dans Dataverse ou ailleurs).
+## Hypothèses et points à confirmer
+- Définition exacte du processus de clôture (gates) à confirmer
+- Emplacement des preuves (SharePoint libraries) à confirmer
+- Domain Pack à confirmer (le fichier est rangé sous FINANCEOPS dans le repo)
 
-## Flux de données (brouillon)
-1. Sélection période (tpg_period).
-2. Charger données financières et historiques.
-3. Identifier écarts/causes + proposer actions.
-4. Produire pack de clôture (gabarits SharePoint) + cases d’exception si applicable.
+## Accès / permissions (à confirmer)
+- SharePoint Idexios‑Prime : lecture sur bibliothèques de preuves
+- Dataverse : lecture sur projet/livrables/décisions si disponibles
