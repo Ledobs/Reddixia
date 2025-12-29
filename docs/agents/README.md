@@ -1,10 +1,10 @@
 ﻿# Documentation des agents IA (IA-TPG-001 à IA-TPG-019)
+## Vue d'ensemble
+Registre complet des 19 agents organisés en 6 domain packs fonctionnels.
+
 ## État
 - Backlog: [workload_pending.md](backlog/workload_pending.md) - Description de l'état
 - Evolution: [evolutions-futures.md](backlog/evolutions-futures.md)
-
-## Vue d'ensemble
-Registre complet des 19 agents organisés en 6 domain packs fonctionnels.
 
 ## Domain Packs
 - [FinanceOps](FINANCEOPS/) - 8 agents (ATLAS, JANUS, VESTA, PLUTUS, CASSANDRA, MERCURY, POSEIDON, CERES)
