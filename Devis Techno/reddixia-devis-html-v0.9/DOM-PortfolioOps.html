@@ -95,6 +95,7 @@
   <div class="pill"><b>Référentiel</b> : SharePoint Idexios-Prime</div>
 </div>
 
+
 </div>
 <div class="two card">
   <h2>Agents du pack</h2>
@@ -113,12 +114,13 @@
 <div class="card">
   <h2>APP / TECH</h2>
   
-<div class="diagram"><pre class="mermaid">flowchart LR
-  HUB[IDEXIOS-HUB] --&gt; PACK[PortfolioOps]
-  PACK --&gt; AG[Agents PortfolioOps]
-  AG --&gt; DV[(Dataverse tpg_*)]
-  AG --&gt; SP[(SharePoint)]
-  AG --&gt; OUT[Sorties (rubriques)]
+<div class="diagram"><pre class="mermaid">flowchart TD
+  HUB[IDEXIOS HUB] --> PACK[PortfolioOps]
+  PACK --> AG[Agents]
+  AG --> DV[Dataverse]
+  AG --> SP[SharePoint]
+  AG --> PA[Power Automate]
+  AG --> OUT[Sorties]
 </pre></div>
 <ul>
   <li>Connecteurs : Dataverse, SharePoint, Power Automate.</li>
@@ -135,6 +137,145 @@
   <li>Documents : modèles, rapports, comptes rendus, exports (SharePoint).</li>
 </ul>
 
+</div>
+
+<div class="card">
+  <h2>Rubriques — explosion métier</h2>
+  <p>Vue “explosée” des rubriques clés du pack : trinité contextuelle, diagrammes, KPI, colonnes de données et schéma Entrée/Sortie. Marquage <span class="warnText">À définir</span> si incomplet.</p>
+
+  <details class="accordion">
+    <summary>
+      <span class="acc-title">Portefeuille — Santé &amp; arbitrages</span>
+      <span class="acc-wrap">Wrap‑up : synthèse portefeuille, statuts, priorités, recommandations.</span>
+    </summary>
+    <div class="acc-body">
+      <h3>1) Contexte métier</h3>
+      <ul>
+        <li><b>Scénario</b> : un comité portefeuille demande une vue consolidée (avancement, risque, coût, capacité) pour arbitrer.</li>
+        <li><b>Besoin</b> : décider rapidement (prioriser, stopper, financer) sur la base d’indicateurs traçables.</li>
+        <li><b>Process</b> : Collecte données projets → Consolidation → Analyse → Recommandations → Diffusion.</li>
+      </ul>
+      <h3>2) Visualisation</h3>
+      <div class="diagram"><pre class="mermaid">graph TD
+  A[Demande Portefeuille] --> B[Consolidation projets]
+  B --> C[Analyse santé (ATHENA-PORT)]
+  B --> D[Risques (GAIA-RISK)]
+  B --> E[Capacité (VESTA-WORK)]
+  C --> Z[Sortie Portefeuille]
+  D --> Z
+  E --> Z
+</pre></div>
+      <div class="diagram" style="margin-top:10px"><pre class="mermaid">sequenceDiagram
+  autonumber
+  actor U as Utilisateur
+  participant HUB as IDEXIOS-HUB
+  participant AP as ATHENA-PORT
+  participant GR as GAIA-RISK
+  participant DV as Dataverse (tpg_...)
+  U->>HUB: Demande "Santé du portefeuille"
+  HUB->>AP: Consolider + analyser
+  AP->>DV: Lire projets/portefeuille
+  DV-->>AP: Données
+  HUB->>GR: Risques & dépendances
+  GR->>DV: Lire risques
+  GR-->>HUB: Synthèse risques
+  AP-->>HUB: KPI + recommandations
+  HUB-->>U: Vue consolidée + actions
+</pre></div>
+      <h3>3) Indicateurs &amp; seuils</h3>
+      <ul>
+        <li>Portefeuille “on track” (%) — seuil : <span class="warnText">À définir</span></li>
+        <li>Risque agrégé (exposition) — seuil : <span class="warnText">À définir</span></li>
+        <li>Capacité utilisée (%) — seuil : <span class="warnText">À définir</span></li>
+      </ul>
+      <h3>4) Architecture de l’information (colonnes)</h3>
+      <table style="width:100%; border-collapse:collapse; font-size:13px">
+        <thead>
+          <tr>
+            <th style="text-align:left; padding:8px; border-bottom:1px solid rgba(39,53,95,.6)">Nom</th>
+            <th style="text-align:left; padding:8px; border-bottom:1px solid rgba(39,53,95,.6)">Type</th>
+            <th style="text-align:left; padding:8px; border-bottom:1px solid rgba(39,53,95,.6)">Format</th>
+            <th style="text-align:left; padding:8px; border-bottom:1px solid rgba(39,53,95,.6)">Utilité</th>
+            <th style="text-align:left; padding:8px; border-bottom:1px solid rgba(39,53,95,.6)">Contexte</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="padding:8px; border-bottom:1px solid rgba(39,53,95,.35)"><code>portfolio_id</code></td>
+            <td style="padding:8px; border-bottom:1px solid rgba(39,53,95,.35)">string</td>
+            <td style="padding:8px; border-bottom:1px solid rgba(39,53,95,.35)">GUID / clé métier</td>
+            <td style="padding:8px; border-bottom:1px solid rgba(39,53,95,.35)">Clé de liaison du portefeuille.</td>
+            <td style="padding:8px; border-bottom:1px solid rgba(39,53,95,.35)">Toutes analyses</td>
+          </tr>
+          <tr>
+            <td style="padding:8px; border-bottom:1px solid rgba(39,53,95,.35)"><code>project_id</code></td>
+            <td style="padding:8px; border-bottom:1px solid rgba(39,53,95,.35)">string</td>
+            <td style="padding:8px; border-bottom:1px solid rgba(39,53,95,.35)">GUID / clé métier</td>
+            <td style="padding:8px; border-bottom:1px solid rgba(39,53,95,.35)">Liaison projets ↔ risques ↔ finances.</td>
+            <td style="padding:8px; border-bottom:1px solid rgba(39,53,95,.35)">Consolidation</td>
+          </tr>
+        </tbody>
+      </table>
+      <h3>5) Schéma de traitement (Entrée/Sortie &amp; clés)</h3>
+      <div class="diagram"><pre class="mermaid">flowchart LR
+  IN[Entrées: projets/risques/finances] -->|portfolio_id + project_id| AG[Analyse]
+  AG --> OUT[Sorties: synthèse + recommandations]
+</pre></div>
+      <h3>6) Questions (mode interview)</h3>
+      <ul>
+        <li>Quels KPI sont “officiels” pour le comité portefeuille ?</li>
+        <li>Quels seuils déclenchent une escalade (rouge/orange/vert) ?</li>
+        <li>Quelles tables/colonnes portent les statuts et l’avancement ?</li>
+      </ul>
+    </div>
+  </details>
+
+  <details class="accordion" style="margin-top:10px">
+    <summary>
+      <span class="acc-title">Portefeuille — Risques &amp; dépendances</span>
+      <span class="acc-wrap">Wrap‑up : signaux faibles, impacts, plans de mitigation.</span>
+    </summary>
+    <div class="acc-body">
+      <h3>1) Contexte métier</h3>
+      <ul>
+        <li><b>Scénario</b> : identifier risques cross-projets et dépendances qui menacent les jalons.</li>
+        <li><b>Besoin</b> : réduire surprises, protéger trajectoire, prioriser actions.</li>
+        <li><b>Process</b> : Détection → Qualification → Impact → Mitigation → Suivi.</li>
+      </ul>
+      <h3>2) Visualisation</h3>
+      <div class="diagram"><pre class="mermaid">graph TD
+  A[Sources risques] --> B[GAIA-RISK]
+  B --> C[Scoring]
+  C --> D[Plans mitigation]
+  D --> E[Suivi]
+</pre></div>
+      <h3>3) KPI</h3>
+      <ul>
+        <li>Exposition risque (score) — seuil : <span class="warnText">À définir</span></li>
+        <li>Nb risques critiques — seuil : <span class="warnText">À définir</span></li>
+      </ul>
+    </div>
+  </details>
+
+  <details class="accordion" style="margin-top:10px">
+    <summary>
+      <span class="acc-title">Portefeuille — Scénarios</span>
+      <span class="acc-wrap">Wrap‑up : comparer options (priorités, capacité, coûts) et recommander.</span>
+    </summary>
+    <div class="acc-body">
+      <h3>1) Contexte métier</h3>
+      <ul>
+        <li><b>Scénario</b> : “si on décale X / ajoute Y ressources, quel impact ?”.</li>
+        <li><b>Besoin</b> : arbitrer avec transparence et traçabilité.</li>
+        <li><b>Process</b> : Hypothèses → Simulation → Comparaison → Décision.</li>
+      </ul>
+      <h3>2) Données</h3>
+      <ul>
+        <li><b>Entrées</b> : hypothèses, contraintes, capacité, budgets (<span class="warnText">À définir</span>)</li>
+        <li><b>Sorties</b> : tableau comparatif, recommandation, risques associés</li>
+      </ul>
+    </div>
+  </details>
 </div>
 <div class="card">
   <h2>Spécifications (relations pack → agents → systèmes)</h2>

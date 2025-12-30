@@ -113,12 +113,13 @@
 <div class="card">
   <h2>APP / TECH</h2>
   
-<div class="diagram"><pre class="mermaid">flowchart LR
-  HUB[IDEXIOS-HUB] --&gt; PACK[FinanceOps]
-  PACK --&gt; AG[Agents FinanceOps]
-  AG --&gt; DV[(Dataverse tpg_*)]
-  AG --&gt; SP[(SharePoint)]
-  AG --&gt; OUT[Sorties (rubriques)]
+<div class="diagram"><pre class="mermaid">flowchart TD
+  HUB[IDEXIOS HUB] --> PACK[FinanceOps]
+  PACK --> AG[Agents]
+  AG --> DV[Dataverse]
+  AG --> SP[SharePoint]
+  AG --> PA[Power Automate]
+  AG --> OUT[Sorties]
 </pre></div>
 <ul>
   <li>Connecteurs : Dataverse, SharePoint, Power Automate.</li>
@@ -136,6 +137,152 @@
 </ul>
 
 </div>
+
+<div class="card">
+  <h2>Rubriques — explosion métier</h2>
+
+  <p>Objectif : relier systématiquement le besoin métier au flux logique et aux données. Les éléments manquants sont marqués <span class="warnText">À définir</span>.</p>
+
+  <details class="accordion">
+    <summary>
+      <span class="acc-title">Finances — Contrôle &amp; écarts</span>
+      <span class="acc-wrap">Wrap‑up : comparer budget vs réalisé, qualifier les dérives, proposer des actions.</span>
+    </summary>
+    <div class="acc-body">
+      <h3>1) Contexte métier (scénario / besoin / process)</h3>
+      <ul>
+        <li><b>Scénario d’usage</b> : un PMO/contrôleur demande l’état financier d’un portefeuille/projet (coût, effort, budget) et les écarts.</li>
+        <li><b>Besoin métier</b> : détecter tôt les dérives (coûts, engagements, burn) pour arbitrer, corriger et sécuriser la trajectoire.</li>
+        <li><b>Business process</b> : Collecte → Normalisation → Calcul KPI → Détection anomalies → Recommandations → Diffusion (conversation + artefacts).</li>
+      </ul>
+
+      <h3>2) Visualisation (hiérarchie → flux)</h3>
+      <div class="diagram"><pre class="mermaid">graph TD
+  A[Demande Finance] --> B[Collecte (MERCURY-COLLECT)]
+  B --> C[Normalisation &amp; consolidation]
+  C --> D[Contrôle &amp; écarts (ATLAS-CTRL)]
+  C --> E[Anomalies (PLUTUS-ANOM)]
+  C --> F[Prévisions (CASSANDRA-FQA)]
+  C --> G[Cash (POSEIDON-CASH)]
+  C --> H[Budget (CERES-BUDGET)]
+  D --> Z[Sortie Finance]
+  E --> Z
+  F --> Z
+  G --> Z
+  H --> Z
+</pre></div>
+      <div class="diagram" style="margin-top:10px"><pre class="mermaid">sequenceDiagram
+  autonumber
+  actor U as Utilisateur
+  participant HUB as IDEXIOS-HUB
+  participant MC as MERCURY-COLLECT
+  participant DV as Dataverse (tpg_...)
+  participant AT as ATLAS-CTRL
+  participant OUT as Sortie Finance
+  U->>HUB: Demande "État financier / écarts"
+  HUB->>MC: Collecter + normaliser (périmètre, période)
+  MC->>DV: Lire transactions/budgets/temps
+  DV-->>MC: Jeux de données
+  MC->>AT: Calcul écarts + diagnostics
+  AT-->>HUB: KPI + alertes + recommandations
+  HUB-->>OUT: Synthèse + tableaux + liens
+  OUT-->>U: Restitution
+</pre></div>
+
+      <h3>3) Indicateurs &amp; seuils</h3>
+      <ul>
+        <li>Variance coût (%) = (Réalisé − Budget) / Budget — seuil critique : <span class="warnText">À définir</span></li>
+        <li>Burn rate (€/semaine) — seuil critique : <span class="warnText">À définir</span></li>
+        <li>Forecast accuracy (MAPE) — seuil critique : <span class="warnText">À définir</span></li>
+        <li>Couverture des données (complet/incomplet) — seuil critique : <span class="warnText">À définir</span></li>
+      </ul>
+
+      <h3>4) Architecture de l’information (colonnes)</h3>
+      <table style="width:100%; border-collapse:collapse; font-size:13px">
+        <thead>
+          <tr>
+            <th style="text-align:left; padding:8px; border-bottom:1px solid rgba(39,53,95,.6)">Nom</th>
+            <th style="text-align:left; padding:8px; border-bottom:1px solid rgba(39,53,95,.6)">Type</th>
+            <th style="text-align:left; padding:8px; border-bottom:1px solid rgba(39,53,95,.6)">Format</th>
+            <th style="text-align:left; padding:8px; border-bottom:1px solid rgba(39,53,95,.6)">Utilité</th>
+            <th style="text-align:left; padding:8px; border-bottom:1px solid rgba(39,53,95,.6)">Contexte</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="padding:8px; border-bottom:1px solid rgba(39,53,95,.35)"><code>billing_account_id</code></td>
+            <td style="padding:8px; border-bottom:1px solid rgba(39,53,95,.35)">string</td>
+            <td style="padding:8px; border-bottom:1px solid rgba(39,53,95,.35)">GUID / clé métier</td>
+            <td style="padding:8px; border-bottom:1px solid rgba(39,53,95,.35)">Clé de liaison comptable (factures, paiements, engagements).</td>
+            <td style="padding:8px; border-bottom:1px solid rgba(39,53,95,.35)">Consolidation multi-sources</td>
+          </tr>
+          <tr>
+            <td style="padding:8px; border-bottom:1px solid rgba(39,53,95,.35)"><code>period_id</code></td>
+            <td style="padding:8px; border-bottom:1px solid rgba(39,53,95,.35)">string</td>
+            <td style="padding:8px; border-bottom:1px solid rgba(39,53,95,.35)">YYYY-MM</td>
+            <td style="padding:8px; border-bottom:1px solid rgba(39,53,95,.35)">Index temporel (filtre/agrégation).</td>
+            <td style="padding:8px; border-bottom:1px solid rgba(39,53,95,.35)">Toutes rubriques Finance</td>
+          </tr>
+          <tr>
+            <td style="padding:8px; border-bottom:1px solid rgba(39,53,95,.35)"><code>cost_actual</code></td>
+            <td style="padding:8px; border-bottom:1px solid rgba(39,53,95,.35)">number</td>
+            <td style="padding:8px; border-bottom:1px solid rgba(39,53,95,.35)">decimal</td>
+            <td style="padding:8px; border-bottom:1px solid rgba(39,53,95,.35)">Mesure réalisé (coût).</td>
+            <td style="padding:8px; border-bottom:1px solid rgba(39,53,95,.35)">Table <span class="warnText">À définir</span></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h3>5) Schéma de traitement (Entrée/Sortie &amp; clés de liaison)</h3>
+      <div class="diagram"><pre class="mermaid">flowchart LR
+  IN[Entrées: factures/temps/achats] -->|billing_account_id + period_id| N[Normalisation]
+  N --> K[Calcul KPI / écarts]
+  K --> OUT[Sorties: tableaux + alertes + recommandations]
+</pre></div>
+      <ul>
+        <li><b>Entrées</b> : transactions, temps, engagements, budgets (sources <span class="warnText">À définir</span>)</li>
+        <li><b>Clés</b> : <code>billing_account_id</code>, <code>project_id</code>, <code>portfolio_id</code>, <code>period_id</code></li>
+        <li><b>Sorties</b> : synthèse (texte), table d’écarts, liste d’anomalies, liens vers pièces (SharePoint)</li>
+      </ul>
+
+      <h3>6) Questions (mode interview)</h3>
+      <ul>
+        <li>Quelle est la <b>source de vérité</b> du budget (table, colonne, version) ?</li>
+        <li>Quelle granularité est attendue (projet, lot, portefeuille, centre de coûts) ?</li>
+        <li>Quels seuils déclenchent une alerte (variance %, montant, durée) ?</li>
+        <li>Quelles clés garantissent le matching multi-sources (ex: <code>billing_account_id</code>) ?</li>
+      </ul>
+    </div>
+  </details>
+
+  <details class="accordion" style="margin-top:10px">
+    <summary>
+      <span class="acc-title">Finances — Trésorerie &amp; engagements</span>
+      <span class="acc-wrap">Wrap‑up : visibilité cash, décaissements prévus, engagements et risques.</span>
+    </summary>
+    <div class="acc-body">
+      <h3>1) Contexte métier</h3>
+      <ul>
+        <li><b>Scénario</b> : obtenir la trajectoire de cash liée au portefeuille (prévision de décaissements).</li>
+        <li><b>Besoin</b> : sécuriser liquidité, anticiper pics, arbitrer échéanciers.</li>
+        <li><b>Process</b> : Collecte → Projection → Risques → Restitution.</li>
+      </ul>
+      <h3>2) Visualisation</h3>
+      <div class="diagram"><pre class="mermaid">graph TD
+  A[Demande Cash] --> B[POSEIDON-CASH]
+  B --> C[Engagements &amp; échéances]
+  C --> D[Projection cash]
+  D --> E[Alertes &amp; recommandations]
+</pre></div>
+      <h3>3) Données (I/O)</h3>
+      <ul>
+        <li><b>Entrées</b> : factures, échéanciers, engagements, risques (<span class="warnText">À définir</span>)</li>
+        <li><b>Sorties</b> : vue cash, top engagements, alertes de liquidité</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
 <div class="card">
   <h2>Spécifications (relations pack → agents → systèmes)</h2>
   

@@ -99,7 +99,26 @@
           fontFamily:"ui-sans-serif, system-ui"
         }
       });
-      mermaid.run({ querySelector: ".mermaid" });
+
+      const nodes = $$(".mermaid");
+      if(!nodes.length) return;
+
+      // Render one-by-one so a single parse error doesn't abort everything.
+      nodes.forEach((node, idx)=>{
+        try{
+          const head = (node.textContent || "").trim().split("\n")[0] || "";
+          const p = mermaid.run({ nodes: [node] });
+          // mermaid.run returns a Promise in v10; attach a catch to prevent
+          // "Uncaught (in promise)" and to identify the failing block.
+          if(p && typeof p.then === "function"){
+            p.catch((e)=>{
+              console.warn("Mermaid render failed", { idx, head }, e);
+            });
+          }
+        }catch(e){
+          console.warn("Mermaid render failed (sync)", { idx }, e);
+        }
+      });
     }catch(e){
       console.warn("Mermaid init failed", e);
     }

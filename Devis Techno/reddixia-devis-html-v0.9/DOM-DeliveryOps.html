@@ -113,12 +113,13 @@
 <div class="card">
   <h2>APP / TECH</h2>
   
-<div class="diagram"><pre class="mermaid">flowchart LR
-  HUB[IDEXIOS-HUB] --&gt; PACK[DeliveryOps]
-  PACK --&gt; AG[Agents DeliveryOps]
-  AG --&gt; DV[(Dataverse tpg_*)]
-  AG --&gt; SP[(SharePoint)]
-  AG --&gt; OUT[Sorties (rubriques)]
+<div class="diagram"><pre class="mermaid">flowchart TD
+  HUB[IDEXIOS HUB] --> PACK[DeliveryOps]
+  PACK --> AG[Agents]
+  AG --> DV[Dataverse]
+  AG --> SP[SharePoint]
+  AG --> PA[Power Automate]
+  AG --> OUT[Sorties]
 </pre></div>
 <ul>
   <li>Connecteurs : Dataverse, SharePoint, Power Automate.</li>
@@ -135,6 +136,129 @@
   <li>Documents : modèles, rapports, comptes rendus, exports (SharePoint).</li>
 </ul>
 
+</div>
+
+<div class="card">
+  <h2>Rubriques — explosion métier</h2>
+
+  <p>Objectif : relier systématiquement le besoin métier au flux logique et aux données. Les éléments manquants sont marqués <span class="warnText">À définir</span>.</p>
+
+  <details class="accordion">
+    <summary>
+      <span class="acc-title">Livraison — Avancement &amp; jalons</span>
+      <span class="acc-wrap">Wrap‑up : statut, écarts plan/réel, jalons en retard, actions.</span>
+    </summary>
+    <div class="acc-body">
+      <h3>1) Contexte métier</h3>
+      <ul>
+        <li><b>Scénario</b> : un PMO demande un état d’avancement consolidé par projet (jalons, tâches, dépendances) avec alertes.</li>
+        <li><b>Besoin</b> : sécuriser la trajectoire (délais, charge) et objectiver les arbitrages.</li>
+        <li><b>Business process</b> : Collecte plan → Mise à jour réel → Comparaison → Alertes → Reporting.</li>
+      </ul>
+
+      <h3>2) Visualisation (hiérarchie → flux)</h3>
+      <div class="diagram"><pre class="mermaid">graph TD
+  A[Plan projet] --> B[Tâches & jalons]
+  B --> C[Avancement réel]
+  C --> D[Écarts & retards]
+  D --> E[Alertes]
+  E --> F[Statut projet]
+</pre></div>
+      <div class="diagram" style="margin-top:10px"><pre class="mermaid">sequenceDiagram
+  autonumber
+  actor U as Utilisateur
+  participant HUB as IDEXIOS-HUB
+  participant HE as HERMES-PROJ
+  participant DV as Dataverse (tpg_...)
+  participant SP as SharePoint
+  U->>HUB: Demande "Avancement & jalons"
+  HUB->>HE: Consolider plan + réel
+  HE->>DV: Lire tâches/jalons (À définir)
+  HE->>SP: Lire CR / livrables (À définir)
+  HE-->>HUB: KPI + écarts + alertes
+  HUB-->>U: Statut + actions recommandées
+</pre></div>
+
+      <h3>3) Indicateurs &amp; seuils</h3>
+      <ul>
+        <li>% avancement (pondéré) — seuil : <span class="warnText">À définir</span></li>
+        <li>Jalons en retard (# / %) — seuil : <span class="warnText">À définir</span></li>
+        <li>Écart planning (jours) — seuil : <span class="warnText">À définir</span></li>
+      </ul>
+
+      <h3>4) Architecture de l’information (colonnes)</h3>
+      <table style="width:100%; border-collapse:collapse; font-size:13px">
+        <thead>
+          <tr>
+            <th style="text-align:left; padding:8px; border-bottom:1px solid rgba(39,53,95,.6)">Nom</th>
+            <th style="text-align:left; padding:8px; border-bottom:1px solid rgba(39,53,95,.6)">Type</th>
+            <th style="text-align:left; padding:8px; border-bottom:1px solid rgba(39,53,95,.6)">Format</th>
+            <th style="text-align:left; padding:8px; border-bottom:1px solid rgba(39,53,95,.6)">Utilité</th>
+            <th style="text-align:left; padding:8px; border-bottom:1px solid rgba(39,53,95,.6)">Contexte</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="padding:8px; border-bottom:1px solid rgba(39,53,95,.35)"><code>project_id</code></td>
+            <td style="padding:8px; border-bottom:1px solid rgba(39,53,95,.35)">string</td>
+            <td style="padding:8px; border-bottom:1px solid rgba(39,53,95,.35)">GUID / clé</td>
+            <td style="padding:8px; border-bottom:1px solid rgba(39,53,95,.35)">Clé de liaison projet (statut ↔ tâches ↔ risques).</td>
+            <td style="padding:8px; border-bottom:1px solid rgba(39,53,95,.35)">Toutes analyses delivery</td>
+          </tr>
+          <tr>
+            <td style="padding:8px; border-bottom:1px solid rgba(39,53,95,.35)"><code>milestone_id</code></td>
+            <td style="padding:8px; border-bottom:1px solid rgba(39,53,95,.35)">string</td>
+            <td style="padding:8px; border-bottom:1px solid rgba(39,53,95,.35)">ID</td>
+            <td style="padding:8px; border-bottom:1px solid rgba(39,53,95,.35)">Identifier un jalon et son état.</td>
+            <td style="padding:8px; border-bottom:1px solid rgba(39,53,95,.35)">Planification</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h3>5) Schéma de traitement (Entrée/Sortie &amp; clés)</h3>
+      <div class="diagram"><pre class="mermaid">flowchart LR
+  IN[Entrées: plan + avancement] -->|project_id| HE[Consolidation]
+  HE --> OUT[Sorties: statut + alertes]
+</pre></div>
+      <ul>
+        <li><b>Clés de liaison</b> : <code>project_id</code>, <code>milestone_id</code>, <code>work_item_id</code> (<span class="warnText">À définir</span>)</li>
+        <li><b>Sorties</b> : statut, écarts, recommandations, liens vers preuves</li>
+      </ul>
+
+      <h3>6) Questions (mode interview)</h3>
+      <ul>
+        <li>Quelle est la table source des tâches/jalons (Dataverse, MS Project, Planner) ?</li>
+        <li>Comment calcule‑t‑on l’avancement (pondération, jalons bloquants) ?</li>
+        <li>Quels seuils déclenchent une alerte (jours, %, criticité) ?</li>
+      </ul>
+    </div>
+  </details>
+
+  <details class="accordion" style="margin-top:10px">
+    <summary>
+      <span class="acc-title">Livraison — Dépendances &amp; alertes</span>
+      <span class="acc-wrap">Wrap‑up : détecter blocages, dépendances critiques, et proposer des actions.</span>
+    </summary>
+    <div class="acc-body">
+      <h3>1) Contexte métier</h3>
+      <ul>
+        <li><b>Scénario</b> : détecter les dépendances (inter‑projets/équipes) qui menacent les jalons.</li>
+        <li><b>Besoin</b> : réduire les retards en anticipant les blocages.</li>
+        <li><b>Process</b> : Recensement dépendances → Scoring criticité → Alertes → Plan d’action.</li>
+      </ul>
+      <h3>2) Visualisation</h3>
+      <div class="diagram"><pre class="mermaid">graph TD
+  A[Dépendances] --> B[Criticité]
+  B --> C[Alertes]
+  C --> D[Plan d’action]
+</pre></div>
+      <h3>3) KPI</h3>
+      <ul>
+        <li>Dépendances critiques (#) — seuil : <span class="warnText">À définir</span></li>
+        <li>Taux de tâches bloquées (%) — seuil : <span class="warnText">À définir</span></li>
+      </ul>
+    </div>
+  </details>
 </div>
 <div class="card">
   <h2>Spécifications (relations pack → agents → systèmes)</h2>

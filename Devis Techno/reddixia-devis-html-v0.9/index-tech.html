@@ -99,19 +99,16 @@
 <div class="diagram">
   <pre class="mermaid">gitGraph
   commit id:"init"
-  branch dev
-  checkout dev
-  commit id:"poc-ui"
-  commit id:"packs-dom"
-  branch feature/mcp
-  checkout feature/mcp
-  commit id:"mcp-socle"
-  checkout dev
-  merge feature/mcp
-  commit id:"hardening"
-  branch release
-  checkout release
-  commit id:"pilot"
+  branch iD-xPM-Pantheon
+  checkout iD-xPM-Pantheon
+  commit id:"pack-v0.9"
+  commit id:"fix-dev-plan-gantt"
+  commit id:"fix-repo-links-branch"
+  branch release_v0_9
+  checkout release_v0_9
+  commit id:"publish-pack"
+  checkout iD-xPM-Pantheon
+  merge release_v0_9
 </pre>
 </div>
 

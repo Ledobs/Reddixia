@@ -95,6 +95,7 @@
   <div class="pill"><b>Référentiel</b> : SharePoint Idexios-Prime</div>
 </div>
 
+
 </div>
 <div class="two card">
   <h2>Agents du pack</h2>
@@ -113,12 +114,13 @@
 <div class="card">
   <h2>APP / TECH</h2>
   
-<div class="diagram"><pre class="mermaid">flowchart LR
-  HUB[IDEXIOS-HUB] --&gt; PACK[GovernanceOps]
-  PACK --&gt; AG[Agents GovernanceOps]
-  AG --&gt; DV[(Dataverse tpg_*)]
-  AG --&gt; SP[(SharePoint)]
-  AG --&gt; OUT[Sorties (rubriques)]
+<div class="diagram"><pre class="mermaid">flowchart TD
+  HUB[IDEXIOS HUB] --> PACK[GovernanceOps]
+  PACK --> AG[Agents]
+  AG --> DV[Dataverse]
+  AG --> SP[SharePoint]
+  AG --> PA[Power Automate]
+  AG --> OUT[Sorties]
 </pre></div>
 <ul>
   <li>Connecteurs : Dataverse, SharePoint, Power Automate.</li>
@@ -135,6 +137,149 @@
   <li>Documents : modèles, rapports, comptes rendus, exports (SharePoint).</li>
 </ul>
 
+</div>
+
+<div class="card">
+  <h2>Rubriques — explosion métier</h2>
+  <p>Chaque rubrique inclut : scénario d’usage, besoin métier, logique de flux, visualisation hiérarchique, données (colonnes + I/O) et questions. Marquage <span class="warnText">À définir</span> si incomplet.</p>
+
+  <details class="accordion">
+    <summary>
+      <span class="acc-title">Gouvernance — Contrôles &amp; conformité</span>
+      <span class="acc-wrap">Wrap‑up : vérifier politiques, contrôles, preuves et décisions associées.</span>
+    </summary>
+    <div class="acc-body">
+      <h3>1) Contexte métier (scénario / besoin / process)</h3>
+      <ul>
+        <li><b>Scénario d’usage</b> : un responsable conformité demande l’état des contrôles (RLS/DLP/rétention), les écarts et les preuves.</li>
+        <li><b>Besoin métier</b> : réduire les risques (audit, sécurité, conformité) et standardiser la traçabilité des décisions.</li>
+        <li><b>Business process</b> : Identification exigence → Contrôle → Collecte preuves → Qualification écarts → Actions → Reporting.</li>
+      </ul>
+
+      <h3>2) Visualisation (hiérarchie → flux)</h3>
+      <div class="diagram"><pre class="mermaid">graph TD
+  A[Exigences / Politiques] --> B[Contrôles]
+  B --> C[Preuves]
+  B --> D[Écarts]
+  D --> E[Actions correctives]
+  C --> F[Rapports / audit]
+</pre></div>
+      <div class="diagram" style="margin-top:10px"><pre class="mermaid">sequenceDiagram
+  autonumber
+  actor U as Utilisateur
+  participant HUB as IDEXIOS-HUB
+  participant TH as THEMIS-GOV
+  participant DV as Dataverse (tpg_...)
+  participant SP as SharePoint
+  U->>HUB: Demande "Contrôles & conformité"
+  HUB->>TH: Vérifier politiques + contrôles
+  TH->>DV: Lire règles/états (À définir)
+  TH->>SP: Lire preuves / artefacts
+  TH-->>HUB: Écarts + recommandations + liens
+  HUB-->>U: Synthèse + preuves + actions
+</pre></div>
+
+      <h3>3) Indicateurs &amp; seuils</h3>
+      <ul>
+        <li>Taux de contrôles conformes (%) — seuil critique : <span class="warnText">À définir</span></li>
+        <li>Nombre d’écarts ouverts (par sévérité) — seuil critique : <span class="warnText">À définir</span></li>
+        <li>Délai moyen de remédiation (jours) — seuil critique : <span class="warnText">À définir</span></li>
+      </ul>
+
+      <h3>4) Architecture de l’information (colonnes)</h3>
+      <table style="width:100%; border-collapse:collapse; font-size:13px">
+        <thead>
+          <tr>
+            <th style="text-align:left; padding:8px; border-bottom:1px solid rgba(39,53,95,.6)">Nom</th>
+            <th style="text-align:left; padding:8px; border-bottom:1px solid rgba(39,53,95,.6)">Type</th>
+            <th style="text-align:left; padding:8px; border-bottom:1px solid rgba(39,53,95,.6)">Format</th>
+            <th style="text-align:left; padding:8px; border-bottom:1px solid rgba(39,53,95,.6)">Utilité</th>
+            <th style="text-align:left; padding:8px; border-bottom:1px solid rgba(39,53,95,.6)">Contexte</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="padding:8px; border-bottom:1px solid rgba(39,53,95,.35)"><code>control_id</code></td>
+            <td style="padding:8px; border-bottom:1px solid rgba(39,53,95,.35)">string</td>
+            <td style="padding:8px; border-bottom:1px solid rgba(39,53,95,.35)">ID / code</td>
+            <td style="padding:8px; border-bottom:1px solid rgba(39,53,95,.35)">Identifiant de contrôle (audit, conformité).</td>
+            <td style="padding:8px; border-bottom:1px solid rgba(39,53,95,.35)">Catalogue de contrôles</td>
+          </tr>
+          <tr>
+            <td style="padding:8px; border-bottom:1px solid rgba(39,53,95,.35)"><code>evidence_url</code></td>
+            <td style="padding:8px; border-bottom:1px solid rgba(39,53,95,.35)">string</td>
+            <td style="padding:8px; border-bottom:1px solid rgba(39,53,95,.35)">URL</td>
+            <td style="padding:8px; border-bottom:1px solid rgba(39,53,95,.35)">Lien vers preuve (SharePoint).</td>
+            <td style="padding:8px; border-bottom:1px solid rgba(39,53,95,.35)">Traçabilité</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h3>5) Schéma de traitement (Entrée/Sortie &amp; clés)</h3>
+      <div class="diagram"><pre class="mermaid">flowchart LR
+  IN[Entrées: politiques + états] -->|control_id| Q[Qualification]
+  Q --> OUT[Sorties: écarts + preuves + actions]
+</pre></div>
+      <ul>
+        <li><b>Clés de liaison</b> : <code>control_id</code>, <code>policy_id</code>, <code>project_id</code> (<span class="warnText">À définir</span>)</li>
+        <li><b>Sorties</b> : liste d’écarts, recommandations, liens preuves</li>
+      </ul>
+
+      <h3>6) Questions (mode interview)</h3>
+      <ul>
+        <li>Quel est le référentiel officiel des contrôles (liste, propriétaire) ?</li>
+        <li>Quels niveaux de sévérité et SLA de remédiation ?</li>
+        <li>Quelles preuves minimales exigées par contrôle ?</li>
+      </ul>
+    </div>
+  </details>
+
+  <details class="accordion" style="margin-top:10px">
+    <summary>
+      <span class="acc-title">Gouvernance — Capacité &amp; charge</span>
+      <span class="acc-wrap">Wrap‑up : capacité, allocations, surcharge, arbitrages.</span>
+    </summary>
+    <div class="acc-body">
+      <h3>1) Contexte métier</h3>
+      <ul>
+        <li><b>Scénario</b> : consolider capacité et effort par équipe/BU/période.</li>
+        <li><b>Besoin</b> : éviter sur-allocation, sécuriser les engagements, planifier.</li>
+        <li><b>Process</b> : Collecte charges → Agrégation → Détection surcharge → Recommandations.</li>
+      </ul>
+      <h3>2) Visualisation</h3>
+      <div class="diagram"><pre class="mermaid">graph TD
+  A[Capacité] --> B[Allocations]
+  B --> C[Surcharge / conflits]
+  C --> D[Arbitrages]
+  D --> E[Plan ajusté]
+</pre></div>
+      <h3>3) KPI</h3>
+      <ul>
+        <li>Taux d’utilisation (%) — seuil : <span class="warnText">À définir</span></li>
+        <li>Over-allocation (# ressources) — seuil : <span class="warnText">À définir</span></li>
+      </ul>
+    </div>
+  </details>
+
+  <details class="accordion" style="margin-top:10px">
+    <summary>
+      <span class="acc-title">Gouvernance — Data &amp; veille</span>
+      <span class="acc-wrap">Wrap‑up : règles data, impacts, conformité et recommandations.</span>
+    </summary>
+    <div class="acc-body">
+      <h3>1) Contexte métier</h3>
+      <ul>
+        <li><b>Scénario</b> : vérifier la conformité data (rétention, classification, accès) et documenter impacts.</li>
+        <li><b>Besoin</b> : réduire risque légal/sécurité et améliorer qualité du référentiel.</li>
+        <li><b>Process</b> : Inventaire → Classification → Contrôles → Actions → Reporting.</li>
+      </ul>
+      <h3>2) Données (I/O)</h3>
+      <ul>
+        <li><b>Entrées</b> : inventaire data, politiques, logs (<span class="warnText">À définir</span>)</li>
+        <li><b>Sorties</b> : liste d’écarts, recommandations, décisions de traitement</li>
+      </ul>
+    </div>
+  </details>
 </div>
 <div class="card">
   <h2>Spécifications (relations pack → agents → systèmes)</h2>

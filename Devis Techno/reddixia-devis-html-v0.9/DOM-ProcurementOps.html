@@ -113,12 +113,13 @@
 <div class="card">
   <h2>APP / TECH</h2>
   
-<div class="diagram"><pre class="mermaid">flowchart LR
-  HUB[IDEXIOS-HUB] --&gt; PACK[ProcurementOps]
-  PACK --&gt; AG[Agents ProcurementOps]
-  AG --&gt; DV[(Dataverse tpg_*)]
-  AG --&gt; SP[(SharePoint)]
-  AG --&gt; OUT[Sorties (rubriques)]
+<div class="diagram"><pre class="mermaid">flowchart TD
+  HUB[IDEXIOS HUB] --> PACK[ProcurementOps]
+  PACK --> AG[Agents]
+  AG --> DV[Dataverse]
+  AG --> SP[SharePoint]
+  AG --> PA[Power Automate]
+  AG --> OUT[Sorties]
 </pre></div>
 <ul>
   <li>Connecteurs : Dataverse, SharePoint, Power Automate.</li>
@@ -135,6 +136,129 @@
   <li>Documents : modèles, rapports, comptes rendus, exports (SharePoint).</li>
 </ul>
 
+</div>
+
+<div class="card">
+  <h2>Rubriques — explosion métier</h2>
+
+  <p>Objectif : expliciter les rubriques clés Procurement (contrats, RFP, cycle‑time) et relier flux + données. Les éléments manquants sont marqués <span class="warnText">À définir</span>.</p>
+
+  <details class="accordion">
+    <summary>
+      <span class="acc-title">Procurement — Contrats (diff, risques, approbation)</span>
+      <span class="acc-wrap">Wrap‑up : comparer versions, qualifier risques, tracer validation.</span>
+    </summary>
+    <div class="acc-body">
+      <h3>1) Contexte métier</h3>
+      <ul>
+        <li><b>Scénario</b> : un acheteur analyse une version contractuelle, détecte clauses sensibles et prépare le circuit d’approbation.</li>
+        <li><b>Besoin</b> : réduire risques juridiques/financiers et accélérer la signature.</li>
+        <li><b>Business process</b> : Réception draft → Diff versions → Scoring risques → Validation → Signature.</li>
+      </ul>
+
+      <h3>2) Visualisation</h3>
+      <div class="diagram"><pre class="mermaid">graph TD
+  A[Draft contrat] --> B[Diff versions]
+  B --> C[Détection clauses]
+  C --> D[Scoring risque]
+  D --> E[Approbation]
+  E --> F[Contrat validé]
+</pre></div>
+      <div class="diagram" style="margin-top:10px"><pre class="mermaid">sequenceDiagram
+  autonumber
+  actor U as Utilisateur
+  participant HUB as IDEXIOS-HUB
+  participant JU as JUNO-PROC
+  participant SP as SharePoint
+  participant DV as Dataverse (tpg_...)
+  U->>HUB: Demande "Analyse contrat"
+  HUB->>JU: Diff + risques + recommandations
+  JU->>SP: Lire versions contrat (À définir)
+  JU->>DV: Lire référentiels (vendor/projet) (À définir)
+  JU-->>HUB: Risques + clauses + circuit approbation
+  HUB-->>U: Synthèse + points d’attention + actions
+</pre></div>
+
+      <h3>3) Indicateurs &amp; seuils</h3>
+      <ul>
+        <li>Score risque global (0-100) — seuil : <span class="warnText">À définir</span></li>
+        <li>Nb clauses “rouges” — seuil : <span class="warnText">À définir</span></li>
+        <li>Délai d’approbation (jours) — seuil : <span class="warnText">À définir</span></li>
+      </ul>
+
+      <h3>4) Architecture de l’information (colonnes)</h3>
+      <table style="width:100%; border-collapse:collapse; font-size:13px">
+        <thead>
+          <tr>
+            <th style="text-align:left; padding:8px; border-bottom:1px solid rgba(39,53,95,.6)">Nom</th>
+            <th style="text-align:left; padding:8px; border-bottom:1px solid rgba(39,53,95,.6)">Type</th>
+            <th style="text-align:left; padding:8px; border-bottom:1px solid rgba(39,53,95,.6)">Format</th>
+            <th style="text-align:left; padding:8px; border-bottom:1px solid rgba(39,53,95,.6)">Utilité</th>
+            <th style="text-align:left; padding:8px; border-bottom:1px solid rgba(39,53,95,.6)">Contexte</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="padding:8px; border-bottom:1px solid rgba(39,53,95,.35)"><code>contract_id</code></td>
+            <td style="padding:8px; border-bottom:1px solid rgba(39,53,95,.35)">string</td>
+            <td style="padding:8px; border-bottom:1px solid rgba(39,53,95,.35)">ID</td>
+            <td style="padding:8px; border-bottom:1px solid rgba(39,53,95,.35)">Clé de liaison contrat ↔ versions ↔ risques.</td>
+            <td style="padding:8px; border-bottom:1px solid rgba(39,53,95,.35)">Contrats</td>
+          </tr>
+          <tr>
+            <td style="padding:8px; border-bottom:1px solid rgba(39,53,95,.35)"><code>vendor_id</code></td>
+            <td style="padding:8px; border-bottom:1px solid rgba(39,53,95,.35)">string</td>
+            <td style="padding:8px; border-bottom:1px solid rgba(39,53,95,.35)">ID</td>
+            <td style="padding:8px; border-bottom:1px solid rgba(39,53,95,.35)">Rattacher fournisseur et historique.</td>
+            <td style="padding:8px; border-bottom:1px solid rgba(39,53,95,.35)">Référentiel vendors</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h3>5) Schéma de traitement (Entrée/Sortie &amp; clés)</h3>
+      <div class="diagram"><pre class="mermaid">flowchart LR
+  IN[Entrées: versions + référentiels] -->|contract_id| JU[Analyse]
+  JU --> OUT[Sorties: risques + recommandations]
+</pre></div>
+      <ul>
+        <li><b>Clés de liaison</b> : <code>contract_id</code>, <code>vendor_id</code>, <code>project_id</code> (<span class="warnText">À définir</span>)</li>
+      </ul>
+
+      <h3>6) Questions</h3>
+      <ul>
+        <li>Quelles clauses sont “rouges” par défaut (ex: SLA, pénalités, IP, RGPD) ?</li>
+        <li>Quel circuit d’approbation (rôles, délais, escalades) ?</li>
+        <li>Où sont stockées les versions (SharePoint / DMS) ?</li>
+      </ul>
+    </div>
+  </details>
+
+  <details class="accordion" style="margin-top:10px">
+    <summary>
+      <span class="acc-title">Procurement — RFP &amp; cycle time</span>
+      <span class="acc-wrap">Wrap‑up : suivre RFP, délais, et goulots d’étranglement.</span>
+    </summary>
+    <div class="acc-body">
+      <h3>1) Contexte métier</h3>
+      <ul>
+        <li><b>Scénario</b> : piloter une consultation (RFP) et mesurer les délais (cycle time) jusqu’à l’attribution.</li>
+        <li><b>Besoin</b> : accélérer sourcing et sécuriser compliance.</li>
+        <li><b>Process</b> : Demande → RFP → Réponses → Évaluation → Attribution.</li>
+      </ul>
+      <h3>2) Visualisation</h3>
+      <div class="diagram"><pre class="mermaid">flowchart LR
+  A[Demande] --> B[RFP]
+  B --> C[Réponses]
+  C --> D[Évaluation]
+  D --> E[Attribution]
+</pre></div>
+      <h3>3) KPI</h3>
+      <ul>
+        <li>Cycle time (jours) — seuil : <span class="warnText">À définir</span></li>
+        <li>Taux de RFP en retard (%) — seuil : <span class="warnText">À définir</span></li>
+      </ul>
+    </div>
+  </details>
 </div>
 <div class="card">
   <h2>Spécifications (relations pack → agents → systèmes)</h2>
