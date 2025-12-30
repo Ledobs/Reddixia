@@ -1,0 +1,180 @@
+{
+  "generated_at": "2025-12-29T18:37:19.784193",
+  "files": [
+    {
+      "path": "CMP-IA-TPG-001-Idexios.html",
+      "bytes": 12069,
+      "sha256": "56f59f937348479306b5e6d5d4ad6a2dd1aa0eebb3f8c73a8b3e8a207509fd67"
+    },
+    {
+      "path": "CMP-IA-TPG-002-Hermes.html",
+      "bytes": 12430,
+      "sha256": "fc691f3ec8e0c496006ab7aaf4e40934a6f5dacb47256a70f2194d3d09c3209a"
+    },
+    {
+      "path": "CMP-IA-TPG-003-Athena.html",
+      "bytes": 12247,
+      "sha256": "f736f2692b2c035260dd6d5e2edb92904db31813b480eca8d98c2c2d24c63037"
+    },
+    {
+      "path": "CMP-IA-TPG-004-Themis.html",
+      "bytes": 12257,
+      "sha256": "b9b5f781afa679f3b5f7eb0382042123094f987e0b5cb8a952207096af176545"
+    },
+    {
+      "path": "CMP-IA-TPG-005-Atlas.html",
+      "bytes": 12241,
+      "sha256": "51c31fa3dc28437bb28e78cee61fb770eff04d4bb845921a100a059d7725bbaa"
+    },
+    {
+      "path": "CMP-IA-TPG-006-Iris.html",
+      "bytes": 12227,
+      "sha256": "baa310f09969ca6f38756d71dac54585c60922604d4529f7e9a002d2d41e8cd1"
+    },
+    {
+      "path": "CMP-IA-TPG-007-Gaia.html",
+      "bytes": 12222,
+      "sha256": "80b5c7f19a041b2e86402fc787f505e6aa9c8658f910b12d2f13c8c8a39c127d"
+    },
+    {
+      "path": "CMP-IA-TPG-008-Apollo.html",
+      "bytes": 12168,
+      "sha256": "7aee2a68d331fcef1eca12e48573e1435e6971db859a7f2736025e42a25d5c81"
+    },
+    {
+      "path": "CMP-IA-TPG-009-Janus.html",
+      "bytes": 12239,
+      "sha256": "78b46fd7e69973addeeb73a9507096d2bd7a7fe8b52518be41844fbb089f5347"
+    },
+    {
+      "path": "CMP-IA-TPG-010-Vesta.html",
+      "bytes": 12225,
+      "sha256": "c38cb5902d7b72ac6b51b6c0b672ebd83764388701f2fb58ba6692cc26e3ec3b"
+    },
+    {
+      "path": "CMP-IA-TPG-011-Plutus.html",
+      "bytes": 12225,
+      "sha256": "374a84f603f73f72b4c93e0ebd5a34796dc1b17ad1aa19a6c18e0028cf0df0aa"
+    },
+    {
+      "path": "CMP-IA-TPG-012-Cassandra.html",
+      "bytes": 12260,
+      "sha256": "fd9891b55409e1c5e1fda33b7df3492e202794a4cba3712a3b4d409735f1a863"
+    },
+    {
+      "path": "CMP-IA-TPG-013-Mercury.html",
+      "bytes": 12255,
+      "sha256": "5bcfef5d2473d93e039644950b012aaeb62d0a14d0a03be1f60061f45870797d"
+    },
+    {
+      "path": "CMP-IA-TPG-014-Minerva.html",
+      "bytes": 12251,
+      "sha256": "346c38a6ec91984d31a1594b081f2b49b818c80d89b4ac24689c05631fe44197"
+    },
+    {
+      "path": "CMP-IA-TPG-015-Cicero.html",
+      "bytes": 12143,
+      "sha256": "fece3720aa4b374fd503b3e2c05891d42272a5e2118999b506b44ca2caa1ae2d"
+    },
+    {
+      "path": "CMP-IA-TPG-016-Poseidon.html",
+      "bytes": 12248,
+      "sha256": "77f0085f1a670c2459529b8e0e292edb4c287049ea26140a184102da0d135bef"
+    },
+    {
+      "path": "CMP-IA-TPG-017-Juno.html",
+      "bytes": 12171,
+      "sha256": "f5a50ee72a7b25ba06ceed5f985af8ee694346db7b811b47505e539d021234cd"
+    },
+    {
+      "path": "CMP-IA-TPG-018-Ceres.html",
+      "bytes": 12231,
+      "sha256": "860ea94e5c9c14b86a6c935995be136cc232248f4c744d019e6c269c38e6af7f"
+    },
+    {
+      "path": "CMP-IA-TPG-019-Vulcan.html",
+      "bytes": 12176,
+      "sha256": "45177e3120a8711ae2aaa84c74e994ddb3c60916c7f2b5bc07e2893719c80c35"
+    },
+    {
+      "path": "DOM-COMMSOPS.html",
+      "bytes": 6049,
+      "sha256": "8b223672f6a4372c2e43194cc62b3aaa29a29cf3fccb63cbc65415b2b9804516"
+    },
+    {
+      "path": "DOM-Conseils.html",
+      "bytes": 5144,
+      "sha256": "6ed2cbb73f4495e597fc9bc9957be2fc2d964ad560082ec158a4794d0f2fe1c2"
+    },
+    {
+      "path": "DOM-DELIVERYOPS.html",
+      "bytes": 5774,
+      "sha256": "352af1b5d4156932b4e7ebde28a1e6987c1267e4a232420ddfe8e44938645d1e"
+    },
+    {
+      "path": "DOM-FINANCEOPS.html",
+      "bytes": 7966,
+      "sha256": "ade420f31c2de90507a41c67c591fb87fa9c583dd5a49ca184dcfa47d07d6f2d"
+    },
+    {
+      "path": "DOM-GOVERNANCEOPS.html",
+      "bytes": 6429,
+      "sha256": "5f56bfc1cce3136884db62bcfa485e889a7ca1095de087296ff71e74fcfe38ac"
+    },
+    {
+      "path": "DOM-HUB.html",
+      "bytes": 5704,
+      "sha256": "1b1f84c2dd2082a0e3752e32b3d7d7f80785f1c0f8d7cfe75489171bbeacae0a"
+    },
+    {
+      "path": "DOM-Livrables.html",
+      "bytes": 5143,
+      "sha256": "521f4926ed544d4f33f0ef17adf0f9e7124957dcdca22f0bd42d07295a6bc9cb"
+    },
+    {
+      "path": "DOM-PORTFOLIOOPS.html",
+      "bytes": 6092,
+      "sha256": "b84ad76edf0c0d82b53bc163af3bd3f082c0558a4f8a65c5538371611ea58479"
+    },
+    {
+      "path": "DOM-PROCUREMENTOPS.html",
+      "bytes": 6099,
+      "sha256": "11c80d213e03f0981b6238a93743900600fb131a0e0e4eec59584623bafe835b"
+    },
+    {
+      "path": "DOM-Scenarios.html",
+      "bytes": 5232,
+      "sha256": "204b7dbdd89bb84a65b76c0a493a95f7546b9c82ca488f939a9e57e399dd2ffb"
+    },
+    {
+      "path": "assets/css/style.css",
+      "bytes": 4103,
+      "sha256": "40c6286d0e2c53a42a9f4710c3232d26a220660d78f79831f791dba215fedde3"
+    },
+    {
+      "path": "assets/img/Icon.png",
+      "bytes": 1678882,
+      "sha256": "b0d9471c24ea3178bd7b3dd80c8c0239d9f64fbeb9164ac11f04a9c83773287d"
+    },
+    {
+      "path": "assets/js/app.js",
+      "bytes": 5293,
+      "sha256": "4d37d67326793659c78845f9324ebd7f9bb894ff9fb74461d0dcecd25213db14"
+    },
+    {
+      "path": "devis_architecture_reddixia_resume_exec.md",
+      "bytes": 2221,
+      "sha256": "17ccc5a347d5cbe68a9e518acdc1a0379e95e13c05a82285cadfb5ce38cf76ba"
+    },
+    {
+      "path": "index-tech.html",
+      "bytes": 21160,
+      "sha256": "7d2914eaf85c08b1ae6303a19ab91c1de2ea226034f663a650f099f01b6d10fb"
+    },
+    {
+      "path": "index.html",
+      "bytes": 18846,
+      "sha256": "19d7677cdad10d68d2b737f1ebbf3e3551375b2f7093d80b7726fbfe1ddaeaed"
+    }
+  ]
+}

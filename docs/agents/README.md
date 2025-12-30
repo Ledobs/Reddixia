@@ -1,7 +1,10 @@
 ﻿# Documentation des agents IA (IA-TPG-001 à IA-TPG-019)
-
 ## Vue d'ensemble
 Registre complet des 19 agents organisés en 6 domain packs fonctionnels.
+
+## État
+- Backlog: [workload_pending.md](backlog/workload_pending.md) - Description de l'état
+- Evolution: [evolutions-futures.md](backlog/evolutions-futures.md)
 
 ## Domain Packs
 - [FinanceOps](FINANCEOPS/) - 8 agents (ATLAS, JANUS, VESTA, PLUTUS, CASSANDRA, MERCURY, POSEIDON, CERES)
@@ -22,12 +25,11 @@ Registre complet des 19 agents organisés en 6 domain packs fonctionnels.
 - CommsOps: [index-Apollo.md](COMMSOPS/APOLLO-CHANGE/index-Apollo.md), [index-Cicero.md](COMMSOPS/CICERO-ALLHANDS/index-Cicero.md)
 
 ## Fichiers clés
-- [agents-registry.md](agents-registry.md) - Registre existant
-- [agents-registry-v2.md](agents-registry-v2.md) - Registre complet IA-TPG-001→019
-- [inventaire-agents.md](inventaire-agents.md) - Versions v0.03/v0.09/v1.03
-- [domain-packs-architecture.md](domain-packs-architecture.md) - 6 domain packs
-- [flux-agentique-par-pack.md](flux-agentique-par-pack.md) - Flux standards
-- [contrat-agentique.md](contrat-agentique.md) - Clés transversales
+- [agents-registry.md](agents-registry.md) - Registre complet IA-TPG-001→019
+- [inventaire-agents.md](inventaire-agents.md) - à intégrer fichier ToolboxAgents
+- [domain-packs-architecture.md](domain-packs-architecture.md) - à créer contrat :  BUS-APP-DEV-TECH-DATA
+- [flux-agentique-par-pack.md](flux-agentique-par-pack.md) - à créer schéma standard utilisation des composantes transversales
+- [contrat-agentique.md](contrat-agentique.md) - à créer index des clés transversales
 
 ---
 **Projet**: Reddixia  

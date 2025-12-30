@@ -1,0 +1,1349 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>Reddixia — Index</title>
+  <link rel="stylesheet" href="assets/css/style.css"/>
+  <script defer src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+  <script defer src="https://unpkg.com/cytoscape@3.29.0/dist/cytoscape.min.js"></script>
+  <script defer src="assets/js/app.js"></script>
+</head>
+<body>
+  <div class="topbar">
+    <div class="brand">
+      <div class="mark"></div>
+      <div class="title">
+        <b>Reddixia — devis technique</b>
+        <span>Vue d’ensemble</span>
+      </div>
+    </div>
+    <div class="toplinks">
+      <a class="badge" href="index-tech.html" title="Ouvrir l’index technique">Ouvrir l’index technique</a>
+      <a class="badge" href="index.html" title="Revenir à l’index">Index</a>
+      <a class="badge" href="https://copilotstudio.preview.microsoft.com/environments/14a51a38-b4c0-eb5b-9089-fcef1e4b79f5/solutions/89228855-0fd5-f011-8544-7ced8d0679f6" target="_blank" rel="noopener">Solution (Idexia365)</a>
+      <a class="badge" href="https://github.com/Ledobs/Reddixia/blob/iD-xPM-Pantheon/README.md" target="_blank" rel="noopener">Repo Git</a>
+      <span class="badge" data-tip="Preuve de concept Reddixia v0.9">Preuve de concept Reddixia v0.9</span>
+    </div>
+  </div>
+
+  <div class="layout">
+    <aside class="sidebar">
+      <h3>Aller à</h3>
+      <div class="navbox">
+  <select id="navSelect" aria-label="Aller à">
+    <option value="index.html">Index — Vue d’ensemble</option>
+<option value="index-tech.html">Index technique — Architecture &amp; intégrations</option>
+<option disabled>──────────</option>
+<option disabled>Domain Packs</option>
+<option value="DOM-CommsOps.html">DOM — CommsOps</option>
+<option value="DOM-DeliveryOps.html">DOM — DeliveryOps</option>
+<option value="DOM-FinanceOps.html">DOM — FinanceOps</option>
+<option value="DOM-GovernanceOps.html">DOM — GovernanceOps</option>
+<option value="DOM-PortfolioOps.html">DOM — PortfolioOps</option>
+<option value="DOM-ProcurementOps.html">DOM — ProcurementOps</option>
+<option disabled>──────────</option>
+<option disabled>Rubriques</option>
+<option value="DOM-Portefeuille.html">DOM — Portefeuille</option>
+<option value="DOM-Conseils.html">DOM — Conseils</option>
+<option value="DOM-Scenarios.html">DOM — Scenarios</option>
+<option value="DOM-Livrables.html">DOM — Livrables</option>
+<option disabled>──────────</option>
+<option disabled>Composantes (agents)</option>
+<option value="CMP-IA-TPG-001-Idexios.html">IA-TPG-001 — IDEXIOS-HUB</option>
+<option value="CMP-IA-TPG-002-Hermes.html">IA-TPG-002 — HERMES-PROJ</option>
+<option value="CMP-IA-TPG-003-Athena.html">IA-TPG-003 — ATHENA-PORT</option>
+<option value="CMP-IA-TPG-004-Themis.html">IA-TPG-004 — THEMIS-GOV</option>
+<option value="CMP-IA-TPG-005-Atlas.html">IA-TPG-005 — ATLAS-CTRL</option>
+<option value="CMP-IA-TPG-006-Gaia.html">IA-TPG-006 — GAIA-RISK</option>
+<option value="CMP-IA-TPG-007-Vesta.html">IA-TPG-007 — VESTA-WORK</option>
+<option value="CMP-IA-TPG-008-Apollo.html">IA-TPG-008 — APOLLO-CHANGE</option>
+<option value="CMP-IA-TPG-009-Mercury.html">IA-TPG-009 — MERCURY-COLLECT</option>
+<option value="CMP-IA-TPG-010-Plutus.html">IA-TPG-010 — PLUTUS-ANOM</option>
+<option value="CMP-IA-TPG-011-Janus.html">IA-TPG-011 — JANUS-CLOSE</option>
+<option value="CMP-IA-TPG-012-Cassandra.html">IA-TPG-012 — CASSANDRA-FQA</option>
+<option value="CMP-IA-TPG-013-Cerberus.html">IA-TPG-013 — CERBERUS-SEC</option>
+<option value="CMP-IA-TPG-014-Orpheus.html">IA-TPG-014 — ORPHEUS-ADOPT</option>
+<option value="CMP-IA-TPG-015-Cicero.html">IA-TPG-015 — CICERO-ALLHANDS</option>
+<option value="CMP-IA-TPG-016-Poseidon.html">IA-TPG-016 — POSEIDON-CASH</option>
+<option value="CMP-IA-TPG-017-Juno.html">IA-TPG-017 — JUNO-PROC</option>
+<option value="CMP-IA-TPG-018-Ceres.html">IA-TPG-018 — CERES-BUDGET</option>
+<option value="CMP-IA-TPG-019-Vulcan.html">IA-TPG-019 — VULCAN-DEV</option>
+  </select>
+  <div class="navlinks">
+    <a href="index.html">Index</a>
+    <a href="index-tech.html">Index technique</a>
+  </div>
+</div>
+      <div style="margin-top:14px" class="small">Dernière génération : <span class="small">2025-12-29 17:21:39 EST</span></div>
+    </aside>
+
+    <main class="main">
+      <section class="hero">
+        <h1>Index — Vue d’ensemble</h1>
+        <p>Point d’entrée du pack HTML : navigation, architecture globale, flux applicatif, plan de développement et registre des agents.</p>
+        <div class="meta"><span class="chip">Solution: <b>Reddixia (xPM)</b></span><span class="chip">Version contenu: <b>POC v0.9</b></span><span class="chip">Pages: <b>Index / Index-tech / DOM / CMP</b></span><span class="chip">Dernière génération: <b>2025-12-29 17:21:39 EST</b></span></div>
+        <p class="small" style="margin-top:10px">
+          <b>Prototypes (Copilot Studio)</b> :
+          <a href="https://copilotstudio.microsoft.com/environments/14a51a38-b4c0-eb5b-9089-fcef1e4b79f5/bots/b53b46a2-15d5-f011-8544-7c1e52408748/overview" target="_blank" rel="noopener">IDEXIOS-HUB</a>
+          ·
+          <a href="https://copilotstudio.microsoft.com/environments/14a51a38-b4c0-eb5b-9089-fcef1e4b79f5/bots/d295c02c-f2dd-f011-8406-7ced8d0595a6" target="_blank" rel="noopener">HERMES-PROJ</a>
+        </p>
+      </section>
+
+      <section class="grid">
+        <div class="card">
+  <h2>Architecture globale (vue superposée)</h2>
+  
+<p>Deux vues dans le même espace : <b>Domaines</b> (packs → agents) et <b>Composants</b> (plateforme → flux). Utilise les onglets pour basculer.</p>
+<div data-tab-group>
+  <div class="tabs" role="tablist" aria-label="Architecture globale">
+    <button class="tab" role="tab" aria-selected="false" data-tab="domaines">Domaines</button>
+    <button class="tab" role="tab" aria-selected="false" data-tab="composants">Composants</button>
+  </div>
+  <div class="tabpanes">
+    <div data-pane="domaines" class="active">
+      <div class="diagram">
+        <div class="toolbar">
+          <button class="btn" data-cy-zoom="in">+</button>
+          <button class="btn" data-cy-zoom="out">−</button>
+          <button class="btn" data-cy-zoom="fit">Ajuster</button>
+        </div>
+        <div class="cy" data-cy-data="cy-domain-data"></div>
+      </div>
+      <script type="application/json" id="cy-domain-data">{
+  "elements": {
+    "nodes": [
+      {
+        "data": {
+          "id": "CommsOps",
+          "label": "CommsOps",
+          "type": "pack"
+        }
+      },
+      {
+        "data": {
+          "id": "DeliveryOps",
+          "label": "DeliveryOps",
+          "type": "pack"
+        }
+      },
+      {
+        "data": {
+          "id": "FinanceOps",
+          "label": "FinanceOps",
+          "type": "pack"
+        }
+      },
+      {
+        "data": {
+          "id": "GovernanceOps",
+          "label": "GovernanceOps",
+          "type": "pack"
+        }
+      },
+      {
+        "data": {
+          "id": "PortfolioOps",
+          "label": "PortfolioOps",
+          "type": "pack"
+        }
+      },
+      {
+        "data": {
+          "id": "ProcurementOps",
+          "label": "ProcurementOps",
+          "type": "pack"
+        }
+      },
+      {
+        "data": {
+          "id": "Transversal (Hub)",
+          "label": "Transversal (Hub)",
+          "type": "pack"
+        }
+      },
+      {
+        "data": {
+          "id": "IDEXIOS-HUB",
+          "label": "IDEXIOS-HUB",
+          "type": "agent"
+        }
+      },
+      {
+        "data": {
+          "id": "HERMES-PROJ",
+          "label": "HERMES-PROJ",
+          "type": "agent"
+        }
+      },
+      {
+        "data": {
+          "id": "ATHENA-PORT",
+          "label": "ATHENA-PORT",
+          "type": "agent"
+        }
+      },
+      {
+        "data": {
+          "id": "THEMIS-GOV",
+          "label": "THEMIS-GOV",
+          "type": "agent"
+        }
+      },
+      {
+        "data": {
+          "id": "ATLAS-CTRL",
+          "label": "ATLAS-CTRL",
+          "type": "agent"
+        }
+      },
+      {
+        "data": {
+          "id": "GAIA-RISK",
+          "label": "GAIA-RISK",
+          "type": "agent"
+        }
+      },
+      {
+        "data": {
+          "id": "VESTA-WORK",
+          "label": "VESTA-WORK",
+          "type": "agent"
+        }
+      },
+      {
+        "data": {
+          "id": "APOLLO-CHANGE",
+          "label": "APOLLO-CHANGE",
+          "type": "agent"
+        }
+      },
+      {
+        "data": {
+          "id": "MERCURY-COLLECT",
+          "label": "MERCURY-COLLECT",
+          "type": "agent"
+        }
+      },
+      {
+        "data": {
+          "id": "PLUTUS-ANOM",
+          "label": "PLUTUS-ANOM",
+          "type": "agent"
+        }
+      },
+      {
+        "data": {
+          "id": "JANUS-CLOSE",
+          "label": "JANUS-CLOSE",
+          "type": "agent"
+        }
+      },
+      {
+        "data": {
+          "id": "CASSANDRA-FQA",
+          "label": "CASSANDRA-FQA",
+          "type": "agent"
+        }
+      },
+      {
+        "data": {
+          "id": "CERBERUS-SEC",
+          "label": "CERBERUS-SEC",
+          "type": "agent"
+        }
+      },
+      {
+        "data": {
+          "id": "ORPHEUS-ADOPT",
+          "label": "ORPHEUS-ADOPT",
+          "type": "agent"
+        }
+      },
+      {
+        "data": {
+          "id": "CICERO-ALLHANDS",
+          "label": "CICERO-ALLHANDS",
+          "type": "agent"
+        }
+      },
+      {
+        "data": {
+          "id": "POSEIDON-CASH",
+          "label": "POSEIDON-CASH",
+          "type": "agent"
+        }
+      },
+      {
+        "data": {
+          "id": "JUNO-PROC",
+          "label": "JUNO-PROC",
+          "type": "agent"
+        }
+      },
+      {
+        "data": {
+          "id": "CERES-BUDGET",
+          "label": "CERES-BUDGET",
+          "type": "agent"
+        }
+      },
+      {
+        "data": {
+          "id": "VULCAN-DEV",
+          "label": "VULCAN-DEV",
+          "type": "agent"
+        }
+      },
+      {
+        "data": {
+          "id": "CopilotStudio",
+          "label": "Copilot Studio",
+          "type": "system"
+        }
+      },
+      {
+        "data": {
+          "id": "Dataverse",
+          "label": "Dataverse TPG (tpg_*)",
+          "type": "system"
+        }
+      },
+      {
+        "data": {
+          "id": "SharePoint",
+          "label": "SharePoint Idexios-Prime",
+          "type": "system"
+        }
+      },
+      {
+        "data": {
+          "id": "PowerAutomate",
+          "label": "Power Automate",
+          "type": "system"
+        }
+      },
+      {
+        "data": {
+          "id": "PowerPages",
+          "label": "Power Pages / Cards",
+          "type": "system"
+        }
+      },
+      {
+        "data": {
+          "id": "MCP",
+          "label": "Serveurs MCP",
+          "type": "system"
+        }
+      }
+    ],
+    "edges": [
+      {
+        "data": {
+          "id": "e_Transversal (Hub)_IDEXIOS-HUB",
+          "source": "Transversal (Hub)",
+          "target": "IDEXIOS-HUB",
+          "label": "contient"
+        }
+      },
+      {
+        "data": {
+          "id": "e_DeliveryOps_HERMES-PROJ",
+          "source": "DeliveryOps",
+          "target": "HERMES-PROJ",
+          "label": "contient"
+        }
+      },
+      {
+        "data": {
+          "id": "e_PortfolioOps_ATHENA-PORT",
+          "source": "PortfolioOps",
+          "target": "ATHENA-PORT",
+          "label": "contient"
+        }
+      },
+      {
+        "data": {
+          "id": "e_GovernanceOps_THEMIS-GOV",
+          "source": "GovernanceOps",
+          "target": "THEMIS-GOV",
+          "label": "contient"
+        }
+      },
+      {
+        "data": {
+          "id": "e_FinanceOps_ATLAS-CTRL",
+          "source": "FinanceOps",
+          "target": "ATLAS-CTRL",
+          "label": "contient"
+        }
+      },
+      {
+        "data": {
+          "id": "e_PortfolioOps_GAIA-RISK",
+          "source": "PortfolioOps",
+          "target": "GAIA-RISK",
+          "label": "contient"
+        }
+      },
+      {
+        "data": {
+          "id": "e_GovernanceOps_VESTA-WORK",
+          "source": "GovernanceOps",
+          "target": "VESTA-WORK",
+          "label": "contient"
+        }
+      },
+      {
+        "data": {
+          "id": "e_CommsOps_APOLLO-CHANGE",
+          "source": "CommsOps",
+          "target": "APOLLO-CHANGE",
+          "label": "contient"
+        }
+      },
+      {
+        "data": {
+          "id": "e_FinanceOps_MERCURY-COLLECT",
+          "source": "FinanceOps",
+          "target": "MERCURY-COLLECT",
+          "label": "contient"
+        }
+      },
+      {
+        "data": {
+          "id": "e_FinanceOps_PLUTUS-ANOM",
+          "source": "FinanceOps",
+          "target": "PLUTUS-ANOM",
+          "label": "contient"
+        }
+      },
+      {
+        "data": {
+          "id": "e_FinanceOps_JANUS-CLOSE",
+          "source": "FinanceOps",
+          "target": "JANUS-CLOSE",
+          "label": "contient"
+        }
+      },
+      {
+        "data": {
+          "id": "e_FinanceOps_CASSANDRA-FQA",
+          "source": "FinanceOps",
+          "target": "CASSANDRA-FQA",
+          "label": "contient"
+        }
+      },
+      {
+        "data": {
+          "id": "e_FinanceOps_CERBERUS-SEC",
+          "source": "FinanceOps",
+          "target": "CERBERUS-SEC",
+          "label": "contient"
+        }
+      },
+      {
+        "data": {
+          "id": "e_GovernanceOps_ORPHEUS-ADOPT",
+          "source": "GovernanceOps",
+          "target": "ORPHEUS-ADOPT",
+          "label": "contient"
+        }
+      },
+      {
+        "data": {
+          "id": "e_CommsOps_CICERO-ALLHANDS",
+          "source": "CommsOps",
+          "target": "CICERO-ALLHANDS",
+          "label": "contient"
+        }
+      },
+      {
+        "data": {
+          "id": "e_FinanceOps_POSEIDON-CASH",
+          "source": "FinanceOps",
+          "target": "POSEIDON-CASH",
+          "label": "contient"
+        }
+      },
+      {
+        "data": {
+          "id": "e_ProcurementOps_JUNO-PROC",
+          "source": "ProcurementOps",
+          "target": "JUNO-PROC",
+          "label": "contient"
+        }
+      },
+      {
+        "data": {
+          "id": "e_FinanceOps_CERES-BUDGET",
+          "source": "FinanceOps",
+          "target": "CERES-BUDGET",
+          "label": "contient"
+        }
+      },
+      {
+        "data": {
+          "id": "e_ProcurementOps_VULCAN-DEV",
+          "source": "ProcurementOps",
+          "target": "VULCAN-DEV",
+          "label": "contient"
+        }
+      },
+      {
+        "data": {
+          "id": "e_hub_cs",
+          "source": "IDEXIOS-HUB",
+          "target": "CopilotStudio",
+          "label": "front"
+        }
+      },
+      {
+        "data": {
+          "id": "e_hub_dv",
+          "source": "IDEXIOS-HUB",
+          "target": "Dataverse",
+          "label": "lecture/écriture"
+        }
+      },
+      {
+        "data": {
+          "id": "e_hub_sp",
+          "source": "IDEXIOS-HUB",
+          "target": "SharePoint",
+          "label": "référentiel"
+        }
+      },
+      {
+        "data": {
+          "id": "e_hub_pa",
+          "source": "IDEXIOS-HUB",
+          "target": "PowerAutomate",
+          "label": "workflows"
+        }
+      },
+      {
+        "data": {
+          "id": "e_hub_pp",
+          "source": "IDEXIOS-HUB",
+          "target": "PowerPages",
+          "label": "diffusion"
+        }
+      },
+      {
+        "data": {
+          "id": "e_hub_mcp",
+          "source": "IDEXIOS-HUB",
+          "target": "MCP",
+          "label": "orchestration"
+        }
+      },
+      {
+        "data": {
+          "id": "e_hub_pack_CommsOps",
+          "source": "IDEXIOS-HUB",
+          "target": "CommsOps",
+          "label": "orchestre"
+        }
+      },
+      {
+        "data": {
+          "id": "e_hub_pack_DeliveryOps",
+          "source": "IDEXIOS-HUB",
+          "target": "DeliveryOps",
+          "label": "orchestre"
+        }
+      },
+      {
+        "data": {
+          "id": "e_hub_pack_FinanceOps",
+          "source": "IDEXIOS-HUB",
+          "target": "FinanceOps",
+          "label": "orchestre"
+        }
+      },
+      {
+        "data": {
+          "id": "e_hub_pack_GovernanceOps",
+          "source": "IDEXIOS-HUB",
+          "target": "GovernanceOps",
+          "label": "orchestre"
+        }
+      },
+      {
+        "data": {
+          "id": "e_hub_pack_PortfolioOps",
+          "source": "IDEXIOS-HUB",
+          "target": "PortfolioOps",
+          "label": "orchestre"
+        }
+      },
+      {
+        "data": {
+          "id": "e_hub_pack_ProcurementOps",
+          "source": "IDEXIOS-HUB",
+          "target": "ProcurementOps",
+          "label": "orchestre"
+        }
+      },
+      {
+        "data": {
+          "id": "e_agent_HERMES-PROJ_Dataverse",
+          "source": "HERMES-PROJ",
+          "target": "Dataverse",
+          "label": "lire/écrire"
+        }
+      },
+      {
+        "data": {
+          "id": "e_agent_HERMES-PROJ_SharePoint",
+          "source": "HERMES-PROJ",
+          "target": "SharePoint",
+          "label": "lire"
+        }
+      },
+      {
+        "data": {
+          "id": "e_agent_HERMES-PROJ_PowerPages",
+          "source": "HERMES-PROJ",
+          "target": "PowerPages",
+          "label": "publier"
+        }
+      },
+      {
+        "data": {
+          "id": "e_agent_ATHENA-PORT_Dataverse",
+          "source": "ATHENA-PORT",
+          "target": "Dataverse",
+          "label": "lire/écrire"
+        }
+      },
+      {
+        "data": {
+          "id": "e_agent_ATHENA-PORT_SharePoint",
+          "source": "ATHENA-PORT",
+          "target": "SharePoint",
+          "label": "lire"
+        }
+      },
+      {
+        "data": {
+          "id": "e_agent_ATHENA-PORT_PowerPages",
+          "source": "ATHENA-PORT",
+          "target": "PowerPages",
+          "label": "publier"
+        }
+      },
+      {
+        "data": {
+          "id": "e_agent_THEMIS-GOV_Dataverse",
+          "source": "THEMIS-GOV",
+          "target": "Dataverse",
+          "label": "lire/écrire"
+        }
+      },
+      {
+        "data": {
+          "id": "e_agent_THEMIS-GOV_SharePoint",
+          "source": "THEMIS-GOV",
+          "target": "SharePoint",
+          "label": "lire"
+        }
+      },
+      {
+        "data": {
+          "id": "e_agent_THEMIS-GOV_PowerPages",
+          "source": "THEMIS-GOV",
+          "target": "PowerPages",
+          "label": "publier"
+        }
+      },
+      {
+        "data": {
+          "id": "e_agent_ATLAS-CTRL_Dataverse",
+          "source": "ATLAS-CTRL",
+          "target": "Dataverse",
+          "label": "lire/écrire"
+        }
+      },
+      {
+        "data": {
+          "id": "e_agent_ATLAS-CTRL_SharePoint",
+          "source": "ATLAS-CTRL",
+          "target": "SharePoint",
+          "label": "lire"
+        }
+      },
+      {
+        "data": {
+          "id": "e_agent_ATLAS-CTRL_PowerPages",
+          "source": "ATLAS-CTRL",
+          "target": "PowerPages",
+          "label": "publier"
+        }
+      },
+      {
+        "data": {
+          "id": "e_agent_GAIA-RISK_Dataverse",
+          "source": "GAIA-RISK",
+          "target": "Dataverse",
+          "label": "lire/écrire"
+        }
+      },
+      {
+        "data": {
+          "id": "e_agent_GAIA-RISK_SharePoint",
+          "source": "GAIA-RISK",
+          "target": "SharePoint",
+          "label": "lire"
+        }
+      },
+      {
+        "data": {
+          "id": "e_agent_GAIA-RISK_PowerPages",
+          "source": "GAIA-RISK",
+          "target": "PowerPages",
+          "label": "publier"
+        }
+      },
+      {
+        "data": {
+          "id": "e_agent_VESTA-WORK_Dataverse",
+          "source": "VESTA-WORK",
+          "target": "Dataverse",
+          "label": "lire/écrire"
+        }
+      },
+      {
+        "data": {
+          "id": "e_agent_VESTA-WORK_SharePoint",
+          "source": "VESTA-WORK",
+          "target": "SharePoint",
+          "label": "lire"
+        }
+      },
+      {
+        "data": {
+          "id": "e_agent_VESTA-WORK_PowerPages",
+          "source": "VESTA-WORK",
+          "target": "PowerPages",
+          "label": "publier"
+        }
+      },
+      {
+        "data": {
+          "id": "e_agent_APOLLO-CHANGE_Dataverse",
+          "source": "APOLLO-CHANGE",
+          "target": "Dataverse",
+          "label": "lire/écrire"
+        }
+      },
+      {
+        "data": {
+          "id": "e_agent_APOLLO-CHANGE_SharePoint",
+          "source": "APOLLO-CHANGE",
+          "target": "SharePoint",
+          "label": "lire"
+        }
+      },
+      {
+        "data": {
+          "id": "e_agent_APOLLO-CHANGE_PowerPages",
+          "source": "APOLLO-CHANGE",
+          "target": "PowerPages",
+          "label": "publier"
+        }
+      },
+      {
+        "data": {
+          "id": "e_agent_MERCURY-COLLECT_Dataverse",
+          "source": "MERCURY-COLLECT",
+          "target": "Dataverse",
+          "label": "lire/écrire"
+        }
+      },
+      {
+        "data": {
+          "id": "e_agent_MERCURY-COLLECT_SharePoint",
+          "source": "MERCURY-COLLECT",
+          "target": "SharePoint",
+          "label": "lire"
+        }
+      },
+      {
+        "data": {
+          "id": "e_agent_MERCURY-COLLECT_PowerPages",
+          "source": "MERCURY-COLLECT",
+          "target": "PowerPages",
+          "label": "publier"
+        }
+      },
+      {
+        "data": {
+          "id": "e_agent_PLUTUS-ANOM_Dataverse",
+          "source": "PLUTUS-ANOM",
+          "target": "Dataverse",
+          "label": "lire/écrire"
+        }
+      },
+      {
+        "data": {
+          "id": "e_agent_PLUTUS-ANOM_SharePoint",
+          "source": "PLUTUS-ANOM",
+          "target": "SharePoint",
+          "label": "lire"
+        }
+      },
+      {
+        "data": {
+          "id": "e_agent_PLUTUS-ANOM_PowerPages",
+          "source": "PLUTUS-ANOM",
+          "target": "PowerPages",
+          "label": "publier"
+        }
+      },
+      {
+        "data": {
+          "id": "e_agent_JANUS-CLOSE_Dataverse",
+          "source": "JANUS-CLOSE",
+          "target": "Dataverse",
+          "label": "lire/écrire"
+        }
+      },
+      {
+        "data": {
+          "id": "e_agent_JANUS-CLOSE_SharePoint",
+          "source": "JANUS-CLOSE",
+          "target": "SharePoint",
+          "label": "lire"
+        }
+      },
+      {
+        "data": {
+          "id": "e_agent_JANUS-CLOSE_PowerPages",
+          "source": "JANUS-CLOSE",
+          "target": "PowerPages",
+          "label": "publier"
+        }
+      },
+      {
+        "data": {
+          "id": "e_agent_CASSANDRA-FQA_Dataverse",
+          "source": "CASSANDRA-FQA",
+          "target": "Dataverse",
+          "label": "lire/écrire"
+        }
+      },
+      {
+        "data": {
+          "id": "e_agent_CASSANDRA-FQA_SharePoint",
+          "source": "CASSANDRA-FQA",
+          "target": "SharePoint",
+          "label": "lire"
+        }
+      },
+      {
+        "data": {
+          "id": "e_agent_CASSANDRA-FQA_PowerPages",
+          "source": "CASSANDRA-FQA",
+          "target": "PowerPages",
+          "label": "publier"
+        }
+      },
+      {
+        "data": {
+          "id": "e_agent_CERBERUS-SEC_Dataverse",
+          "source": "CERBERUS-SEC",
+          "target": "Dataverse",
+          "label": "lire/écrire"
+        }
+      },
+      {
+        "data": {
+          "id": "e_agent_CERBERUS-SEC_SharePoint",
+          "source": "CERBERUS-SEC",
+          "target": "SharePoint",
+          "label": "lire"
+        }
+      },
+      {
+        "data": {
+          "id": "e_agent_CERBERUS-SEC_PowerPages",
+          "source": "CERBERUS-SEC",
+          "target": "PowerPages",
+          "label": "publier"
+        }
+      },
+      {
+        "data": {
+          "id": "e_agent_ORPHEUS-ADOPT_Dataverse",
+          "source": "ORPHEUS-ADOPT",
+          "target": "Dataverse",
+          "label": "lire/écrire"
+        }
+      },
+      {
+        "data": {
+          "id": "e_agent_ORPHEUS-ADOPT_SharePoint",
+          "source": "ORPHEUS-ADOPT",
+          "target": "SharePoint",
+          "label": "lire"
+        }
+      },
+      {
+        "data": {
+          "id": "e_agent_ORPHEUS-ADOPT_PowerPages",
+          "source": "ORPHEUS-ADOPT",
+          "target": "PowerPages",
+          "label": "publier"
+        }
+      },
+      {
+        "data": {
+          "id": "e_agent_CICERO-ALLHANDS_Dataverse",
+          "source": "CICERO-ALLHANDS",
+          "target": "Dataverse",
+          "label": "lire/écrire"
+        }
+      },
+      {
+        "data": {
+          "id": "e_agent_CICERO-ALLHANDS_SharePoint",
+          "source": "CICERO-ALLHANDS",
+          "target": "SharePoint",
+          "label": "lire"
+        }
+      },
+      {
+        "data": {
+          "id": "e_agent_CICERO-ALLHANDS_PowerPages",
+          "source": "CICERO-ALLHANDS",
+          "target": "PowerPages",
+          "label": "publier"
+        }
+      },
+      {
+        "data": {
+          "id": "e_agent_POSEIDON-CASH_Dataverse",
+          "source": "POSEIDON-CASH",
+          "target": "Dataverse",
+          "label": "lire/écrire"
+        }
+      },
+      {
+        "data": {
+          "id": "e_agent_POSEIDON-CASH_SharePoint",
+          "source": "POSEIDON-CASH",
+          "target": "SharePoint",
+          "label": "lire"
+        }
+      },
+      {
+        "data": {
+          "id": "e_agent_POSEIDON-CASH_PowerPages",
+          "source": "POSEIDON-CASH",
+          "target": "PowerPages",
+          "label": "publier"
+        }
+      },
+      {
+        "data": {
+          "id": "e_agent_JUNO-PROC_Dataverse",
+          "source": "JUNO-PROC",
+          "target": "Dataverse",
+          "label": "lire/écrire"
+        }
+      },
+      {
+        "data": {
+          "id": "e_agent_JUNO-PROC_SharePoint",
+          "source": "JUNO-PROC",
+          "target": "SharePoint",
+          "label": "lire"
+        }
+      },
+      {
+        "data": {
+          "id": "e_agent_JUNO-PROC_PowerPages",
+          "source": "JUNO-PROC",
+          "target": "PowerPages",
+          "label": "publier"
+        }
+      },
+      {
+        "data": {
+          "id": "e_agent_CERES-BUDGET_Dataverse",
+          "source": "CERES-BUDGET",
+          "target": "Dataverse",
+          "label": "lire/écrire"
+        }
+      },
+      {
+        "data": {
+          "id": "e_agent_CERES-BUDGET_SharePoint",
+          "source": "CERES-BUDGET",
+          "target": "SharePoint",
+          "label": "lire"
+        }
+      },
+      {
+        "data": {
+          "id": "e_agent_CERES-BUDGET_PowerPages",
+          "source": "CERES-BUDGET",
+          "target": "PowerPages",
+          "label": "publier"
+        }
+      },
+      {
+        "data": {
+          "id": "e_agent_VULCAN-DEV_Dataverse",
+          "source": "VULCAN-DEV",
+          "target": "Dataverse",
+          "label": "lire/écrire"
+        }
+      },
+      {
+        "data": {
+          "id": "e_agent_VULCAN-DEV_SharePoint",
+          "source": "VULCAN-DEV",
+          "target": "SharePoint",
+          "label": "lire"
+        }
+      },
+      {
+        "data": {
+          "id": "e_agent_VULCAN-DEV_PowerPages",
+          "source": "VULCAN-DEV",
+          "target": "PowerPages",
+          "label": "publier"
+        }
+      }
+    ]
+  }
+}</script>
+    </div>
+    <div data-pane="composants">
+      <div class="diagram">
+        <div class="toolbar">
+          <button class="btn" data-cy-zoom="in">+</button>
+          <button class="btn" data-cy-zoom="out">−</button>
+          <button class="btn" data-cy-zoom="fit">Ajuster</button>
+        </div>
+        <div class="cy" data-cy-data="cy-components-data"></div>
+      </div>
+      <script type="application/json" id="cy-components-data">{
+  "elements": {
+    "nodes": [
+      {
+        "data": {
+          "id": "Users",
+          "label": "Utilisateurs",
+          "type": "system"
+        }
+      },
+      {
+        "data": {
+          "id": "Teams",
+          "label": "Teams/Outlook",
+          "type": "system"
+        }
+      },
+      {
+        "data": {
+          "id": "CopilotStudio",
+          "label": "Copilot Studio",
+          "type": "system"
+        }
+      },
+      {
+        "data": {
+          "id": "Idexios",
+          "label": "IDEXIOS-HUB",
+          "type": "agent"
+        }
+      },
+      {
+        "data": {
+          "id": "Agents",
+          "label": "Agents de domaine",
+          "type": "agent"
+        }
+      },
+      {
+        "data": {
+          "id": "Dataverse",
+          "label": "Dataverse (tpg_*)",
+          "type": "system"
+        }
+      },
+      {
+        "data": {
+          "id": "SharePoint",
+          "label": "SharePoint Idexios-Prime",
+          "type": "system"
+        }
+      },
+      {
+        "data": {
+          "id": "Automate",
+          "label": "Power Automate",
+          "type": "system"
+        }
+      },
+      {
+        "data": {
+          "id": "PowerBI",
+          "label": "Power BI / SSRS",
+          "type": "system"
+        }
+      },
+      {
+        "data": {
+          "id": "MCP",
+          "label": "Serveurs MCP",
+          "type": "system"
+        }
+      },
+      {
+        "data": {
+          "id": "Logs",
+          "label": "Log Analytics",
+          "type": "system"
+        }
+      },
+      {
+        "data": {
+          "id": "Purview",
+          "label": "Purview / DLP",
+          "type": "system"
+        }
+      }
+    ],
+    "edges": [
+      {
+        "data": {
+          "id": "c1",
+          "source": "Users",
+          "target": "CopilotStudio",
+          "label": "requêtes"
+        }
+      },
+      {
+        "data": {
+          "id": "c2",
+          "source": "CopilotStudio",
+          "target": "Idexios",
+          "label": "contexte"
+        }
+      },
+      {
+        "data": {
+          "id": "c3",
+          "source": "Idexios",
+          "target": "Agents",
+          "label": "routage"
+        }
+      },
+      {
+        "data": {
+          "id": "c4",
+          "source": "Agents",
+          "target": "Dataverse",
+          "label": "tpg_*"
+        }
+      },
+      {
+        "data": {
+          "id": "c5",
+          "source": "Agents",
+          "target": "SharePoint",
+          "label": "docs"
+        }
+      },
+      {
+        "data": {
+          "id": "c6",
+          "source": "Agents",
+          "target": "Automate",
+          "label": "jobs"
+        }
+      },
+      {
+        "data": {
+          "id": "c7",
+          "source": "Dataverse",
+          "target": "PowerBI",
+          "label": "datasets"
+        }
+      },
+      {
+        "data": {
+          "id": "c8",
+          "source": "Automate",
+          "target": "MCP",
+          "label": "actions"
+        }
+      },
+      {
+        "data": {
+          "id": "c9",
+          "source": "MCP",
+          "target": "Logs",
+          "label": "télémétrie"
+        }
+      },
+      {
+        "data": {
+          "id": "c10",
+          "source": "Idexios",
+          "target": "Purview",
+          "label": "règles"
+        }
+      },
+      {
+        "data": {
+          "id": "c11",
+          "source": "Teams",
+          "target": "CopilotStudio",
+          "label": "canaux"
+        }
+      }
+    ]
+  }
+}</script>
+    </div>
+  </div>
+</div>
+
+</div>
+<div class="card">
+  <h2>Plan de développement</h2>
+  
+<p>Vue de planification : une trame de fond (roadmap) avec une superposition prioritaire « vitrine » (démarrage 12 janvier 2026, cycles de 2 semaines), puis reprise en cycles mensuels.</p>
+<div class="diagram" style="min-height:520px">
+  <pre class="mermaid">gantt
+  title Reddixia — plan de développement (vitrine → POC → pilote)
+  dateFormat  YYYY-MM-DD
+  axisFormat  %b %Y
+  tickInterval 1month
+  section Vitrine (prioritaire)
+  Repère - Janvier 2026           :milestone, m0, 2026-01-01, 0d
+  Cycle 1 (2 semaines)             :v1, 2026-01-12, 10d
+  Validation contenu vitrine       :milestone, v2, 2026-01-22, 0d
+  Capture écran « show de boucane » :milestone, v3, 2026-01-28, 0d
+  section Cadrage
+  Vision &amp; périmètre               :a1, 2026-02-02, 10d
+  Architecture &amp; modèles           :a2, after a1, 20d
+  section Données &amp; intégrations
+  Connecteurs Dataverse / SP       :b1, after a2, 20d
+  Serveurs MCP (socle)             :b2, after b1, 20d
+  section Itérations futures
+  Cycle (backlog &amp; extensions)     :f1, after b2, 60d
+</pre>
+</div>
+
+</div>
+<div class="card">
+  <h2>Flux applicatif</h2>
+  
+<p>Schéma Mermaid. Si une information manque, le contenu l’indique avec <span class="warnText">À confirmer</span>.</p>
+<div class="diagram">
+  <pre class="mermaid">flowchart LR
+  U[Utilisateurs] --&gt;|Demande| CS[Copilot Studio]
+  CS --&gt; HUB[IDEXIOS-HUB]
+  HUB --&gt;|Route| AG[Agents de domaine]
+  AG --&gt; DV[(Dataverse TPG tpg_*)]
+  AG --&gt; SP[(SharePoint Idexios-Prime)]
+  AG --&gt; PA[Power Automate]
+  HUB --&gt; OUT[Sorties: Conversation / Power Pages / Livrables]
+  OUT --&gt; U
+</pre>
+</div>
+<div style="height:10px"></div>
+<div class="diagram">
+  <pre class="mermaid">sequenceDiagram
+  autonumber
+  actor U as Utilisateur
+  participant CS as Copilot Studio
+  participant HUB as IDEXIOS-HUB
+  participant A as Agent de domaine
+  participant DV as Dataverse (tpg_*)
+  participant SP as SharePoint (Idexios-Prime)
+  U-&gt;&gt;CS: Question / demande (rubrique)
+  CS-&gt;&gt;HUB: Contexte + conversation
+  HUB-&gt;&gt;A: Routage + consignes
+  A-&gt;&gt;DV: Lire/écrire données
+  A-&gt;&gt;SP: Lire gabarits / déposer livrables
+  A--&gt;&gt;HUB: Résultats + indicateurs
+  HUB--&gt;&gt;CS: Réponse + artefacts
+  CS--&gt;&gt;U: Message + liens / cartes
+</pre>
+</div>
+
+</div>
+<div class="two card">
+  <h2>Sources du projet</h2>
+  
+<ul>
+  <li>GitHub : <a href="https://github.com/Ledobs/Reddixia" target="_blank" rel="noopener">Ledobs/Reddixia</a></li>
+  <li>Solution (Idexia365) : <a href="https://copilotstudio.preview.microsoft.com/environments/14a51a38-b4c0-eb5b-9089-fcef1e4b79f5/solutions/89228855-0fd5-f011-8544-7ced8d0679f6" target="_blank" rel="noopener">Copilot Studio — Solution</a></li>
+  <li>Prototypes : <a href="https://copilotstudio.microsoft.com/environments/14a51a38-b4c0-eb5b-9089-fcef1e4b79f5/bots/b53b46a2-15d5-f011-8544-7c1e52408748/overview" target="_blank" rel="noopener">IDEXIOS-HUB</a> ; <a href="https://copilotstudio.microsoft.com/environments/14a51a38-b4c0-eb5b-9089-fcef1e4b79f5/bots/d295c02c-f2dd-f011-8406-7ced8d0595a6" target="_blank" rel="noopener">HERMES-PROJ</a></li>
+  <li>Schéma d’architecture d’information : <a href="https://dbdiagram.io/d/TPG_PPPandS_DEC2025-69459a734bbde0fd74d8852f" target="_blank" rel="noopener">dbdiagram.io</a></li>
+  <li>Sources de connaissances (extraits) : Dataverse TPG (<code>tpg_*</code>), SharePoint Idexios-Prime, gabarits HTML.</li>
+</ul>
+
+</div>
+<div class="two card">
+  <h2>Structure de documentation</h2>
+  
+<ul>
+  <li><b>Index</b> : vue d’ensemble (cette page)</li>
+  <li><b>Index technique</b> : architecture, intégrations, sécurité</li>
+  <li><b>DOM-*</b> : Domain Packs + rubriques (Portefeuille, Conseils, Scénarios, Livrables)</li>
+  <li><b>CMP-*</b> : Composantes (agents) — détails BUS/APP/TECH/DATA</li>
+</ul>
+
+</div>
+<div class="card">
+  <h2>Registre des agents</h2>
+  
+<table style="width:100%; border-collapse:collapse; font-size:13px">
+  <thead>
+    <tr>
+      <th style="text-align:left; padding:8px; border-bottom:1px solid rgba(39,53,95,.6)">Code</th>
+      <th style="text-align:left; padding:8px; border-bottom:1px solid rgba(39,53,95,.6)">Agent</th>
+      <th style="text-align:left; padding:8px; border-bottom:1px solid rgba(39,53,95,.6)">Pack</th>
+      <th style="text-align:left; padding:8px; border-bottom:1px solid rgba(39,53,95,.6)">Statut</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr><td><code>IA-TPG-001</code></td><td><a href='CMP-IA-TPG-001-Idexios.html'>IDEXIOS-HUB</a></td><td>Transversal (Hub)</td><td>En cours</td></tr>
+<tr><td><code>IA-TPG-002</code></td><td><a href='CMP-IA-TPG-002-Hermes.html'>HERMES-PROJ</a></td><td>DeliveryOps</td><td>En cours</td></tr>
+<tr><td><code>IA-TPG-003</code></td><td><a href='CMP-IA-TPG-003-Athena.html'>ATHENA-PORT</a></td><td>PortfolioOps</td><td>En essais</td></tr>
+<tr><td><code>IA-TPG-004</code></td><td><a href='CMP-IA-TPG-004-Themis.html'>THEMIS-GOV</a></td><td>GovernanceOps</td><td>En cours</td></tr>
+<tr><td><code>IA-TPG-005</code></td><td><a href='CMP-IA-TPG-005-Atlas.html'>ATLAS-CTRL</a></td><td>FinanceOps</td><td>En cours</td></tr>
+<tr><td><code>IA-TPG-006</code></td><td><a href='CMP-IA-TPG-006-Iris.html'>GAIA-RISK</a></td><td>PortfolioOps</td><td>Non démarré</td></tr>
+<tr><td><code>IA-TPG-007</code></td><td><a href='CMP-IA-TPG-007-Gaia.html'>VESTA-WORK</a></td><td>GovernanceOps</td><td>Non démarré</td></tr>
+<tr><td><code>IA-TPG-008</code></td><td><a href='CMP-IA-TPG-008-Apollo.html'>APOLLO-CHANGE</a></td><td>CommsOps</td><td>Non démarré</td></tr>
+<tr><td><code>IA-TPG-009</code></td><td><a href='CMP-IA-TPG-009-Janus.html'>MERCURY-COLLECT</a></td><td>FinanceOps</td><td>Approuvé (à implémenter)</td></tr>
+<tr><td><code>IA-TPG-010</code></td><td><a href='CMP-IA-TPG-010-Vesta.html'>PLUTUS-ANOM</a></td><td>FinanceOps</td><td>Approuvé (à implémenter)</td></tr>
+<tr><td><code>IA-TPG-011</code></td><td><a href='CMP-IA-TPG-011-Plutus.html'>JANUS-CLOSE</a></td><td>FinanceOps</td><td>Approuvé (à implémenter)</td></tr>
+<tr><td><code>IA-TPG-012</code></td><td><a href='CMP-IA-TPG-012-Cassandra.html'>CASSANDRA-FQA</a></td><td>FinanceOps</td><td>Approuvé (à implémenter)</td></tr>
+<tr><td><code>IA-TPG-013</code></td><td><a href='CMP-IA-TPG-013-Mercury.html'>CERBERUS-SEC</a></td><td>FinanceOps</td><td>Approuvé (optionnel selon périmètre AR)</td></tr>
+<tr><td><code>IA-TPG-014</code></td><td><a href='CMP-IA-TPG-014-Minerva.html'>ORPHEUS-ADOPT</a></td><td>GovernanceOps</td><td>Approuvé (à implémenter)</td></tr>
+<tr><td><code>IA-TPG-015</code></td><td><a href='CMP-IA-TPG-015-Cicero.html'>CICERO-ALLHANDS</a></td><td>CommsOps</td><td>Approuvé (à implémenter)</td></tr>
+<tr><td><code>IA-TPG-016</code></td><td><a href='CMP-IA-TPG-016-Poseidon.html'>POSEIDON-CASH</a></td><td>FinanceOps</td><td>Approuvé (à implémenter)</td></tr>
+<tr><td><code>IA-TPG-017</code></td><td><a href='CMP-IA-TPG-017-Juno.html'>JUNO-PROC</a></td><td>ProcurementOps</td><td>Approuvé (à implémenter)</td></tr>
+<tr><td><code>IA-TPG-018</code></td><td><a href='CMP-IA-TPG-018-Ceres.html'>CERES-BUDGET</a></td><td>FinanceOps</td><td>Approuvé (à implémenter)</td></tr>
+<tr><td><code>IA-TPG-019</code></td><td><a href='CMP-IA-TPG-019-Vulcan.html'>VULCAN-DEV</a></td><td>ProcurementOps</td><td>Approuvé (à implémenter)</td></tr>
+  </tbody>
+</table>
+
+</div>
+      </section>
+    </main>
+  </div>
+</body>
+</html>

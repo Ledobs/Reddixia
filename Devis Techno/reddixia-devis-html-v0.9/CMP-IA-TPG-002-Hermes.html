@@ -1,0 +1,262 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>Reddixia — HERMES-PROJ</title>
+  <link rel="stylesheet" href="assets/css/style.css"/>
+  <script defer src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+  <script defer src="https://unpkg.com/cytoscape@3.29.0/dist/cytoscape.min.js"></script>
+  <script defer src="assets/js/app.js"></script>
+</head>
+<body>
+  <div class="topbar">
+    <div class="brand">
+      <div class="mark"></div>
+      <div class="title">
+        <b>Reddixia — devis technique</b>
+        <span>Composante · HERMES-PROJ</span>
+      </div>
+    </div>
+    <div class="toplinks">
+      <a class="badge" href="index-tech.html" title="Ouvrir l’index technique">Ouvrir l’index technique</a>
+      <a class="badge" href="index.html" title="Revenir à l’index">Index</a>
+      <a class="badge" href="https://github.com/Ledobs/Reddixia/blob/iD-xPM-Pantheon/README.md" target="_blank" rel="noopener">Repo Git</a>
+      <span class="badge" data-tip="Preuve de concept Reddixia v0.9">Preuve de concept Reddixia v0.9</span>
+    </div>
+  </div>
+
+  <div class="layout">
+    <aside class="sidebar">
+      <h3>Aller à</h3>
+      <div class="navbox">
+  <select id="navSelect" aria-label="Aller à">
+    <option value="index.html">Index — Vue d’ensemble</option>
+<option value="index-tech.html">Index technique — Architecture &amp; intégrations</option>
+<option disabled>──────────</option>
+<option disabled>Domain Packs</option>
+<option value="DOM-CommsOps.html">DOM — CommsOps</option>
+<option value="DOM-DeliveryOps.html">DOM — DeliveryOps</option>
+<option value="DOM-FinanceOps.html">DOM — FinanceOps</option>
+<option value="DOM-GovernanceOps.html">DOM — GovernanceOps</option>
+<option value="DOM-PortfolioOps.html">DOM — PortfolioOps</option>
+<option value="DOM-ProcurementOps.html">DOM — ProcurementOps</option>
+<option disabled>──────────</option>
+<option disabled>Rubriques</option>
+<option value="DOM-Portefeuille.html">DOM — Portefeuille</option>
+<option value="DOM-Conseils.html">DOM — Conseils</option>
+<option value="DOM-Scenarios.html">DOM — Scenarios</option>
+<option value="DOM-Livrables.html">DOM — Livrables</option>
+<option disabled>──────────</option>
+<option disabled>Composantes (agents)</option>
+<option value="CMP-IA-TPG-001-Idexios.html">IA-TPG-001 — IDEXIOS-HUB</option>
+<option value="CMP-IA-TPG-002-Hermes.html">IA-TPG-002 — HERMES-PROJ</option>
+<option value="CMP-IA-TPG-003-Athena.html">IA-TPG-003 — ATHENA-PORT</option>
+<option value="CMP-IA-TPG-004-Themis.html">IA-TPG-004 — THEMIS-GOV</option>
+<option value="CMP-IA-TPG-005-Atlas.html">IA-TPG-005 — ATLAS-CTRL</option>
+<option value="CMP-IA-TPG-006-Gaia.html">IA-TPG-006 — GAIA-RISK</option>
+<option value="CMP-IA-TPG-007-Vesta.html">IA-TPG-007 — VESTA-WORK</option>
+<option value="CMP-IA-TPG-008-Apollo.html">IA-TPG-008 — APOLLO-CHANGE</option>
+<option value="CMP-IA-TPG-009-Mercury.html">IA-TPG-009 — MERCURY-COLLECT</option>
+<option value="CMP-IA-TPG-010-Plutus.html">IA-TPG-010 — PLUTUS-ANOM</option>
+<option value="CMP-IA-TPG-011-Janus.html">IA-TPG-011 — JANUS-CLOSE</option>
+<option value="CMP-IA-TPG-012-Cassandra.html">IA-TPG-012 — CASSANDRA-FQA</option>
+<option value="CMP-IA-TPG-013-Cerberus.html">IA-TPG-013 — CERBERUS-SEC</option>
+<option value="CMP-IA-TPG-014-Orpheus.html">IA-TPG-014 — ORPHEUS-ADOPT</option>
+<option value="CMP-IA-TPG-015-Cicero.html">IA-TPG-015 — CICERO-ALLHANDS</option>
+<option value="CMP-IA-TPG-016-Poseidon.html">IA-TPG-016 — POSEIDON-CASH</option>
+<option value="CMP-IA-TPG-017-Juno.html">IA-TPG-017 — JUNO-PROC</option>
+<option value="CMP-IA-TPG-018-Ceres.html">IA-TPG-018 — CERES-BUDGET</option>
+<option value="CMP-IA-TPG-019-Vulcan.html">IA-TPG-019 — VULCAN-DEV</option>
+  </select>
+  <div class="navlinks">
+    <a href="index.html">Index</a>
+    <a href="index-tech.html">Index technique</a>
+  </div>
+</div>
+      <div style="margin-top:14px" class="small">Dernière génération : <span class="small">2025-12-29 17:21:39 EST</span></div>
+    </aside>
+
+    <main class="main">
+      <section class="hero">
+        <h1>CMP — HERMES-PROJ</h1>
+        <p>Détails de l’agent HERMES-PROJ : BUS, APP, TECH, DATA et relations.</p>
+        <div class="meta"><span class="chip">Code: <b>IA-TPG-002</b></span><span class="chip">Pack: <b>DeliveryOps</b></span><span class="chip">Modèles: <b>Mermaid · Cytoscape</b></span><span class="chip">Statut: <b>En cours</b></span><span class="chip">Dernière génération: <b>2025-12-29 17:21:39 EST</b></span></div>
+      </section>
+
+      <section class="grid">
+        <div class="card">
+  <h2>Global</h2>
+  
+<p><b>Agent de suivi de livraison : il consolide l’avancement des projets, le plan (tâches/jalons), les dépendances, et produit des statuts de projet avec alertes.</b></p>
+<div class="kpi">
+  <div class="pill"><b>Code</b> : <code>IA-TPG-002</code></div>
+  <div class="pill"><b>Nom</b> : HERMES-PROJ</div>
+  <div class="pill"><b>Pack</b> : DeliveryOps</div>
+  <div class="pill"><b>Statut</b> : En cours</div>
+</div>
+
+</div>
+<div class="two card">
+  <h2>BUS</h2>
+  
+<ul>
+  <li><b>Déclencheurs</b> : Livrables, Conseils</li>
+  <li><b>Rôle</b> : Agent de suivi de livraison : il consolide l’avancement des projets, le plan (tâches/jalons), les dépendances, et produit des statuts de projet avec alertes.</li>
+  <li><b>Valeur</b> : décisions plus rapides, traçabilité, réduction de la charge manuelle.</li>
+</ul>
+<p>Notes : à compléter lors des ateliers (contrôles, exceptions, règles métiers).</p>
+
+</div>
+<div class="two card">
+  <h2>APP</h2>
+  
+<p>Interactions typiques : IDEXIOS-HUB → HERMES-PROJ → (Dataverse/SharePoint) → retour structuré.</p>
+<div class="diagram"><pre class="mermaid">sequenceDiagram
+  autonumber
+  participant HUB as IDEXIOS-HUB
+  participant AG as HERMES-PROJ
+  participant DV as Dataverse (tpg_*)
+  participant SP as SharePoint
+  HUB-&gt;&gt;AG: Demande (rubrique + contexte)
+  AG-&gt;&gt;DV: Lecture/écriture ciblée
+  AG-&gt;&gt;SP: Lire modèles / déposer livrables
+  AG--&gt;&gt;HUB: Résultat structuré + indicateurs
+</pre></div>
+<div style="height:10px"></div>
+<div class="diagram"><pre class="mermaid">flowchart LR
+  HUB[IDEXIOS-HUB] --&gt; AG[HERMES-PROJ]
+  AG --&gt; DV[(Dataverse)]
+  AG --&gt; SP[(SharePoint)]
+  AG --&gt; OUT[Sorties]
+</pre></div>
+
+</div>
+<div class="card">
+  <h2>TECH</h2>
+  
+<ul>
+  <li>Connecteurs : Dataverse, SharePoint, Power Automate (au besoin).</li>
+  <li>Gestion d’erreurs : rejets explicites, messages « À confirmer » si données manquantes.</li>
+  <li>Journalisation : décisions, sources, anomalies; corrélation par conversation.</li>
+  <li>Sécurité : accès minimal requis, segmentation par pack, DLP/Purview si applicable.</li>
+</ul>
+
+</div>
+<div class="card">
+  <h2>DATA</h2>
+  
+<h3>Sources</h3>
+<ul><li>tpg_project</li><li>tpg_task (ou msdyn_ task) — à confirmer</li><li>tpg_milestone — à confirmer</li><li>tpg_dependency — à confirmer</li><li>tpg_risk, tpg_issue, tpg_decision — à confirmer</li></ul>
+<h3>Sorties</h3>
+<p>Sorties à confirmer selon les cas d’usage.</p>
+
+</div>
+<div class="card">
+  <h2>Spécifications (relations)</h2>
+  
+<div class="diagram">
+  <div class="toolbar">
+    <button class="btn" data-cy-zoom="in">+</button>
+    <button class="btn" data-cy-zoom="out">−</button>
+    <button class="btn" data-cy-zoom="fit">Ajuster</button>
+  </div>
+  <div class="cy" data-cy-data="cy-cmp-data"></div>
+</div>
+<script type="application/json" id="cy-cmp-data">{
+  "elements": {
+    "nodes": [
+      {
+        "data": {
+          "id": "DeliveryOps",
+          "label": "DeliveryOps",
+          "type": "pack"
+        }
+      },
+      {
+        "data": {
+          "id": "HERMES-PROJ",
+          "label": "HERMES-PROJ",
+          "type": "agent"
+        }
+      },
+      {
+        "data": {
+          "id": "IDEXIOS-HUB",
+          "label": "IDEXIOS-HUB",
+          "type": "agent"
+        }
+      },
+      {
+        "data": {
+          "id": "Dataverse",
+          "label": "Dataverse (tpg_*)",
+          "type": "system"
+        }
+      },
+      {
+        "data": {
+          "id": "SharePoint",
+          "label": "SharePoint Idexios-Prime",
+          "type": "system"
+        }
+      },
+      {
+        "data": {
+          "id": "Outputs",
+          "label": "Sorties (rubriques)",
+          "type": "system"
+        }
+      }
+    ],
+    "edges": [
+      {
+        "data": {
+          "id": "e_pack",
+          "source": "DeliveryOps",
+          "target": "HERMES-PROJ",
+          "label": "contient"
+        }
+      },
+      {
+        "data": {
+          "id": "e_hub",
+          "source": "IDEXIOS-HUB",
+          "target": "HERMES-PROJ",
+          "label": "route"
+        }
+      },
+      {
+        "data": {
+          "id": "e_dv",
+          "source": "HERMES-PROJ",
+          "target": "Dataverse",
+          "label": "données"
+        }
+      },
+      {
+        "data": {
+          "id": "e_sp",
+          "source": "HERMES-PROJ",
+          "target": "SharePoint",
+          "label": "livrables"
+        }
+      },
+      {
+        "data": {
+          "id": "e_out",
+          "source": "HERMES-PROJ",
+          "target": "Outputs",
+          "label": "produit"
+        }
+      }
+    ]
+  }
+}</script>
+
+</div>
+      </section>
+    </main>
+  </div>
+</body>
+</html>

@@ -24,3 +24,9 @@ session-reports/
 .DS_Store
 Thumbs.db
 *.swp
+
+# Devis (HTML packs)
+Devis Techno/reddixia-devis-html-v0.6/
+
+# Local caches
+.cache/
