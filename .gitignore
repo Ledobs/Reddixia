@@ -27,3 +27,6 @@ Thumbs.db
 
 # Devis (HTML packs)
 Devis Techno/reddixia-devis-html-v0.6/
+
+# Local caches
+.cache/
