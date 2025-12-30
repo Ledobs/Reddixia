@@ -90,13 +90,13 @@
   
 <p>La rubrique <b>Livrables</b> correspond au type de sortie attendu. IDEXIOS-HUB route la demande vers les agents pertinents et assemble le résultat (conversation + artefacts).</p>
 <div class="diagram"><pre class="mermaid">flowchart TB
-  U[Utilisateur] --&gt; HUB[IDEXIOS-HUB]
-  HUB --&gt;|Sélection rubrique| R[Livrables]
-  R --&gt; A[Agents contributeurs]
-  A --&gt; DV[(Dataverse)]
-  A --&gt; SP[(SharePoint)]
-  R --&gt; OUT[Sortie Livrables]
-  OUT --&gt; U
+  U[Utilisateur] --> HUB[IDEXIOS-HUB]
+  HUB -->|Sélection rubrique| R[Livrables]
+  R --> A[Agents contributeurs]
+  A --> DV[(Dataverse)]
+  A --> SP[(SharePoint)]
+  R --> OUT[Sortie Livrables]
+  OUT --> U
 </pre></div>
 
 </div>
