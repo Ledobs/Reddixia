@@ -346,3 +346,38 @@ pre.mermaid{
   font-size:12px; color:var(--muted2);
 }
 .warnText{color:var(--warn); font-weight:700}
+
+details.accordion{
+  border:1px solid rgba(39,53,95,.65);
+  background: rgba(15,24,48,.35);
+  border-radius: 18px;
+  padding:10px 12px;
+}
+details.accordion[open]{
+  border-color: rgba(90,169,255,.65);
+  background: rgba(16,27,53,.55);
+}
+details.accordion summary{
+  cursor:pointer;
+  user-select:none;
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap:12px;
+  list-style:none;
+}
+details.accordion summary::-webkit-details-marker{display:none}
+details.accordion summary .acc-title{
+  font-size:13px;
+  font-weight:700;
+  color:var(--text);
+}
+details.accordion summary .acc-wrap{
+  font-size:12px;
+  color:var(--muted2);
+  text-align:right;
+  max-width: 62ch;
+}
+details.accordion .acc-body{
+  margin-top:10px;
+}
