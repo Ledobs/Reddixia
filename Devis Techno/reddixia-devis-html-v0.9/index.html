@@ -1226,10 +1226,10 @@
   <pre class="mermaid">gantt
   title Reddixia — plan de développement (vitrine → POC → pilote)
   dateFormat  YYYY-MM-DD
-  axisFormat  %d %b %Y
-  tickInterval 2week
+  axisFormat  %b %Y
+  tickInterval 1month
   section Vitrine (prioritaire)
-  Repère : Janvier 2026           :milestone, m0, 2026-01-01, 0d
+  Repère - Janvier 2026           :milestone, m0, 2026-01-01, 0d
   Cycle 1 (2 semaines)             :v1, 2026-01-12, 10d
   Validation contenu vitrine       :milestone, v2, 2026-01-22, 0d
   Capture écran « show de boucane » :milestone, v3, 2026-01-28, 0d
@@ -1239,16 +1239,8 @@
   section Données &amp; intégrations
   Connecteurs Dataverse / SP       :b1, after a2, 20d
   Serveurs MCP (socle)             :b2, after b1, 20d
-  section Packs de domaine
-  FinanceOps (collecte + anomalies):c1, after b2, 20d
-  PortfolioOps (scénarios)         :c2, after c1, 20d
-  GovernanceOps (contrôles)        :c3, after c2, 20d
-  section Diffusion
-  Power Pages / Cards              :d1, after c3, 20d
-  Tableaux &amp; rapports              :d2, after d1, 20d
-  section Stabilisation
-  Tests &amp; durcissement             :e1, after d2, 20d
-  Pilote &amp; ajustements             :e2, after e1, 20d
+  section Itérations futures
+  Cycle (backlog &amp; extensions)     :f1, after b2, 60d
 </pre>
 </div>
 
