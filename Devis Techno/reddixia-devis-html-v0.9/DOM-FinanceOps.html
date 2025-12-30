@@ -113,12 +113,13 @@
 <div class="card">
   <h2>APP / TECH</h2>
   
-<div class="diagram"><pre class="mermaid">flowchart LR
-  HUB[IDEXIOS-HUB] --> PACK[FinanceOps]
-  PACK --> AG[Agents FinanceOps]
-  AG --> DV[(Dataverse tpg_*)]
-  AG --> SP[(SharePoint)]
-  AG --> OUT[Sorties (rubriques)]
+<div class="diagram"><pre class="mermaid">flowchart TD
+  HUB[IDEXIOS HUB] --> PACK[FinanceOps]
+  PACK --> AG[Agents]
+  AG --> DV[Dataverse]
+  AG --> SP[SharePoint]
+  AG --> PA[Power Automate]
+  AG --> OUT[Sorties]
 </pre></div>
 <ul>
   <li>Connecteurs : Dataverse, SharePoint, Power Automate.</li>
@@ -175,7 +176,7 @@
   actor U as Utilisateur
   participant HUB as IDEXIOS-HUB
   participant MC as MERCURY-COLLECT
-  participant DV as Dataverse (tpg_*)
+  participant DV as Dataverse (tpg_...)
   participant AT as ATLAS-CTRL
   participant OUT as Sortie Finance
   U->>HUB: Demande "État financier / écarts"

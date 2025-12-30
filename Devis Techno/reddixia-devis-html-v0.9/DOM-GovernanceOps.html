@@ -114,12 +114,13 @@
 <div class="card">
   <h2>APP / TECH</h2>
   
-<div class="diagram"><pre class="mermaid">flowchart LR
-  HUB[IDEXIOS-HUB] --> PACK[GovernanceOps]
-  PACK --> AG[Agents GovernanceOps]
-  AG --> DV[(Dataverse tpg_*)]
-  AG --> SP[(SharePoint)]
-  AG --> OUT[Sorties (rubriques)]
+<div class="diagram"><pre class="mermaid">flowchart TD
+  HUB[IDEXIOS HUB] --> PACK[GovernanceOps]
+  PACK --> AG[Agents]
+  AG --> DV[Dataverse]
+  AG --> SP[SharePoint]
+  AG --> PA[Power Automate]
+  AG --> OUT[Sorties]
 </pre></div>
 <ul>
   <li>Connecteurs : Dataverse, SharePoint, Power Automate.</li>
@@ -168,7 +169,7 @@
   actor U as Utilisateur
   participant HUB as IDEXIOS-HUB
   participant TH as THEMIS-GOV
-  participant DV as Dataverse (tpg_*)
+  participant DV as Dataverse (tpg_...)
   participant SP as SharePoint
   U->>HUB: Demande "Contrôles & conformité"
   HUB->>TH: Vérifier politiques + contrôles

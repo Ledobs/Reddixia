@@ -114,12 +114,13 @@
 <div class="card">
   <h2>APP / TECH</h2>
   
-<div class="diagram"><pre class="mermaid">flowchart LR
-  HUB[IDEXIOS-HUB] --> PACK[PortfolioOps]
-  PACK --> AG[Agents PortfolioOps]
-  AG --> DV[(Dataverse tpg_*)]
-  AG --> SP[(SharePoint)]
-  AG --> OUT[Sorties (rubriques)]
+<div class="diagram"><pre class="mermaid">flowchart TD
+  HUB[IDEXIOS HUB] --> PACK[PortfolioOps]
+  PACK --> AG[Agents]
+  AG --> DV[Dataverse]
+  AG --> SP[SharePoint]
+  AG --> PA[Power Automate]
+  AG --> OUT[Sorties]
 </pre></div>
 <ul>
   <li>Connecteurs : Dataverse, SharePoint, Power Automate.</li>
@@ -170,7 +171,7 @@
   participant HUB as IDEXIOS-HUB
   participant AP as ATHENA-PORT
   participant GR as GAIA-RISK
-  participant DV as Dataverse (tpg_*)
+  participant DV as Dataverse (tpg_...)
   U->>HUB: Demande "Santé du portefeuille"
   HUB->>AP: Consolider + analyser
   AP->>DV: Lire projets/portefeuille

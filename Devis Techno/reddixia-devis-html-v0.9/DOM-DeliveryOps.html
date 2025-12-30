@@ -113,12 +113,13 @@
 <div class="card">
   <h2>APP / TECH</h2>
   
-<div class="diagram"><pre class="mermaid">flowchart LR
-  HUB[IDEXIOS-HUB] --> PACK[DeliveryOps]
-  PACK --> AG[Agents DeliveryOps]
-  AG --> DV[(Dataverse tpg_*)]
-  AG --> SP[(SharePoint)]
-  AG --> OUT[Sorties (rubriques)]
+<div class="diagram"><pre class="mermaid">flowchart TD
+  HUB[IDEXIOS HUB] --> PACK[DeliveryOps]
+  PACK --> AG[Agents]
+  AG --> DV[Dataverse]
+  AG --> SP[SharePoint]
+  AG --> PA[Power Automate]
+  AG --> OUT[Sorties]
 </pre></div>
 <ul>
   <li>Connecteurs : Dataverse, SharePoint, Power Automate.</li>
@@ -136,18 +137,6 @@
 </ul>
 
 </div>
-<div class="card">
-  <h2>Spécifications (relations pack → agents → systèmes)</h2>
-  
-<div class="diagram">
-  <div class="toolbar">
-    <button class="btn" data-cy-zoom="in">+</button>
-    <button class="btn" data-cy-zoom="out">−</button>
-    <button class="btn" data-cy-zoom="fit">Ajuster</button>
-  </div>
-  <div class="cy" data-cy-data="cy-pack-data"></div>
-</div>
-<script type="application/json" id="cy-pack-data">{
 
 <div class="card">
   <h2>Rubriques — explosion métier</h2>
@@ -180,7 +169,7 @@
   actor U as Utilisateur
   participant HUB as IDEXIOS-HUB
   participant HE as HERMES-PROJ
-  participant DV as Dataverse (tpg_*)
+  participant DV as Dataverse (tpg_...)
   participant SP as SharePoint
   U->>HUB: Demande "Avancement & jalons"
   HUB->>HE: Consolider plan + réel
@@ -271,6 +260,18 @@
     </div>
   </details>
 </div>
+<div class="card">
+  <h2>Spécifications (relations pack → agents → systèmes)</h2>
+  
+<div class="diagram">
+  <div class="toolbar">
+    <button class="btn" data-cy-zoom="in">+</button>
+    <button class="btn" data-cy-zoom="out">−</button>
+    <button class="btn" data-cy-zoom="fit">Ajuster</button>
+  </div>
+  <div class="cy" data-cy-data="cy-pack-data"></div>
+</div>
+<script type="application/json" id="cy-pack-data">{
   "elements": {
     "nodes": [
       {

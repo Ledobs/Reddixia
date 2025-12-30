@@ -258,7 +258,7 @@ a:hover{text-decoration:underline}
   border-radius: 18px;
   padding:10px;
   position:relative;
-  overflow:hidden;
+  overflow:auto;
 }
 .diagram .toolbar{
   display:flex; gap:8px; justify-content:flex-end;
@@ -281,6 +281,12 @@ pre.mermaid{
   font-family: var(--mono);
   font-size:12px;
   color:var(--muted2);
+}
+
+pre.mermaid svg{
+  display:block;
+  height:auto;
+  max-width:100%;
 }
 
 .cy{
