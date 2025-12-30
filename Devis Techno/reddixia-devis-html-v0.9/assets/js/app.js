@@ -111,20 +111,21 @@
     const buildDomainStarLayout = (elements)=>{
       if(!elements || Array.isArray(elements) || !elements.nodes) return elements;
 
+      // Goal: isolate each domain "star" so the diagram reads as a constellation.
+      // Main source of clutter is global transversal systems with many cross-domain edges.
+      // Solution: duplicate transversal systems per domain pack so usage edges stay local.
+
       const hubId = "IDEXIOS-HUB";
       const packOrder = ["CommsOps", "DeliveryOps", "FinanceOps", "GovernanceOps", "PortfolioOps", "ProcurementOps"];
 
-      const nodes = (elements.nodes || []).map(n=>({ ...n }));
-      const edges = (elements.edges || []).map(e=>({ ...e }));
+      const nodesIn = (elements.nodes || []).map(n=>({ ...n, data: { ...(n.data || {}) } }));
+      const edgesIn = (elements.edges || []).map(e=>({ ...e, data: { ...(e.data || {}) } }));
 
-      const nodesById = new Map();
-      nodes.forEach(n=>{ if(n && n.data && n.data.id) nodesById.set(n.data.id, n); });
+      const packs = nodesIn.filter(n=>n.data && n.data.type === "pack").map(n=>n.data.id);
+      const systemsGlobal = nodesIn.filter(n=>n.data && n.data.type === "system").map(n=>n.data.id);
+      const agents = nodesIn.filter(n=>n.data && n.data.type === "agent").map(n=>n.data.id);
 
-      const packs = nodes.filter(n=>n.data && n.data.type === "pack").map(n=>n.data.id);
-      const systems = nodes.filter(n=>n.data && n.data.type === "system").map(n=>n.data.id);
-      const agents = nodes.filter(n=>n.data && n.data.type === "agent").map(n=>n.data.id);
-
-      const transversalPackId = packs.find(p=>p.toLowerCase().includes("transversal")) || null;
+      const transversalPackId = packs.find(p=>String(p).toLowerCase().includes("transversal")) || null;
 
       const domainPacks = [];
       packOrder.forEach(p=>{ if(packs.includes(p)) domainPacks.push(p); });
@@ -135,91 +136,192 @@
 
       // Build pack -> agents relation from edges (pack contains agent)
       const packToAgents = new Map();
-      domainPacks.concat(transversalPackId ? [transversalPackId] : []).forEach(p=>packToAgents.set(p, []));
-      edges.forEach(e=>{
+      const allPacksForMembership = domainPacks.concat(transversalPackId ? [transversalPackId] : []);
+      allPacksForMembership.forEach(p=>packToAgents.set(p, []));
+      edgesIn.forEach(e=>{
         const d = e && e.data;
         if(!d || !d.source || !d.target) return;
-        const src = d.source;
-        const tgt = d.target;
-        if(!packs.includes(src)) return;
-        if(!agents.includes(tgt)) return;
-        const arr = packToAgents.get(src);
-        if(arr) arr.push(tgt);
+        if(!packs.includes(d.source)) return;
+        if(!agents.includes(d.target)) return;
+        const arr = packToAgents.get(d.source);
+        if(arr) arr.push(d.target);
       });
+      for(const [p, list] of packToAgents.entries()) list.sort();
+
+      const agentToPack = new Map();
       for(const [p, list] of packToAgents.entries()){
-        list.sort();
+        list.forEach(a=>{ if(!agentToPack.has(a)) agentToPack.set(a, p); });
       }
 
-      // Coordinates
-      const center = { x: 0, y: 0 };
-      const packRadius = 360;
-      const agentOrbit = 140;
-      const systemRadius = 620;
+      const sysShortLabel = (sysId, originalLabel)=>{
+        switch(sysId){
+          case "Dataverse": return "Dataverse";
+          case "SharePoint": return "SharePoint";
+          case "PowerPages": return "Power Pages";
+          case "PowerAutomate": return "Automate";
+          case "CopilotStudio": return "Copilot";
+          case "MCP": return "MCP";
+          default: return originalLabel || sysId;
+        }
+      };
 
+      const newNodes = [];
+      const newEdges = [];
+
+      const byIdIn = new Map();
+      nodesIn.forEach(n=>{ if(n && n.data && n.data.id) byIdIn.set(n.data.id, n); });
+
+      // Keep all non-system nodes (packs + agents)
+      nodesIn.forEach(n=>{
+        if(!n || !n.data || !n.data.id) return;
+        if(n.data.type === "system") return;
+        newNodes.push(n);
+      });
+
+      const packToSystems = new Map();
+      domainPacks.forEach(p=>packToSystems.set(p, []));
+
+      const sysCopyId = (packId, sysId)=>`${packId}::${sysId}`;
+      const ensureSysCopy = (packId, sysId)=>{
+        const id = sysCopyId(packId, sysId);
+        if(newNodes.some(n=>n.data && n.data.id === id)) return id;
+        const original = byIdIn.get(sysId);
+        const label = sysShortLabel(sysId, original && original.data ? original.data.label : sysId);
+        newNodes.push({
+          data: {
+            id,
+            label,
+            type: "system",
+            baseId: sysId,
+            pack: packId
+          }
+        });
+        const arr = packToSystems.get(packId);
+        if(arr && !arr.includes(id)) arr.push(id);
+        return id;
+      };
+
+      // Rewrite edges:
+      // - Keep hub->pack orchestration edges
+      // - Keep pack->agent containment edges
+      // - Rewrite agent->system usage edges to local (pack-specific) system copies
+      // - Drop hub->system edges and global system nodes (source of clutter)
+      edgesIn.forEach(e=>{
+        const d = e && e.data;
+        if(!d || !d.source || !d.target) return;
+
+        const src = d.source;
+        const tgt = d.target;
+
+        const srcIsAgent = agents.includes(src);
+        const tgtIsSystem = systemsGlobal.includes(tgt);
+
+        // pack contains agent
+        if(packs.includes(src) && agents.includes(tgt)){
+          newEdges.push(e);
+          return;
+        }
+
+        // hub orchestration to packs
+        if(src === hubId && packs.includes(tgt)){
+          newEdges.push(e);
+          return;
+        }
+
+        // agent uses system (rewrite to local system copy)
+        if(srcIsAgent && tgtIsSystem){
+          const packId = agentToPack.get(src);
+          if(!packId || !domainPacks.includes(packId)) return;
+          const localSysId = ensureSysCopy(packId, tgt);
+          newEdges.push({
+            data: {
+              id: `e_use_${src}_${localSysId}`,
+              source: src,
+              target: localSysId,
+              // Keep it visually clean: the node proximity shows the relationship
+              label: ""
+            }
+          });
+          return;
+        }
+
+        // Everything else (hub->system, system-related edges) is omitted in this "Domaines" view
+      });
+
+      // Coordinates: larger radii + per-pack local system arc (outward)
+      const center = { x: 0, y: 0 };
+      const packRadius = 720;
+      const agentOrbit = 240;
+      const systemOrbit = 420;
+
+      const nodesById = new Map();
+      newNodes.forEach(n=>{ if(n && n.data && n.data.id) nodesById.set(n.data.id, n); });
       const setPos = (id, x, y)=>{
         const n = nodesById.get(id);
         if(!n) return;
         n.position = { x, y };
       };
 
-      // Hub centered
       setPos(hubId, center.x, center.y);
-
-      // Optional: transversal pack close to hub
       if(transversalPackId){
-        setPos(transversalPackId, center.x - 210, center.y);
+        setPos(transversalPackId, center.x - 360, center.y);
       }
 
-      // Packs on a ring
+      const packAngle = new Map();
       const nP = Math.max(domainPacks.length, 1);
       domainPacks.forEach((packId, idx)=>{
         const a = (Math.PI * 2 * idx) / nP - Math.PI / 2;
+        packAngle.set(packId, a);
         const x = center.x + packRadius * Math.cos(a);
         const y = center.y + packRadius * Math.sin(a);
         setPos(packId, x, y);
 
-        // Agents orbit their pack
+        // Agents orbit pack (slight inward bias to keep systems clearly outside)
         const members = packToAgents.get(packId) || [];
         const m = Math.max(members.length, 1);
         members.forEach((agentId, j)=>{
-          // Local orbit, slightly randomized angle offset per pack to reduce overlaps
-          const aa = (Math.PI * 2 * j) / m + a * 0.35;
+          const aa = (Math.PI * 2 * j) / m + a * 0.25;
           setPos(agentId, x + agentOrbit * Math.cos(aa), y + agentOrbit * Math.sin(aa));
         });
+
+        // Systems placed on an outward arc, away from center, to look like a "star" per domain
+        const sysIds = (packToSystems.get(packId) || []).slice().sort();
+        const s = sysIds.length;
+        if(s){
+          const outward = a; // direction from center to pack
+          const spread = Math.min(1.1, 0.35 * s); // radians
+          sysIds.forEach((sid, k)=>{
+            const t = s === 1 ? 0 : (k / (s - 1) - 0.5);
+            const sa = outward + t * spread;
+            setPos(sid, x + systemOrbit * Math.cos(sa), y + systemOrbit * Math.sin(sa));
+          });
+        }
       });
 
       // Any agent not positioned yet (excluding hub) gets a small inner ring
-      const unplacedAgents = agents.filter(a=>a !== hubId).filter(a=>{
-        const n = nodesById.get(a);
-        return n && !n.position;
-      });
+      const unplacedAgents = agents
+        .filter(a=>a !== hubId)
+        .filter(a=>{
+          const n = nodesById.get(a);
+          return n && !n.position;
+        });
       if(unplacedAgents.length){
         unplacedAgents.forEach((agentId, idx)=>{
           const a = (Math.PI * 2 * idx) / unplacedAgents.length;
-          setPos(agentId, center.x + 160 * Math.cos(a), center.y + 160 * Math.sin(a));
+          setPos(agentId, center.x + 220 * Math.cos(a), center.y + 220 * Math.sin(a));
         });
       }
 
-      // Systems on an outer ring (bottom half bias)
-      const nS = Math.max(systems.length, 1);
-      systems
-        .slice()
-        .sort()
-        .forEach((sysId, idx)=>{
-          const a = (Math.PI * 2 * idx) / nS + Math.PI / 2;
-          setPos(sysId, center.x + systemRadius * Math.cos(a), center.y + systemRadius * Math.sin(a));
-        });
-
-      // Fallback: any remaining nodes get spread on a medium ring
-      const leftovers = nodes.filter(n=>n.data && n.data.id).filter(n=>!n.position);
+      // Fallback: remaining nodes on a medium ring
+      const leftovers = newNodes.filter(n=>n.data && n.data.id).filter(n=>!n.position);
       if(leftovers.length){
         leftovers.forEach((n, idx)=>{
           const a = (Math.PI * 2 * idx) / leftovers.length;
-          n.position = { x: center.x + 480 * Math.cos(a), y: center.y + 480 * Math.sin(a) };
+          n.position = { x: center.x + 560 * Math.cos(a), y: center.y + 560 * Math.sin(a) };
         });
       }
 
-      return { nodes, edges };
+      return { nodes: newNodes, edges: newEdges };
     };
 
     $$(".cy").forEach(el=>{
