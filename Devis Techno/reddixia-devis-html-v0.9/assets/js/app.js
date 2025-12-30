@@ -238,8 +238,8 @@
               id: `e_use_${src}_${localSysId}`,
               source: src,
               target: localSysId,
-              // Keep it visually clean: the node proximity shows the relationship
-              label: ""
+              // Preserve semantics (read / read-write / publier)
+              label: (d.label || "")
             }
           });
           return;
@@ -248,11 +248,30 @@
         // Everything else (hub->system, system-related edges) is omitted in this "Domaines" view
       });
 
+      // Add per-domain invisible bridge nodes to draw dashed "mini-paths"
+      // from each domain's local transversal systems to the central transversal box.
+      const packToBridge = new Map();
+      domainPacks.forEach(packId=>{
+        const sysIds = packToSystems.get(packId) || [];
+        if(!sysIds.length) return;
+        const bridgeId = `${packId}::bridge`;
+        packToBridge.set(packId, bridgeId);
+        newNodes.push({
+          data: {
+            id: bridgeId,
+            label: "",
+            type: "bridge",
+            pack: packId
+          }
+        });
+      });
+
       // Coordinates: larger radii + per-pack local system arc (outward)
       const center = { x: 0, y: 0 };
       const packRadius = 720;
       const agentOrbit = 240;
       const systemOrbit = 420;
+      const bridgeRadius = 360;
 
       const nodesById = new Map();
       newNodes.forEach(n=>{ if(n && n.data && n.data.id) nodesById.set(n.data.id, n); });
@@ -276,6 +295,11 @@
         const y = center.y + packRadius * Math.sin(a);
         setPos(packId, x, y);
 
+        const bridgeId = packToBridge.get(packId);
+        if(bridgeId){
+          setPos(bridgeId, center.x + bridgeRadius * Math.cos(a), center.y + bridgeRadius * Math.sin(a));
+        }
+
         // Agents orbit pack (slight inward bias to keep systems clearly outside)
         const members = packToAgents.get(packId) || [];
         const m = Math.max(members.length, 1);
@@ -296,6 +320,37 @@
             setPos(sid, x + systemOrbit * Math.cos(sa), y + systemOrbit * Math.sin(sa));
           });
         }
+      });
+
+      // Dashed mini-path edges:
+      // systemCopy -> bridge (per system), then bridge -> Transversal pack (one per domain).
+      const targetId = transversalPackId || hubId;
+      domainPacks.forEach(packId=>{
+        const bridgeId = packToBridge.get(packId);
+        if(!bridgeId) return;
+
+        const sysIds = packToSystems.get(packId) || [];
+        sysIds.forEach(sid=>{
+          newEdges.push({
+            data: {
+              id: `e_bridge_${sid}_${bridgeId}`,
+              source: sid,
+              target: bridgeId,
+              label: "",
+              kind: "bridge"
+            }
+          });
+        });
+
+        newEdges.push({
+          data: {
+            id: `e_bridge_${bridgeId}_${targetId}`,
+            source: bridgeId,
+            target: targetId,
+            label: "",
+            kind: "bridge"
+          }
+        });
       });
 
       // Any agent not positioned yet (excluding hub) gets a small inner ring
@@ -379,6 +434,16 @@
             style: { "border-color":"#2dd4bf" }
           },
           {
+            selector: "node[type='bridge']",
+            style: {
+              "background-opacity": 0,
+              "border-width": 0,
+              "width": 1,
+              "height": 1,
+              "label": ""
+            }
+          },
+          {
             selector: "edge",
             style: {
               "line-color": "#93a3cf",
@@ -392,6 +457,16 @@
               "text-background-opacity": 0.7,
               "text-background-color": "#0c1223",
               "text-background-padding": 2
+            }
+          },
+          {
+            selector: "edge[kind='bridge']",
+            style: {
+              "line-style": "dashed",
+              "curve-style": "straight",
+              "target-arrow-shape": "none",
+              "opacity": 0.55,
+              "label": ""
             }
           }
         ]

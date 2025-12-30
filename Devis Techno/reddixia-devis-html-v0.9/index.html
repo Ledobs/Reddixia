@@ -1227,7 +1227,7 @@
   title Reddixia — plan de développement (vitrine → POC → pilote)
   dateFormat  YYYY-MM-DD
   axisFormat  %b %Y
-  excludes    weekends
+  tickInterval 1month
   section Vitrine (prioritaire)
   Cycle 1 (2 semaines)             :v1, 2026-01-12, 10d
   Validation contenu vitrine       :milestone, v2, 2026-01-22, 0d
@@ -1261,10 +1261,10 @@
   U[Utilisateurs] --&gt;|Demande| CS[Copilot Studio]
   CS --&gt; HUB[IDEXIOS-HUB]
   HUB --&gt;|Route| AG[Agents de domaine]
-  AG --&gt; DV[(Dataverse TPG<br/>tpg_*)]
-  AG --&gt; SP[(SharePoint<br/>Idexios-Prime)]
+  AG --&gt; DV[(Dataverse TPG tpg_*)]
+  AG --&gt; SP[(SharePoint Idexios-Prime)]
   AG --&gt; PA[Power Automate]
-  HUB --&gt; OUT[Sorties<br/>Conversation / Power Pages / Livrables]
+  HUB --&gt; OUT[Sorties: Conversation / Power Pages / Livrables]
   OUT --&gt; U
 </pre>
 </div>
