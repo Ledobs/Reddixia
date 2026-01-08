@@ -1262,7 +1262,7 @@ accidentally corrupted (HTML head/body + raw JSON).
         <div class="card">
   <h2>Global</h2>
   
-<p><b>Hub / méta-orchestrateur : il clarifie l’intention, route vers l’agent spécialisé et agrège les résultats sans inventer de chiffres. Il synthétise la vue d’ensemble et met en lumière les signaux d’alerte.</b></p>
+        <p><b>Orchestrateur central orienté utilisateur : point d’entrée unique pour les utilisateurs humains. Il interprète l’intention, qualifie le contexte, orchestre des agents internes et restitue une réponse compréhensible et actionnable. Les agents spécialisés ne sont jamais exposés directement : ils produisent uniquement des résultats internes que IDEXIOS-HUB assemble et reformule.</b></p>
 <div class="kpi">
   <div class="pill"><b>Code</b> : <code>IA-TPG-001</code></div>
   <div class="pill"><b>Nom</b> : IDEXIOS-HUB</div>
@@ -1276,14 +1276,15 @@ accidentally corrupted (HTML head/body + raw JSON).
   <h2>BUS</h2>
   
 <ul>
-  <li><b>Déclencheurs</b> : toutes rubriques (Portefeuille, Conseils, Scenarios, Livrables) et flux planifiés.</li>
-  <li><b>Rôle</b> : orchestrer 1..n domaines (packs), assembler et diffuser la réponse finale.</li>
-  <li><b>Valeur</b> : cohérence globale, décisions plus rapides, traçabilité des hypothèses et limites.</li>
+  <li><b>Point d’entrée unique</b> : IDEXIOS-HUB est l’unique interface d’accès pour les rôles métiers (pilotage, portefeuille, gouvernance, exécution, procurement, communication, direction).</li>
+  <li><b>Responsabilités</b> : interpréter l’intention, qualifier le contexte (portefeuille, période, scénario, périmètre), cadrer la demande et piloter l’exécution.</li>
+  <li><b>Restitution</b> : produire une réponse compréhensible et actionnable (synthèse, options, décisions, prochaines actions) en explicitant hypothèses, limites et points à confirmer.</li>
+  <li><b>Séparation des responsabilités</b> : IDEXIOS-HUB porte l’expérience utilisateur et l’orchestration; les agents spécialisés portent l’expertise et l’accès aux informations, sans responsabilité UX.</li>
 </ul>
-<p>Notes : à compléter lors des ateliers (routage, contrôles, escalade, formats de sortie).</p>
+<p>Principe clé : toute réponse destinée à un humain est formulée et délivrée par IDEXIOS-HUB. Les agents spécialisés produisent des résultats internes, structurés et exploitables par le système.</p>
 
 <h3>Orchestration (vue « cosmos »)</h3>
-<p>Vue allégée : IDEXIOS-HUB orchestre 1..n domaines; chaque domaine produit une réponse structurée; IDEXIOS-HUB assemble la réponse finale.</p>
+<p>Vue de principe : IDEXIOS-HUB orchestre 1..n domaines internes, collecte des réponses structurées et assemble une réponse finale contextualisée pour l’utilisateur. Aucun agent spécialisé n’est exposé directement à un humain.</p>
 <div class="diagram" data-mmd-autofit="1"><pre class="mermaid">flowchart LR
   %% IDEXIOS (orchestrateur) — vue « cosmos » (compacte)
 
@@ -1371,7 +1372,7 @@ accidentally corrupted (HTML head/body + raw JSON).
 <div class="two card">
   <h2>APP</h2>
   
-<p>Interactions typiques : (Humain/Flux) → IDEXIOS-HUB → (1..n domaines) → retours structurés → assemblage → réponse.</p>
+<p>Interactions typiques : (Utilisateur humain / déclencheur applicatif) → IDEXIOS-HUB → (1..n agents internes) → réponses structurées → agrégation / contextualisation → réponse utilisateur.</p>
 <div class="diagram"><pre class="mermaid">sequenceDiagram
   autonumber
   participant HUB as IDEXIOS-HUB
@@ -1381,7 +1382,7 @@ accidentally corrupted (HTML head/body + raw JSON).
   HUB-&gt;&gt;SP: Lire modèles / déposer livrables
   HUB--&gt;&gt;HUB: Agrégation (résultats domaine) + réponse finale
 </pre></div>
-<p class="small">Schéma d’orchestration : voir le bloc BUS (vue « cosmos »).</p>
+<p class="small">Règle d’architecture : aucun lien direct Utilisateur ↔ agent spécialisé. IDEXIOS-HUB est la seule façade autorisée à dialoguer avec un humain.</p>
 
 </div>
 
@@ -1389,10 +1390,10 @@ accidentally corrupted (HTML head/body + raw JSON).
   <h2>TECH</h2>
   
 <ul>
-  <li>Connecteurs : Dataverse, SharePoint, Power Automate (au besoin).</li>
-  <li>Gestion d’erreurs : rejets explicites, messages « À confirmer » si données manquantes.</li>
-  <li>Journalisation : décisions, sources, anomalies; corrélation par conversation.</li>
-  <li>Sécurité : accès minimal requis, segmentation par pack, DLP/Purview si applicable.</li>
+  <li>Canaux d’exposition : IDEXIOS-HUB peut être présenté via différents canaux (ex. chat, portail), sans y déplacer l’intelligence.</li>
+  <li>Flux machine-to-machine : IDEXIOS-HUB orchestre des agents internes et des composants techniques (automatisation, APIs, services), et reçoit des résultats structurés.</li>
+  <li>Contrôle de dialogue : IDEXIOS-HUB est le seul composant autorisé à produire des messages destinés à un humain; les agents sont conçus pour être consommés par des systèmes.</li>
+  <li>Non-fonctionnels : observabilité et corrélation, gestion d’erreurs explicite, contrôle d’accès au moindre privilège, segmentation logique par capacités.</li>
 </ul>
 
 </div>
@@ -1401,9 +1402,9 @@ accidentally corrupted (HTML head/body + raw JSON).
   <h2>DATA</h2>
   
 <h3>Sources</h3>
-<p>Sources : Dataverse (<code>tpg_*</code>) et SharePoint (selon le besoin).</p>
+<p>Les agents spécialisés consomment des données et services : tables Dataverse (dont <code>tpg_*</code>), autres tables, documents SharePoint Online, sources externes via API et serveurs MCP (si activés). Ces accès sont utilisés en machine-to-machine.</p>
 <h3>Sorties</h3>
-<p>Sorties à confirmer selon les cas d’usage.</p>
+<p>Les agents spécialisés produisent des réponses structurées, orientées données (faits, indicateurs, liens, éléments de décision) destinées à IDEXIOS-HUB. IDEXIOS-HUB est responsable de la contextualisation, de la narration et de la mise en forme de la réponse utilisateur. Il n’existe pas de flux direct « données → utilisateur ».</p>
 
 </div>
 
