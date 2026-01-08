@@ -113,16 +113,17 @@
 <div class="card">
   <h2>APP / TECH</h2>
   
-<div class="diagram"><pre class="mermaid">flowchart LR
-  HUB[IDEXIOS-HUB] --> PACK[CommsOps]
+<div class="diagram"><pre class="mermaid">flowchart TD
+  HUB[IDEXIOS HUB] --> PACK[CommsOps]
   PACK --> AG[Agents CommsOps]
-  AG --> DV[(Dataverse tpg_*)]
-  AG --> SP[(SharePoint)]
-  AG --> OUT[Sorties (rubriques)]
+  AG --> DV[Dataverse]
+  AG --> SP[SharePoint]
+  AG --> PA[Power Automate]
+  AG --> OUT[Sorties]
 </pre></div>
 <ul>
   <li>Connecteurs : Dataverse, SharePoint, Power Automate.</li>
-  <li>Diffusion : Copilot Studio (conversation) + Power Pages / cartes.</li>
+  <li>Diffusion : Copilot Studio (conversation) + canaux (Teams/Outlook) + artefacts (Power Pages / cartes).</li>
   <li>Traçabilité : liens vers livrables et décisions.</li>
 </ul>
 
@@ -133,9 +134,43 @@
 <ul>
   <li>Tables principales : <code>tpg_project</code>, <code>tpg_portfolio</code>, <code>tpg_financial</code>, <code>tpg_risk</code> (selon le domaine).</li>
   <li>Documents : modèles, rapports, comptes rendus, exports (SharePoint).</li>
+  <li>Convention : tables Dataverse au préfixe <code>tpg_</code>.</li>
 </ul>
 
 </div>
+
+<div class="card">
+  <h2>Rubriques — explosion métier</h2>
+  <p>Objectif : relier le besoin métier aux sorties de communication, aux données sources et aux validations. Les éléments manquants sont marqués <span class="warnText">À définir</span>.</p>
+
+  <details class="accordion">
+    <summary>
+      <span class="acc-title">Communication — Annonces, kits &amp; FAQ</span>
+      <span class="acc-wrap">Wrap‑up : messages ciblés, cohérence, traçabilité, validation.</span>
+    </summary>
+    <div class="acc-body">
+      <h3>1) Contexte métier</h3>
+      <ul>
+        <li><b>Scénario</b> : une décision portefeuille doit être communiquée (audiences, calendrier, messages, FAQ) avec un niveau de preuve.</li>
+        <li><b>Besoin</b> : assurer cohérence, conformité et diffusion multi‑canal, avec historique des versions.</li>
+        <li><b>Business process</b> : Déclencheur → Brief → Rédaction → Validation → Publication → Mesure/retour.</li>
+      </ul>
+
+      <h3>2) Sorties &amp; KPI</h3>
+      <ul>
+        <li><b>Sorties</b> : annonces, kits de communication, scripts exécutifs, FAQ, cartes de synthèse.</li>
+        <li><b>KPI</b> : délai de publication, taux de relecture/validation, couverture des audiences, taux de retour.</li>
+      </ul>
+
+      <h3>3) Données (sources)</h3>
+      <ul>
+        <li><b>Dataverse</b> : projets/portefeuille, décisions, changements, risques (selon disponibilité).</li>
+        <li><b>SharePoint</b> : modèles, assets, validations, versions, annexes.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
 <div class="card">
   <h2>Spécifications (relations pack → agents → systèmes)</h2>
   

@@ -201,7 +201,7 @@
   <h2>Architecture technique (vue d’ensemble)</h2>
   
 <p>Cette page met l’accent sur la plateforme : Copilot Studio, Dataverse, SharePoint, Power Automate et les serveurs MCP. Le pack est pensé pour fonctionner en local (<code>file://</code>) ou hébergé, sans dépendre d’un <code>fetch()</code> obligatoire.</p>
-<div class="diagram"><pre class="mermaid">flowchart TB
+<div class="diagram"><pre class="mermaid" id="mmd-arch-tech">flowchart TB
   subgraph Canaux
     Teams[Teams / Outlook] --&gt; CS[Copilot Studio]
     Web[Power Pages] --&gt; CS
@@ -241,7 +241,7 @@
   
 <p>Repères Dataverse simplifiés (noms génériques). Le détail exact dépend du schéma TPG (tables <code>tpg_*</code>).</p>
 <p><a href="https://dbdiagram.io/d/TPG_PPPandS_DEC2025-69459a734bbde0fd74d8852f" target="_blank" rel="noopener">Ouvrir le schéma de référence (dbdiagram)</a></p>
-<div class="diagram"><pre class="mermaid">classDiagram
+<div class="diagram"><pre class="mermaid" id="mmd-data-model">classDiagram
   class tpg_project {
     +projectId
     +name
@@ -310,18 +310,28 @@
 
 </div>
 <div class="two card">
-  <h2>Seuils de performance (CPI/SPI)</h2>
-  
-<div class="kpi">
-  <div class="pill good"><b>Vert</b> : CPI/SPI ≥ 0.95</div>
-  <div class="pill warn"><b>Ambre</b> : 0.85 ≤ CPI/SPI &lt; 0.95</div>
-  <div class="pill bad"><b>Rouge</b> : CPI/SPI &lt; 0.85</div>
-</div>
-<p>Ces seuils servent de repères pour la visualisation et les alertes. Ils peuvent être ajustés dans la solution TPG selon la tolérance au risque.</p>
-<ul>
-  <li>Les seuils CPI/SPI ne sont qu’un indicateur : compléter avec la qualité des données (complétude, cohérence), la variance coûts/délais et les exceptions documentées.</li>
-  <li>Les seuils servent à classer, prioriser et déclencher des contrôles (pas à « corriger » automatiquement les données).</li>
-</ul>
+  <h2>Indicateurs types</h2>
+
+  <p>Exemples d’indicateurs de pilotage et de seuils pour la lecture (visualisation) et l’alerte. Les valeurs proposées sont des repères et peuvent être adaptées selon la maturité et la tolérance au risque.</p>
+
+  <details class="rubrique-item">
+    <summary class="rubrique-header">
+      <span class="rubrique-title">Seuils de performance (CPI/SPI)</span>
+      <span class="rubrique-summary">Repères visuels pour alerter, classer et prioriser.</span>
+    </summary>
+    <div class="rubrique-content">
+      <div class="kpi">
+        <div class="pill good"><b>Vert</b> : CPI/SPI ≥ 0.95</div>
+        <div class="pill warn"><b>Ambre</b> : 0.85 ≤ CPI/SPI &lt; 0.95</div>
+        <div class="pill bad"><b>Rouge</b> : CPI/SPI &lt; 0.85</div>
+      </div>
+      <p>Ces seuils servent de repères pour la visualisation et les alertes. Ils peuvent être ajustés dans la solution TPG selon la tolérance au risque.</p>
+      <ul>
+        <li>Les seuils CPI/SPI ne sont qu’un indicateur : compléter avec la qualité des données (complétude, cohérence), la variance coûts/délais et les exceptions documentées.</li>
+        <li>Les seuils servent à classer, prioriser et déclencher des contrôles (pas à « corriger » automatiquement les données).</li>
+      </ul>
+    </div>
+  </details>
 
 </div>
 <div class="card">

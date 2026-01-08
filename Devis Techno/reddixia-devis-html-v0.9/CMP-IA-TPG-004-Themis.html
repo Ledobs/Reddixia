@@ -107,11 +107,41 @@
 </ul>
 <p>Notes : à compléter lors des ateliers (contrôles, exceptions, règles métiers).</p>
 
+
+<h3>Orchestration (vue « domaine »)</h3>
+<p>L’agent collecte et analyse des données pour produire une réponse structurée du domaine, renvoyée à IDEXIOS-HUB.</p>
+<div class="diagram" data-mmd-autofit="1"><pre class="mermaid">flowchart LR
+  classDef domain fill:#f2f2f2,stroke:#999,stroke-width:1px;
+
+  hub["IDEXIOS-HUB"]
+  out["Autres"]
+
+  subgraph pack_GovernanceOps["GovernanceOps"]
+    direction TB
+    agent["THEMIS-GOV"]
+    other_1["ORPHEUS-ADOPT"]
+    other_2["VESTA-WORK"]
+    resp["Réponse structurée GovernanceOps"]
+  end
+  class pack_GovernanceOps domain;
+
+  hub --&gt;|demande| agent
+  dv[("Dataverse (tables TPG_*)")]
+  agent --&gt;|consultation| dv
+  dv --&gt;|données| agent
+  sp[("SharePoint-Prime")]
+  agent --&gt;|consultation| sp
+  sp --&gt;|connaissances| agent
+  agent --&gt;|résultat structuré| resp
+  resp --&gt;|résultat| hub
+  hub --&gt;|livre| out
+</pre></div>
+
 </div>
 <div class="two card">
   <h2>APP</h2>
   
-<p>Interactions typiques : IDEXIOS-HUB → THEMIS-GOV → (Dataverse/SharePoint) → retour structuré.</p>
+<p>Interactions typiques : IDEXIOS-HUB → GovernanceOps → THEMIS-GOV → (Dataverse/SharePoint) → retour structuré.</p>
 <div class="diagram"><pre class="mermaid">sequenceDiagram
   autonumber
   participant HUB as IDEXIOS-HUB
@@ -123,13 +153,8 @@
   AG-&gt;&gt;SP: Lire modèles / déposer livrables
   AG--&gt;&gt;HUB: Résultat structuré + indicateurs
 </pre></div>
-<div style="height:10px"></div>
-<div class="diagram"><pre class="mermaid">flowchart LR
-  HUB[IDEXIOS-HUB] --&gt; AG[THEMIS-GOV]
-  AG --&gt; DV[(Dataverse)]
-  AG --&gt; SP[(SharePoint)]
-  AG --&gt; OUT[Sorties]
-</pre></div>
+<p class="small">Schéma d’orchestration : voir le bloc BUS (vue « domaine »).</p>
+
 
 </div>
 <div class="card">
@@ -204,8 +229,22 @@
       {
         "data": {
           "id": "Outputs",
-          "label": "Sorties (rubriques)",
+          "label": "Autres",
           "type": "system"
+        }
+      },
+      {
+        "data": {
+          "id": "ORPHEUS-ADOPT",
+          "label": "ORPHEUS-ADOPT",
+          "type": "agent"
+        }
+      },
+      {
+        "data": {
+          "id": "VESTA-WORK",
+          "label": "VESTA-WORK",
+          "type": "agent"
         }
       }
     ],
@@ -222,7 +261,7 @@
         "data": {
           "id": "e_hub",
           "source": "IDEXIOS-HUB",
-          "target": "THEMIS-GOV",
+          "target": "GovernanceOps",
           "label": "route"
         }
       },
@@ -245,9 +284,33 @@
       {
         "data": {
           "id": "e_out",
-          "source": "THEMIS-GOV",
+          "source": "IDEXIOS-HUB",
           "target": "Outputs",
-          "label": "produit"
+          "label": "réponse"
+        }
+      },
+      {
+        "data": {
+          "id": "e_ret",
+          "source": "THEMIS-GOV",
+          "target": "IDEXIOS-HUB",
+          "label": "retour"
+        }
+      },
+      {
+        "data": {
+          "id": "e_pack_ORPHEUS_ADOPT",
+          "source": "GovernanceOps",
+          "target": "ORPHEUS-ADOPT",
+          "label": "contient"
+        }
+      },
+      {
+        "data": {
+          "id": "e_pack_VESTA_WORK",
+          "source": "GovernanceOps",
+          "target": "VESTA-WORK",
+          "label": "contient"
         }
       }
     ]

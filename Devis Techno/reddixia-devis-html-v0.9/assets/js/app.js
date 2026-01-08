@@ -84,6 +84,207 @@
 
   function initMermaid(){
     if(!window.mermaid) return;
+
+    const getMermaidDiagramRoot = (node)=>{
+      if(!node) return null;
+      // Mermaid blocks are inside .diagram containers in this pack.
+      return node.closest && node.closest(".diagram") ? node.closest(".diagram") : null;
+    };
+
+    const getSvg = (diagramEl)=>{
+      if(!diagramEl) return null;
+      return diagramEl.querySelector("svg");
+    };
+
+    const getScale = (diagramEl)=>{
+      const v = diagramEl && diagramEl.dataset ? diagramEl.dataset.mmdScale : null;
+      const n = parseFloat(v || "1");
+      return Number.isFinite(n) && n > 0 ? n : 1;
+    };
+
+    const getTx = (diagramEl)=>{
+      const v = diagramEl && diagramEl.dataset ? diagramEl.dataset.mmdTx : null;
+      const n = parseFloat(v || "0");
+      return Number.isFinite(n) ? n : 0;
+    };
+
+    const getTy = (diagramEl)=>{
+      const v = diagramEl && diagramEl.dataset ? diagramEl.dataset.mmdTy : null;
+      const n = parseFloat(v || "0");
+      return Number.isFinite(n) ? n : 0;
+    };
+
+    const getBaseScale = (diagramEl)=>{
+      // Use CSS custom property as a responsive, container-aware default.
+      // Read from the diagram element first (so container queries can override),
+      // then fall back to :root.
+      try{
+        const cs = getComputedStyle(diagramEl || document.documentElement);
+        const raw = (cs.getPropertyValue("--diagram-scale") || "").trim();
+        const n = parseFloat(raw);
+        return Number.isFinite(n) && n > 0 ? n : 1;
+      }catch(e){
+        return 1;
+      }
+    };
+
+    const applyTransform = (diagramEl, scale, tx = 0, ty = 0)=>{
+      const svg = getSvg(diagramEl);
+      if(!svg) return;
+      const base = getBaseScale(diagramEl);
+      const nextUser = Math.max(0.1, Math.min(6, scale));
+      const nextFinal = Math.max(0.1, Math.min(6, nextUser * base));
+      diagramEl.dataset.mmdScale = String(nextUser);
+      diagramEl.dataset.mmdTx = String(Math.max(0, tx));
+      diagramEl.dataset.mmdTy = String(Math.max(0, ty));
+      svg.style.transformOrigin = "0 0";
+      svg.style.transform = `translate(${Math.max(0, tx)}px, ${Math.max(0, ty)}px) scale(${nextFinal})`;
+      // Allow zoom to exceed container width (CSS sets max-width:100%).
+      svg.style.maxWidth = "none";
+    };
+
+    const applyScale = (diagramEl, scale)=>{
+      applyTransform(diagramEl, scale, 0, 0);
+    };
+
+    const getSvgPixelSize = (svg)=>{
+      if(!svg) return { w: 0, h: 0 };
+      // We want the size as currently laid out in CSS pixels.
+      // Temporarily remove transforms so measurements reflect the intrinsic render.
+      const prev = svg.style.transform;
+      try{
+        svg.style.transform = "none";
+        const r = svg.getBoundingClientRect();
+        const w = Math.max(0, r.width || 0);
+        const h = Math.max(0, r.height || 0);
+        return { w, h };
+      }catch(e){
+        return { w: 0, h: 0 };
+      }finally{
+        svg.style.transform = prev;
+      }
+    };
+
+    const resetZoom = (diagramEl)=>{
+      if(!diagramEl || !diagramEl.dataset) return;
+      const initScale = parseFloat(diagramEl.dataset.mmdInitScale || "");
+      const initTx = parseFloat(diagramEl.dataset.mmdInitTx || "");
+      const initTy = parseFloat(diagramEl.dataset.mmdInitTy || "");
+      if(Number.isFinite(initScale) && initScale > 0){
+        applyTransform(diagramEl, initScale, Number.isFinite(initTx) ? initTx : 0, Number.isFinite(initTy) ? initTy : 0);
+      }else{
+        applyTransform(diagramEl, 1, 0, 0);
+      }
+      try{ diagramEl.scrollLeft = 0; diagramEl.scrollTop = 0; }catch(e){}
+    };
+
+    const snapshotInitial = (diagramEl)=>{
+      if(!diagramEl || !diagramEl.dataset) return;
+      if(diagramEl.dataset.mmdInitScale) return;
+      const s = getScale(diagramEl);
+      const tx = getTx(diagramEl);
+      const ty = getTy(diagramEl);
+      diagramEl.dataset.mmdInitScale = String(s);
+      diagramEl.dataset.mmdInitTx = String(tx);
+      diagramEl.dataset.mmdInitTy = String(ty);
+    };
+
+    const fitToWidth = (diagramEl)=>{
+      const svg = getSvg(diagramEl);
+      if(!svg) return;
+      const natural = getSvgPixelSize(svg);
+      if(!natural.w) return;
+
+      const cs = getComputedStyle(diagramEl);
+      const padL = parseFloat(cs.paddingLeft || "0") || 0;
+      const padR = parseFloat(cs.paddingRight || "0") || 0;
+      // diagramEl includes padding + toolbar; keep a small margin.
+      const available = Math.max(100, diagramEl.clientWidth - padL - padR - 12);
+      applyTransform(diagramEl, available / natural.w, 0, 0);
+      try{ diagramEl.scrollLeft = 0; diagramEl.scrollTop = 0; }catch(e){}
+    };
+
+    const fitToBox = (diagramEl)=>{
+      const svg = getSvg(diagramEl);
+      if(!svg) return;
+
+      const natural = getSvgPixelSize(svg);
+      if(!natural.w || !natural.h) return;
+
+      const cs = getComputedStyle(diagramEl);
+      const padL = parseFloat(cs.paddingLeft || "0") || 0;
+      const padR = parseFloat(cs.paddingRight || "0") || 0;
+      const padT = parseFloat(cs.paddingTop || "0") || 0;
+      const padB = parseFloat(cs.paddingBottom || "0") || 0;
+
+      const toolbar = diagramEl.querySelector(".toolbar");
+      const toolbarH = toolbar ? Math.max(0, toolbar.getBoundingClientRect().height) : 0;
+
+      const availableW = Math.max(100, diagramEl.clientWidth - padL - padR - 12);
+      const availableH = Math.max(140, diagramEl.clientHeight - padT - padB - toolbarH - 12);
+
+      const sW = availableW / natural.w;
+      const sH = availableH / natural.h;
+      const s = Math.min(sW, sH);
+
+      const scaledW = natural.w * s;
+      const scaledH = natural.h * s;
+      const tx = Math.max(0, (availableW - scaledW) / 2);
+      const ty = Math.max(0, (availableH - scaledH) / 2);
+      applyTransform(diagramEl, s, tx, ty);
+      try{ diagramEl.scrollLeft = 0; diagramEl.scrollTop = 0; }catch(e){}
+    };
+
+    const autoFitIfRequested = (diagramEl)=>{
+      if(!diagramEl || !diagramEl.dataset) return false;
+      if(diagramEl.dataset.mmdAutofit !== "1") return false;
+      fitToBox(diagramEl);
+      return true;
+    };
+
+    const ensureToolbar = (diagramEl)=>{
+      if(!diagramEl) return;
+      // Skip Cytoscape diagrams (they already have their own toolbar).
+      if(diagramEl.querySelector(".cy")) return;
+      if(diagramEl.querySelector(".toolbar[data-mmd-toolbar='1']")) return;
+
+      const tb = document.createElement("div");
+      tb.className = "toolbar";
+      tb.dataset.mmdToolbar = "1";
+      tb.innerHTML = [
+        "<button class='btn' data-mmd-zoom='in'>+</button>",
+        "<button class='btn' data-mmd-zoom='out'>−</button>",
+        "<button class='btn' data-mmd-zoom='reset'>Réinitialiser</button>",
+        "<button class='btn' data-mmd-zoom='fit'>Ajuster</button>"
+      ].join("");
+      diagramEl.insertBefore(tb, diagramEl.firstChild);
+
+      const zoomIn = tb.querySelector("[data-mmd-zoom='in']");
+      const zoomOut = tb.querySelector("[data-mmd-zoom='out']");
+      const reset = tb.querySelector("[data-mmd-zoom='reset']");
+      const fit = tb.querySelector("[data-mmd-zoom='fit']");
+
+      if(zoomIn) zoomIn.addEventListener("click", ()=>applyTransform(diagramEl, getScale(diagramEl) * 1.2, getTx(diagramEl), getTy(diagramEl)));
+      if(zoomOut) zoomOut.addEventListener("click", ()=>applyTransform(diagramEl, getScale(diagramEl) / 1.2, getTx(diagramEl), getTy(diagramEl)));
+      if(reset) reset.addEventListener("click", ()=>resetZoom(diagramEl));
+      if(fit) fit.addEventListener("click", ()=>fitToBox(diagramEl));
+    };
+
+    const ensureUniqueId = (el, preferred)=>{
+      if(!el) return null;
+      const base = String(preferred || "").trim() || "mmd";
+      let candidate = base;
+      let i = 2;
+      // Ensure uniqueness across the whole document.
+      while(true){
+        const existing = document.getElementById(candidate);
+        if(!existing || existing === el) break;
+        candidate = `${base}-${i++}`;
+      }
+      el.id = candidate;
+      return candidate;
+    };
+
     try{
       mermaid.initialize({
         startOnLoad:false,
@@ -103,22 +304,35 @@
       const nodes = $$(".mermaid");
       if(!nodes.length) return;
 
-      // Render one-by-one so a single parse error doesn't abort everything.
+      // Ensure all Mermaid nodes have unique ids so Mermaid doesn't reuse
+      // autogenerated ones across runs.
       nodes.forEach((node, idx)=>{
-        try{
-          const head = (node.textContent || "").trim().split("\n")[0] || "";
-          const p = mermaid.run({ nodes: [node] });
-          // mermaid.run returns a Promise in v10; attach a catch to prevent
-          // "Uncaught (in promise)" and to identify the failing block.
-          if(p && typeof p.then === "function"){
-            p.catch((e)=>{
-              console.warn("Mermaid render failed", { idx, head }, e);
-            });
-          }
-        }catch(e){
-          console.warn("Mermaid render failed (sync)", { idx }, e);
-        }
+        const rand = Math.random().toString(36).slice(2, 9);
+        const preferred = node.id ? String(node.id).trim() : `mmd-auto-${idx}-${Date.now()}-${rand}`;
+        ensureUniqueId(node, preferred);
+
+        const diagramEl = getMermaidDiagramRoot(node);
+        if(!diagramEl) return;
+        diagramEl.classList.add("diagram--mmd");
+        ensureToolbar(diagramEl);
       });
+
+      // Render everything in one run (avoids id collisions) then fit each diagram.
+      const p = mermaid.run({ nodes });
+      if(p && typeof p.then === "function"){
+        p.then(()=>{
+          requestAnimationFrame(()=>{
+            nodes.forEach(node=>{
+              const diagramEl = getMermaidDiagramRoot(node);
+              if(!diagramEl) return;
+              if(!autoFitIfRequested(diagramEl)) fitToBox(diagramEl);
+              snapshotInitial(diagramEl);
+            });
+          });
+        }).catch((e)=>{
+          console.warn("Mermaid render failed", e);
+        });
+      }
     }catch(e){
       console.warn("Mermaid init failed", e);
     }
