@@ -17,14 +17,40 @@
   --radius2: 22px;
   --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
   --sans: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
+
+  /* Responsive scaling (defaults + fallbacks) */
+  --content-scale: 1;
+  --diagram-scale: 0.95;
+  --base-font: clamp(13px, 0.875vw, 16px);
+  --sidebar-w: clamp(250px, 22vw, 310px);
+  --diagram-max-h: clamp(260px, 55vh, 520px);
+}
+
+/* Responsive presets tuned for 1920 / 1600 / 1366 / 1280-ish widths */
+@media (max-width: 1600px){
+  :root{ --content-scale: 0.96; --diagram-scale: 0.92; }
+}
+@media (max-width: 1366px){
+  :root{ --content-scale: 0.92; --diagram-scale: 0.86; }
+}
+@media (max-width: 1280px){
+  :root{ --content-scale: 0.90; --diagram-scale: 0.82; }
+}
+
+/* Keep Mermaid diagrams proportional to their card (avoid page-long SVGs).
+   Users can still zoom/fit using the built-in controls. */
+.diagram.diagram--mmd{
+  max-height: var(--diagram-max-h);
 }
 
 *{box-sizing:border-box}
 html,body{height:100%}
+html{ text-size-adjust: 100%; }
 body{
   margin:0;
   font-family:var(--sans);
   color:var(--text);
+  font-size: var(--base-font, 15px);
   background:
     radial-gradient(1000px 700px at 10% -10%, rgba(90,169,255,.35), transparent 55%),
     radial-gradient(900px 600px at 110% 10%, rgba(155,125,255,.28), transparent 55%),
@@ -36,8 +62,10 @@ a:hover{text-decoration:underline}
 
 .layout{
   display:grid;
-  grid-template-columns: 290px 1fr;
+  grid-template-columns: var(--sidebar-w, 290px) 1fr;
   min-height:100vh;
+  overflow-x: hidden;
+  overflow-x: clip;
 }
 
 .topbar{
@@ -49,7 +77,7 @@ a:hover{text-decoration:underline}
   align-items:center;
   justify-content:space-between;
   gap:12px;
-  padding:14px 18px;
+  padding: clamp(12px, 0.95vw, 14px) clamp(12px, 1.1vw, 18px);
   border-bottom:1px solid rgba(39,53,95,.65);
   background: rgba(7,11,20,.78);
   backdrop-filter: blur(10px);
@@ -66,8 +94,8 @@ a:hover{text-decoration:underline}
 .brand .title{
   display:flex; flex-direction:column; line-height:1.1;
 }
-.brand .title b{font-size:15px; letter-spacing:.2px}
-.brand .title span{font-size:12px; color:var(--muted2)}
+.brand .title b{font-size: clamp(13px, calc(15px * var(--content-scale, 1)), 15px); letter-spacing:.2px}
+.brand .title span{font-size: clamp(11px, calc(12px * var(--content-scale, 1)), 12px); color:var(--muted2)}
 
 .toplinks{
   display:flex; align-items:center; gap:10px; flex-wrap:wrap;
@@ -82,7 +110,7 @@ a:hover{text-decoration:underline}
   border-radius:999px;
   background: rgba(15,24,48,.6);
   color:var(--muted);
-  font-size:12px;
+  font-size: clamp(11px, calc(12px * var(--content-scale, 1)), 12px);
   position:relative;
 }
 .badge[data-tip]:hover::after{
@@ -105,13 +133,14 @@ a:hover{text-decoration:underline}
   align-self:start;
   height:calc(100vh - 58px);
   overflow:auto;
-  padding:16px 14px;
+  padding: clamp(12px, 1vw, 16px) clamp(10px, 0.9vw, 14px);
   border-right:1px solid rgba(39,53,95,.55);
+  min-width: 0;
 }
 
 .sidebar h3{
   margin:0 0 10px 0;
-  font-size:12px;
+  font-size: clamp(11px, calc(12px * var(--content-scale, 1)), 12px);
   letter-spacing:.12em;
   color:var(--muted2);
   text-transform:uppercase;
@@ -132,7 +161,7 @@ a:hover{text-decoration:underline}
   padding:10px 12px;
   border-radius:12px;
   outline:none;
-  font-size:13px;
+  font-size: clamp(12px, calc(13px * var(--content-scale, 1)), 13px);
 }
 
 .navlinks{
@@ -142,7 +171,7 @@ a:hover{text-decoration:underline}
   flex-wrap:wrap;
 }
 .navlinks a{
-  font-size:12px;
+  font-size: clamp(11px, calc(12px * var(--content-scale, 1)), 12px);
   padding:6px 10px;
   border-radius:999px;
   border:1px solid rgba(39,53,95,.85);
@@ -152,26 +181,27 @@ a:hover{text-decoration:underline}
 .navlinks a:hover{color:var(--text); text-decoration:none; border-color: rgba(90,169,255,.75)}
 
 .main{
-  padding:18px 18px 70px;
+  padding: clamp(12px, 1.1vw, 18px) clamp(12px, 1.1vw, 18px) clamp(48px, 6vh, 70px);
+  min-width: 0;
 }
 
 .hero{
   border:1px solid rgba(39,53,95,.7);
   background: linear-gradient(135deg, rgba(90,169,255,.16), rgba(155,125,255,.10));
   border-radius: var(--radius2);
-  padding:18px 18px 14px;
+  padding: clamp(14px, 1.1vw, 18px) clamp(14px, 1.1vw, 18px) clamp(12px, 0.95vw, 14px);
   box-shadow: var(--shadow);
 }
 .hero h1{
   margin:0;
-  font-size:20px;
+  font-size: clamp(17px, calc(20px * var(--content-scale, 1)), 20px);
   letter-spacing:.2px;
 }
 .hero p{
   margin:8px 0 0 0;
   color:var(--muted);
   max-width: 92ch;
-  font-size:13.5px;
+  font-size: clamp(12px, calc(13.5px * var(--content-scale, 1)), 13.5px);
   line-height:1.45;
 }
 .meta{
@@ -179,7 +209,7 @@ a:hover{text-decoration:underline}
   display:flex; gap:8px; flex-wrap:wrap;
 }
 .chip{
-  font-size:12px;
+  font-size: clamp(11px, calc(12px * var(--content-scale, 1)), 12px);
   color:var(--muted);
   border:1px solid rgba(39,53,95,.8);
   background: rgba(16,27,53,.55);
@@ -191,8 +221,8 @@ a:hover{text-decoration:underline}
 .grid{
   display:grid;
   grid-template-columns: repeat(12, 1fr);
-  gap:14px;
-  margin-top:14px;
+  gap: clamp(10px, 0.9vw, 14px);
+  margin-top: clamp(10px, 0.9vw, 14px);
 }
 
 .card{
@@ -200,28 +230,29 @@ a:hover{text-decoration:underline}
   border:1px solid rgba(39,53,95,.65);
   background: rgba(15,24,48,.42);
   border-radius: var(--radius2);
-  padding:14px;
+  padding: clamp(12px, 1vw, 14px);
   box-shadow: 0 8px 22px rgba(0,0,0,.22);
+  min-width: 0;
 }
 .card h2{
   margin:0 0 10px 0;
-  font-size:15px;
+  font-size: clamp(13px, calc(15px * var(--content-scale, 1)), 15px);
   letter-spacing:.15px;
 }
 .card h3{
   margin:14px 0 8px;
-  font-size:13px;
+  font-size: clamp(12px, calc(13px * var(--content-scale, 1)), 13px);
   color:var(--text);
 }
 .card p, .card li{
   color:var(--muted);
-  font-size:13.2px;
+  font-size: clamp(12.5px, calc(13.2px * var(--content-scale, 1)), 13.2px);
   line-height:1.5;
 }
 .card ul{margin:8px 0 0 18px}
 .card code{
   font-family:var(--mono);
-  font-size:12px;
+  font-size: clamp(11px, calc(12px * var(--content-scale, 1)), 12px);
   color:#dbe7ff;
 }
 
@@ -229,7 +260,7 @@ a:hover{text-decoration:underline}
 @media (min-width: 980px){
   .two{grid-column: span 6}
   .three{grid-column: span 4}
-  .layout{grid-template-columns: 310px 1fr}
+  .layout{grid-template-columns: var(--sidebar-w, 310px) 1fr}
 }
 @media (max-width: 720px){
   .layout{grid-template-columns: 1fr}
@@ -244,7 +275,7 @@ a:hover{text-decoration:underline}
   border-radius: 14px;
   border:1px solid rgba(39,53,95,.85);
   background: rgba(16,27,53,.55);
-  font-size:12px;
+  font-size: clamp(11px, calc(12px * var(--content-scale, 1)), 12px);
   color:var(--muted);
 }
 .kpi .pill b{color:var(--text)}
@@ -259,6 +290,9 @@ a:hover{text-decoration:underline}
   padding:10px;
   position:relative;
   overflow:auto;
+  /* Prevent transformed SVGs from visually escaping and overlapping other cards */
+  contain: layout paint;
+  isolation: isolate;
 }
 .diagram .toolbar{
   display:flex; gap:8px; justify-content:flex-end;
@@ -270,7 +304,7 @@ a:hover{text-decoration:underline}
   color:var(--muted);
   padding:6px 10px;
   border-radius: 12px;
-  font-size:12px;
+  font-size: clamp(11px, calc(12px * var(--content-scale, 1)), 12px);
   cursor:pointer;
 }
 .btn:hover{color:var(--text); border-color: rgba(90,169,255,.75)}
@@ -279,11 +313,12 @@ pre.mermaid{
   margin:0;
   white-space:pre;
   font-family: var(--mono);
-  font-size:12px;
+  font-size: clamp(11px, calc(12px * var(--content-scale, 1)), 12px);
   color:var(--muted2);
 }
 
-pre.mermaid svg{
+/* Mermaid replaces <pre class="mermaid"> with an inline <svg>; ensure sizing still applies */
+.diagram svg{
   display:block;
   height:auto;
   max-width:100%;
@@ -291,7 +326,10 @@ pre.mermaid svg{
 
 .cy{
   width:100%;
-  height:420px;
+  aspect-ratio: 16 / 9;
+  height:auto;
+  min-height: clamp(260px, 32vh, 420px);
+  max-height: clamp(340px, 52vh, 520px);
   border-radius: 14px;
 }
 
@@ -300,7 +338,7 @@ pre.mermaid svg{
   margin-bottom:10px;
 }
 .tab{
-  font-size:12px;
+  font-size: clamp(11px, calc(12px * var(--content-scale, 1)), 12px);
   padding:7px 10px;
   border-radius:999px;
   border:1px solid rgba(39,53,95,.9);
@@ -349,7 +387,7 @@ pre.mermaid svg{
   max-height: 55vh;
 }
 .small{
-  font-size:12px; color:var(--muted2);
+  font-size: clamp(11px, calc(12px * var(--content-scale, 1)), 12px); color:var(--muted2);
 }
 .warnText{color:var(--warn); font-weight:700}
 
@@ -374,12 +412,12 @@ details.accordion summary{
 }
 details.accordion summary::-webkit-details-marker{display:none}
 details.accordion summary .acc-title{
-  font-size:13px;
+  font-size: clamp(12px, calc(13px * var(--content-scale, 1)), 13px);
   font-weight:700;
   color:var(--text);
 }
 details.accordion summary .acc-wrap{
-  font-size:12px;
+  font-size: clamp(11px, calc(12px * var(--content-scale, 1)), 12px);
   color:var(--muted2);
   text-align:right;
   max-width: 62ch;
@@ -387,3 +425,50 @@ details.accordion summary .acc-wrap{
 details.accordion .acc-body{
   margin-top:10px;
 }
+
+details.rubrique-item{
+  border:1px solid rgba(39,53,95,.65);
+  background: rgba(15,24,48,.35);
+  border-radius: 18px;
+  padding:10px 12px;
+}
+details.rubrique-item[open]{
+  border-color: rgba(90,169,255,.65);
+  background: rgba(16,27,53,.55);
+}
+details.rubrique-item > summary.rubrique-header{
+  cursor:pointer;
+  user-select:none;
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap:12px;
+  list-style:none;
+}
+details.rubrique-item > summary.rubrique-header::-webkit-details-marker{display:none}
+details.rubrique-item > summary.rubrique-header .rubrique-title{
+  font-size: clamp(12px, calc(13px * var(--content-scale, 1)), 13px);
+  font-weight:700;
+  color:var(--text);
+}
+details.rubrique-item > summary.rubrique-header .rubrique-summary{
+  font-size: clamp(11px, calc(12px * var(--content-scale, 1)), 12px);
+  color:var(--muted2);
+  text-align:right;
+  max-width: 62ch;
+}
+details.rubrique-item .rubrique-content{
+  margin-top:10px;
+}
+
+/* Container queries: tighten scaling when diagrams get narrow */
+@supports (container-type: inline-size){
+  .diagram{container-type:inline-size}
+  @container (max-width: 900px){
+    .diagram{--diagram-scale: 0.86}
+  }
+  @container (max-width: 720px){
+    .diagram{--diagram-scale: 0.80}
+  }
+}
+

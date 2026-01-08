@@ -107,11 +107,46 @@
 </ul>
 <p>Notes : à compléter lors des ateliers (contrôles, exceptions, règles métiers).</p>
 
+
+<h3>Orchestration (vue « domaine »)</h3>
+<p>L’agent collecte et analyse des données pour produire une réponse structurée du domaine, renvoyée à IDEXIOS-HUB.</p>
+<div class="diagram" data-mmd-autofit="1"><pre class="mermaid">flowchart LR
+  classDef domain fill:#f2f2f2,stroke:#999,stroke-width:1px;
+
+  hub["IDEXIOS-HUB"]
+  out["Autres"]
+
+  subgraph pack_FinanceOps["FinanceOps"]
+    direction TB
+    agent["ATLAS-CTRL"]
+    other_1["CASSANDRA-FQA"]
+    other_2["CERBERUS-SEC"]
+    other_3["CERES-BUDGET"]
+    other_4["JANUS-CLOSE"]
+    other_5["MERCURY-COLLECT"]
+    other_6["PLUTUS-ANOM"]
+    other_7["POSEIDON-CASH"]
+    resp["Réponse structurée FinanceOps"]
+  end
+  class pack_FinanceOps domain;
+
+  hub --&gt;|demande| agent
+  dv[("Dataverse (tables TPG_*)")]
+  agent --&gt;|consultation| dv
+  dv --&gt;|données| agent
+  sp[("SharePoint-Prime")]
+  agent --&gt;|consultation| sp
+  sp --&gt;|connaissances| agent
+  agent --&gt;|résultat structuré| resp
+  resp --&gt;|résultat| hub
+  hub --&gt;|livre| out
+</pre></div>
+
 </div>
 <div class="two card">
   <h2>APP</h2>
   
-<p>Interactions typiques : IDEXIOS-HUB → ATLAS-CTRL → (Dataverse/SharePoint) → retour structuré.</p>
+<p>Interactions typiques : IDEXIOS-HUB → FinanceOps → ATLAS-CTRL → (Dataverse/SharePoint) → retour structuré.</p>
 <div class="diagram"><pre class="mermaid">sequenceDiagram
   autonumber
   participant HUB as IDEXIOS-HUB
@@ -123,13 +158,8 @@
   AG-&gt;&gt;SP: Lire modèles / déposer livrables
   AG--&gt;&gt;HUB: Résultat structuré + indicateurs
 </pre></div>
-<div style="height:10px"></div>
-<div class="diagram"><pre class="mermaid">flowchart LR
-  HUB[IDEXIOS-HUB] --&gt; AG[ATLAS-CTRL]
-  AG --&gt; DV[(Dataverse)]
-  AG --&gt; SP[(SharePoint)]
-  AG --&gt; OUT[Sorties]
-</pre></div>
+<p class="small">Schéma d’orchestration : voir le bloc BUS (vue « domaine »).</p>
+
 
 </div>
 <div class="card">
@@ -204,8 +234,57 @@
       {
         "data": {
           "id": "Outputs",
-          "label": "Sorties (rubriques)",
+          "label": "Autres",
           "type": "system"
+        }
+      },
+      {
+        "data": {
+          "id": "CASSANDRA-FQA",
+          "label": "CASSANDRA-FQA",
+          "type": "agent"
+        }
+      },
+      {
+        "data": {
+          "id": "CERBERUS-SEC",
+          "label": "CERBERUS-SEC",
+          "type": "agent"
+        }
+      },
+      {
+        "data": {
+          "id": "CERES-BUDGET",
+          "label": "CERES-BUDGET",
+          "type": "agent"
+        }
+      },
+      {
+        "data": {
+          "id": "JANUS-CLOSE",
+          "label": "JANUS-CLOSE",
+          "type": "agent"
+        }
+      },
+      {
+        "data": {
+          "id": "MERCURY-COLLECT",
+          "label": "MERCURY-COLLECT",
+          "type": "agent"
+        }
+      },
+      {
+        "data": {
+          "id": "PLUTUS-ANOM",
+          "label": "PLUTUS-ANOM",
+          "type": "agent"
+        }
+      },
+      {
+        "data": {
+          "id": "POSEIDON-CASH",
+          "label": "POSEIDON-CASH",
+          "type": "agent"
         }
       }
     ],
@@ -222,7 +301,7 @@
         "data": {
           "id": "e_hub",
           "source": "IDEXIOS-HUB",
-          "target": "ATLAS-CTRL",
+          "target": "FinanceOps",
           "label": "route"
         }
       },
@@ -245,9 +324,73 @@
       {
         "data": {
           "id": "e_out",
-          "source": "ATLAS-CTRL",
+          "source": "IDEXIOS-HUB",
           "target": "Outputs",
-          "label": "produit"
+          "label": "réponse"
+        }
+      },
+      {
+        "data": {
+          "id": "e_ret",
+          "source": "ATLAS-CTRL",
+          "target": "IDEXIOS-HUB",
+          "label": "retour"
+        }
+      },
+      {
+        "data": {
+          "id": "e_pack_CASSANDRA_FQA",
+          "source": "FinanceOps",
+          "target": "CASSANDRA-FQA",
+          "label": "contient"
+        }
+      },
+      {
+        "data": {
+          "id": "e_pack_CERBERUS_SEC",
+          "source": "FinanceOps",
+          "target": "CERBERUS-SEC",
+          "label": "contient"
+        }
+      },
+      {
+        "data": {
+          "id": "e_pack_CERES_BUDGET",
+          "source": "FinanceOps",
+          "target": "CERES-BUDGET",
+          "label": "contient"
+        }
+      },
+      {
+        "data": {
+          "id": "e_pack_JANUS_CLOSE",
+          "source": "FinanceOps",
+          "target": "JANUS-CLOSE",
+          "label": "contient"
+        }
+      },
+      {
+        "data": {
+          "id": "e_pack_MERCURY_COLLECT",
+          "source": "FinanceOps",
+          "target": "MERCURY-COLLECT",
+          "label": "contient"
+        }
+      },
+      {
+        "data": {
+          "id": "e_pack_PLUTUS_ANOM",
+          "source": "FinanceOps",
+          "target": "PLUTUS-ANOM",
+          "label": "contient"
+        }
+      },
+      {
+        "data": {
+          "id": "e_pack_POSEIDON_CASH",
+          "source": "FinanceOps",
+          "target": "POSEIDON-CASH",
+          "label": "contient"
         }
       }
     ]

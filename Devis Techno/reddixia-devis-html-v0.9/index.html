@@ -1222,7 +1222,7 @@
   <h2>Plan de développement</h2>
   
 <p>Vue de planification : une trame de fond (roadmap) avec une superposition prioritaire « vitrine » (démarrage 12 janvier 2026, cycles de 2 semaines), puis reprise en cycles mensuels.</p>
-<div class="diagram" style="min-height:520px">
+<div class="diagram">
   <pre class="mermaid">gantt
   title Reddixia — plan de développement (vitrine → POC → pilote)
   dateFormat  YYYY-MM-DD
@@ -1248,7 +1248,7 @@
 <div class="card">
   <h2>Flux applicatif</h2>
   
-<p>Schéma Mermaid. Si une information manque, le contenu l’indique avec <span class="warnText">À confirmer</span>.</p>
+<p>Vue du cheminement d'une demande utilisateur : de l'interface conversationnelle (Copilot Studio) vers l'orchestrateur central (IDEXIOS-HUB), qui route vers les agents de domaine spécialisés. Ces agents interagissent avec Dataverse (données structurées tpg_*), SharePoint (gabarits et livrables), et Power Automate (automatisations), puis retournent les résultats sous forme de conversation, Power Pages ou documents générés.</p>
 <div class="diagram">
   <pre class="mermaid">flowchart LR
   U[Utilisateurs] --&gt;|Demande| CS[Copilot Studio]
@@ -1261,6 +1261,9 @@
   OUT --&gt; U
 </pre>
 </div>
+
+<h3>Séquence d'interaction</h3>
+<p>Détail étape par étape d'une interaction type : authentification, routage contextuel, lecture/écriture des données, génération de livrables et retour de la réponse enrichie à l'utilisateur.</p>
 <div style="height:10px"></div>
 <div class="diagram">
   <pre class="mermaid">sequenceDiagram

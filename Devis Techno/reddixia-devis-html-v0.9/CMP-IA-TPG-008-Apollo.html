@@ -107,29 +107,62 @@
 </ul>
 <p>Notes : à compléter lors des ateliers (contrôles, exceptions, règles métiers).</p>
 
+<h3>Orchestration (vue « domaine »)</h3>
+<p>Apollo collecte et analyse des éléments de contexte (décisions, risques, jalons) et des gabarits de communication pour produire une réponse structurée CommsOps, renvoyée à IDEXIOS-HUB.</p>
+<div class="diagram" data-mmd-autofit="1"><pre class="mermaid">flowchart LR
+  classDef domain fill:#f2f2f2,stroke:#999,stroke-width:1px;
+
+  %% Acteurs
+  Human["Humain"] --&gt;|question| Hub["IDEXIOS-HUB"]
+
+  %% Domaine CommsOps (conteneur)
+  subgraph CommsOps["CommsOps"]
+    direction LR
+    Apollo["APOLLO-CHANGE"]
+    Other1["CICERO-ALLHANDS"]
+    RespCO["Réponse structurée CommsOps"]
+  end
+  class CommsOps domain;
+
+  %% Sources externes
+  Dataverse[("Dataverse (TPG: décisions/risques/jalons)")]
+  SharePoint[("SharePoint-Prime (gabarits &amp; procédures com)")]
+
+  %% Orchestration et échanges
+  Hub --&gt;|demande| Apollo
+  Apollo --&gt;|consultation| Dataverse
+  Apollo --&gt;|consultation| SharePoint
+  Dataverse --&gt;|données| Apollo
+  SharePoint --&gt;|gabarits| Apollo
+  Apollo --&gt;|kit structuré| RespCO
+  RespCO --&gt;|résultat| Hub
+
+  %% Livrables (assemblage côté HUB)
+  Hub --&gt;|livre| Msg["Message (Teams/Outlook)"]
+  Hub --&gt;|produit| Kit["Kit com (FAQ, annonce, guide)"]
+  Hub --&gt;|trace| Log["Calendrier / log com"]
+</pre></div>
+
 </div>
 <div class="two card">
   <h2>APP</h2>
   
-<p>Interactions typiques : IDEXIOS-HUB → APOLLO-CHANGE → (Dataverse/SharePoint) → retour structuré.</p>
+<p>Interactions typiques : IDEXIOS-HUB → CommsOps → APOLLO-CHANGE → (Dataverse/SharePoint) → kit de communication / plan d’adoption → retour structuré.</p>
 <div class="diagram"><pre class="mermaid">sequenceDiagram
   autonumber
   participant HUB as IDEXIOS-HUB
   participant AG as APOLLO-CHANGE
-  participant DV as Dataverse (tpg_*)
-  participant SP as SharePoint
-  HUB-&gt;&gt;AG: Demande (rubrique + contexte)
-  AG-&gt;&gt;DV: Lecture/écriture ciblée
-  AG-&gt;&gt;SP: Lire modèles / déposer livrables
-  AG--&gt;&gt;HUB: Résultat structuré + indicateurs
+  participant DV as Dataverse (TPG: projets/décisions/risques)
+  participant SP as SharePoint-Prime (Procédures/Communication)
+
+  HUB-&gt;&gt;AG: Demande (changement + audience + livrable)
+  AG-&gt;&gt;DV: Lire contexte (décisions, jalons, indicateurs)
+  AG-&gt;&gt;SP: Lire gabarits / charte / procédures com
+  AG-&gt;&gt;SP: Déposer kit (FAQ, annonce, guide) — si requis
+  AG--&gt;&gt;HUB: Résultat structuré (plan com/formation + messages + métriques)
 </pre></div>
-<div style="height:10px"></div>
-<div class="diagram"><pre class="mermaid">flowchart LR
-  HUB[IDEXIOS-HUB] --&gt; AG[APOLLO-CHANGE]
-  AG --&gt; DV[(Dataverse)]
-  AG --&gt; SP[(SharePoint)]
-  AG --&gt; OUT[Sorties]
-</pre></div>
+
+<p class="small">Schéma d’orchestration : voir le bloc BUS (vue « domaine »).</p>
 
 </div>
 <div class="card">
@@ -204,8 +237,15 @@
       {
         "data": {
           "id": "Outputs",
-          "label": "Sorties (rubriques)",
+          "label": "Autres",
           "type": "system"
+        }
+      },
+      {
+        "data": {
+          "id": "CICERO-ALLHANDS",
+          "label": "CICERO-ALLHANDS",
+          "type": "agent"
         }
       }
     ],
@@ -222,7 +262,7 @@
         "data": {
           "id": "e_hub",
           "source": "IDEXIOS-HUB",
-          "target": "APOLLO-CHANGE",
+          "target": "CommsOps",
           "label": "route"
         }
       },
@@ -245,9 +285,25 @@
       {
         "data": {
           "id": "e_out",
-          "source": "APOLLO-CHANGE",
+          "source": "IDEXIOS-HUB",
           "target": "Outputs",
-          "label": "produit"
+          "label": "réponse"
+        }
+      },
+      {
+        "data": {
+          "id": "e_ret",
+          "source": "APOLLO-CHANGE",
+          "target": "IDEXIOS-HUB",
+          "label": "retour"
+        }
+      },
+      {
+        "data": {
+          "id": "e_pack_CICERO_ALLHANDS",
+          "source": "CommsOps",
+          "target": "CICERO-ALLHANDS",
+          "label": "contient"
         }
       }
     ]
