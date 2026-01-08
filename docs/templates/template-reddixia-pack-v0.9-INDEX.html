@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>Reddixia — Index</title>
+  <link rel="stylesheet" href="assets/css/style.css"/>
+  <script defer src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+  <script defer src="https://unpkg.com/cytoscape@3.29.0/dist/cytoscape.min.js"></script>
+  <script defer src="assets/js/app.js"></script>
+
+  <!--
+    Template v0.9 (Index)
+    - À placer à la racine du pack HTML (même dossier que les pages DOM/CMP)
+    - Remplacer les jetons {{...}} et injecter la navigation complète
+  -->
+</head>
+<body>
+  <div class="topbar">
+    <div class="brand">
+      <div class="mark"></div>
+      <div class="title">
+        <b>Reddixia — devis technique</b>
+        <span>Vue d’ensemble</span>
+      </div>
+    </div>
+    <div class="toplinks">
+      <a class="badge" href="index-tech.html" title="Ouvrir l’index technique">Ouvrir l’index technique</a>
+      <a class="badge" href="index.html" title="Revenir à l’index">Index</a>
+      <a class="badge" href="https://github.com/Ledobs/Reddixia/blob/iD-xPM-Pantheon/README.md" target="_blank" rel="noopener">Repo Git</a>
+      <span class="badge" data-tip="Preuve de concept Reddixia v0.9">Preuve de concept Reddixia v0.9</span>
+    </div>
+  </div>
+
+  <div class="layout">
+    <aside class="sidebar">
+      <h3>Aller à</h3>
+      <div class="navbox">
+        <select id="navSelect" aria-label="Aller à">
+          <!-- NAV_OPTIONS: liste exhaustive DOM/CMP -->
+          <option value="index.html">Index — Vue d’ensemble</option>
+          <option value="index-tech.html">Index technique — Architecture &amp; intégrations</option>
+          <option disabled>──────────</option>
+          <option disabled>Domain Packs</option>
+          <option value="DOM-GovernanceOps.html">DOM — GovernanceOps</option>
+          <option disabled>──────────</option>
+          <option disabled>Composantes (agents)</option>
+          <option value="CMP-IA-TPG-001-Idexios.html">IA-TPG-001 — IDEXIOS-HUB</option>
+        </select>
+        <div class="navlinks">
+          <a href="index.html">Index</a>
+          <a href="index-tech.html">Index technique</a>
+        </div>
+      </div>
+      <div style="margin-top:14px" class="small">Dernière génération : <span class="small">{{GENERATED_AT}}</span></div>
+    </aside>
+
+    <main class="main">
+      <section class="hero">
+        <h1>Index — Vue d’ensemble</h1>
+        <p>{{INDEX_INTRO}}</p>
+        <div class="meta">
+          <span class="chip">Solution: <b>{{SOLUTION}}</b></span>
+          <span class="chip">Version contenu: <b>{{CONTENT_VERSION}}</b></span>
+          <span class="chip">Pages: <b>Index / Index-tech / DOM / CMP</b></span>
+          <span class="chip">Dernière génération: <b>{{GENERATED_AT}}</b></span>
+        </div>
+      </section>
+
+      <section class="grid">
+        <div class="card">
+          <h2>Architecture globale (vue superposée)</h2>
+          <p>{{ARCH_GLOBAL_DESC}}</p>
+
+          <div data-tab-group>
+            <div class="tabs" role="tablist" aria-label="Architecture globale">
+              <button class="tab" role="tab" aria-selected="false" data-tab="domaines">Domaines</button>
+              <button class="tab" role="tab" aria-selected="false" data-tab="composants">Composants</button>
+            </div>
+
+            <div class="tabpanes">
+              <div data-pane="domaines" class="active">
+                <div class="diagram">
+                  <div class="toolbar">
+                    <button class="btn" data-cy-zoom="in">+</button>
+                    <button class="btn" data-cy-zoom="out">−</button>
+                    <button class="btn" data-cy-zoom="fit">Ajuster</button>
+                  </div>
+                  <div class="cy" data-cy-data="cy-domain-data"></div>
+                </div>
+                <script type="application/json" id="cy-domain-data">{
+  "elements": {
+    "nodes": [
+      {"data": {"id": "IDEXIOS-HUB", "label": "IDEXIOS-HUB", "type": "agent"}},
+      {"data": {"id": "GovernanceOps", "label": "GovernanceOps", "type": "pack"}}
+    ],
+    "edges": [
+      {"data": {"id": "e_hub_pack", "source": "IDEXIOS-HUB", "target": "GovernanceOps", "label": "orchestre"}}
+    ]
+  }
+}</script>
+              </div>
+
+              <div data-pane="composants">
+                <div class="diagram">
+                  <div class="toolbar">
+                    <button class="btn" data-cy-zoom="in">+</button>
+                    <button class="btn" data-cy-zoom="out">−</button>
+                    <button class="btn" data-cy-zoom="fit">Ajuster</button>
+                  </div>
+                  <div class="cy" data-cy-data="cy-components-data"></div>
+                </div>
+                <script type="application/json" id="cy-components-data">{
+  "elements": {
+    "nodes": [
+      {"data": {"id": "CopilotStudio", "label": "Copilot Studio", "type": "system"}},
+      {"data": {"id": "Dataverse", "label": "Dataverse (tpg_*)", "type": "system"}}
+    ],
+    "edges": []
+  }
+}</script>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <h2>Flux applicatif</h2>
+          <p>{{APP_FLOW_DESC}}</p>
+          <div class="diagram" data-mmd-autofit="1"><pre class="mermaid">sequenceDiagram
+  autonumber
+  participant U as Utilisateur
+  participant HUB as IDEXIOS-HUB
+  U->>HUB: Demande
+  HUB-->>U: Réponse + livrable(s)
+</pre></div>
+        </div>
+      </section>
+    </main>
+  </div>
+</body>
+</html>

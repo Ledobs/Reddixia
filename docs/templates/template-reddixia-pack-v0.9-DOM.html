@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>Reddixia — DOM — {{DOMAIN}}</title>
+  <link rel="stylesheet" href="assets/css/style.css"/>
+  <script defer src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+  <script defer src="https://unpkg.com/cytoscape@3.29.0/dist/cytoscape.min.js"></script>
+  <script defer src="assets/js/app.js"></script>
+
+  <!--
+    Template v0.9 (DOM)
+    - À placer à la racine du pack HTML (même dossier que index.html)
+    - Remplacer les jetons {{...}} et injecter les options du menu (NAV_OPTIONS)
+  -->
+</head>
+<body>
+  <div class="topbar">
+    <div class="brand">
+      <div class="mark"></div>
+      <div class="title">
+        <b>Reddixia — devis technique</b>
+        <span>Domaine · {{DOMAIN}}</span>
+      </div>
+    </div>
+    <div class="toplinks">
+      <a class="badge" href="index-tech.html" title="Ouvrir l’index technique">Ouvrir l’index technique</a>
+      <a class="badge" href="index.html" title="Revenir à l’index">Index</a>
+      <a class="badge" href="https://github.com/Ledobs/Reddixia/blob/iD-xPM-Pantheon/README.md" target="_blank" rel="noopener">Repo Git</a>
+      <span class="badge" data-tip="Preuve de concept Reddixia v0.9">Preuve de concept Reddixia v0.9</span>
+    </div>
+  </div>
+
+  <div class="layout">
+    <aside class="sidebar">
+      <h3>Aller à</h3>
+      <div class="navbox">
+        <select id="navSelect" aria-label="Aller à">
+          <!-- NAV_OPTIONS: copier depuis index.html (ou générer) -->
+          <option value="index.html">Index — Vue d’ensemble</option>
+          <option value="index-tech.html">Index technique — Architecture &amp; intégrations</option>
+          <option disabled>──────────</option>
+          <option disabled>Domain Packs</option>
+          <option value="DOM-{{DOMAIN}}.html">DOM — {{DOMAIN}}</option>
+        </select>
+        <div class="navlinks">
+          <a href="index.html">Index</a>
+          <a href="index-tech.html">Index technique</a>
+        </div>
+      </div>
+      <div style="margin-top:14px" class="small">Dernière génération : <span class="small">{{GENERATED_AT}}</span></div>
+    </aside>
+
+    <main class="main">
+      <section class="hero">
+        <h1>DOM — {{DOMAIN}}</h1>
+        <p>Page domaine : périmètre, agents associés, intégrations et relations.</p>
+        <div class="meta">
+          <span class="chip">Domaine: <b>{{DOMAIN}}</b></span>
+          <span class="chip">Modèles: <b>TOGAF (Phase B) · Mermaid · Cytoscape</b></span>
+          <span class="chip">Statut: <b>{{STATUS}}</b></span>
+          <span class="chip">Dernière génération: <b>{{GENERATED_AT}}</b></span>
+        </div>
+      </section>
+
+      <section class="grid">
+        <div class="two card">
+          <h2>Global</h2>
+          <p>{{GLOBAL_PARAGRAPH}}</p>
+          <div class="kpi">
+            <div class="pill"><b>Agents</b> : {{AGENTS_COUNT}}</div>
+            <div class="pill"><b>Données</b> : Dataverse (<code>tpg_*</code>)</div>
+            <div class="pill"><b>Référentiel</b> : SharePoint Idexios-Prime</div>
+          </div>
+        </div>
+
+        <div class="two card">
+          <h2>Agents du pack</h2>
+          <ul>
+            <li><a href="{{AGENT_1_HREF}}">{{AGENT_1_NAME}}</a> — {{AGENT_1_DESC}}</li>
+            <li><a href="{{AGENT_2_HREF}}">{{AGENT_2_NAME}}</a> — {{AGENT_2_DESC}}</li>
+          </ul>
+        </div>
+
+        <div class="two card">
+          <h2>BUS</h2>
+          <ul>
+            <li>{{BUS_1}}</li>
+            <li>{{BUS_2}}</li>
+            <li>{{BUS_3}}</li>
+          </ul>
+        </div>
+
+        <div class="card">
+          <h2>APP / TECH</h2>
+          <div class="diagram"><pre class="mermaid">flowchart TD
+  HUB[IDEXIOS-HUB] --> PACK[{{DOMAIN}}]
+  PACK --> AG[Agents]
+  AG --> DV[Dataverse]
+  AG --> SP[SharePoint]
+  AG --> OUT[Sorties]
+</pre></div>
+          <ul>
+            <li>{{TECH_1}}</li>
+            <li>{{TECH_2}}</li>
+            <li>{{TECH_3}}</li>
+          </ul>
+        </div>
+
+        <div class="card">
+          <h2>DATA</h2>
+          <ul>
+            <li>{{DATA_1}}</li>
+            <li>{{DATA_2}}</li>
+          </ul>
+        </div>
+
+        <div class="card">
+          <h2>Relations (vue domaine)</h2>
+          <div class="diagram">
+            <div class="toolbar">
+              <button class="btn" data-cy-zoom="in">+</button>
+              <button class="btn" data-cy-zoom="out">−</button>
+              <button class="btn" data-cy-zoom="fit">Ajuster</button>
+            </div>
+            <div class="cy" data-cy-data="cy-domain-data"></div>
+          </div>
+          <script type="application/json" id="cy-domain-data">{
+  "elements": {
+    "nodes": [
+      {"data": {"id": "{{DOMAIN}}", "label": "{{DOMAIN}}", "type": "pack"}},
+      {"data": {"id": "IDEXIOS-HUB", "label": "IDEXIOS-HUB", "type": "agent"}}
+    ],
+    "edges": [
+      {"data": {"id": "e_hub_pack", "source": "IDEXIOS-HUB", "target": "{{DOMAIN}}", "label": "orchestre"}}
+    ]
+  }
+}</script>
+        </div>
+      </section>
+    </main>
+  </div>
+</body>
+</html>
