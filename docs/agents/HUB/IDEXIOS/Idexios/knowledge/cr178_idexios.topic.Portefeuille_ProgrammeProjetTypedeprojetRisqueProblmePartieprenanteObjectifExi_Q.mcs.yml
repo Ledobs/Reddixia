@@ -1,0 +1,7 @@
+# Name: Controls
+# Rassemble les informations organisées autour de la clé Projet pour suivre la santé et la gouvernance du portefeuille. Cette source de connaissance répond aux questions trouvées dans les éléments Dataverse suivants : Portefeuille, Programme, Projet, Type de projet, Risque, Problème, Partie prenante, Objectif, Exigence, Enseignement tiré, Décision, Changement, Capacité par mois, Bénéfice, Action
+kind: KnowledgeSourceConfiguration
+source:
+  kind: DataverseStructuredSearchSource
+  triggerCondition: true
+  skillConfiguration: Portefeuille_ProgrammeProjetTypedeprojetRisqueProblmePartieprenanteObjectifExi_u6_hn1qgAodM8uYxv_zH4

@@ -1,0 +1,5 @@
+﻿connectionReferences:
+  - connectionReferenceLogicalName: cr178_idexios.shared_microsoftcopilotstudio.17564c2e6ad640ea9cdcb7341028f103
+    connectorId: /providers/Microsoft.PowerApps/apis/shared_microsoftcopilotstudio
+  - connectionReferenceLogicalName: cr178_idexios.shared_microsoftcopilotstudio.17564c2e6ad640ea9cdcb7341028f103
+    connectorId: /providers/Microsoft.PowerApps/apis/shared_microsoftcopilotstudio

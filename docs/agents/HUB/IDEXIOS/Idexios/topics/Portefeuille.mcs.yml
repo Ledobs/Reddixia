@@ -1,0 +1,72 @@
+# Name: Portefeuille 
+kind: AdaptiveDialog
+beginDialog:
+  kind: OnRecognizedIntent
+  id: main
+  intent:
+    triggerQueries:
+      - portefeuille
+      - qu'est-ce qu'un portefeuille
+      - définition de portefeuille
+      - parle-moi du portefeuille
+      - c'est quoi un portefeuille
+      - informations sur le portefeuille
+      - utilité d'un portefeuille
+      - exemple de portefeuille
+      - à quoi sert un portefeuille
+
+  actions:
+    - kind: Question
+      id: Question_KbodPX
+      variable: init:Topic.TypeAnalysePortefeuille
+      prompt:
+        text:
+          - Quel type d'analyse portefeuille souhaitez-vous effectuer ?
+          - "Veuillez choisir le type d'analyse portefeuille :"
+
+      entity:
+        kind: EmbeddedEntity
+        definition:
+          kind: ClosedListEntity
+          optionSetName: TypeAnalysePortefeuilleOptions
+          items:
+            - id: vue_ensemble
+              displayName: Vue d'ensemble
+
+            - id: projets_risque
+              displayName: Projets à risque
+
+            - id: panoramas
+              displayName: Panoramas
+
+            - id: appui_decision
+              displayName: Appui à la décision
+
+    - kind: Question
+      id: Question_0nFddb
+      variable: Topic.FiltresPortefeuille
+      prompt:
+        text:
+          - "Souhaitez-vous appliquer des filtres ? (Ex : direction, programme, priorité, statut, type de projet, période, etc.)"
+          - Indiquez les filtres à appliquer (direction, programme, statut, période, etc.)
+
+      entity: StringPrebuiltEntity
+
+    - kind: SendActivity
+      id: SendActivity_X2t51Z
+      activity: |-
+        Merci. Je vais analyser les données TPG selon les critères fournis :
+        - Type d'analyse : {Topic.TypeAnalysePortefeuille}
+        - Filtres : {Topic.FiltresPortefeuille}
+
+        Les données manquantes seront affichées comme : <span><b>à définir</b></span>
+
+    - kind: SendActivity
+      id: SendActivity_ygoSDK
+      activity:
+        attachments:
+          - kind: AdaptiveCardTemplate
+            cardContent: "={ type: \"AdaptiveCard\", body: [ { type: \"TextBlock\", size: \"Medium\", weight: \"Bolder\", text: \"Synthèse du portefeuille\" }, { type: \"FactSet\", facts: [ { title: \"Nombre de projets\", value: \"{Topic.NombreProjets}\" }, { title: \"Budget prévu\", value: \"{Topic.BudgetPrevu}\" }, { title: \"Budget réel\", value: \"{Topic.BudgetReel}\" }, { title: \"Consommation\", value: \"{Topic.Consommation}\" }, { title: \"Santé coût / délai / portée\", value: \"{Topic.SanteProjet}\" }, { title: \"Capacité des ressources\", value: \"{Topic.CapaciteRessources}\" }, { title: \"Projets critiques\", value: \"{Topic.AlertesProjetsCritiques}\" }, { title: \"Vues agrégées\", value: \"{Topic.VuesAgregees}\" }, { title: \"Suggestions d'ajustement\", value: \"{Topic.SuggestionsAjustement}\" } ] } ], '$schema': \"http://adaptivecards.io/schemas/adaptive-card.json\", version: \"1.5\" }"
+
+inputType: {}
+outputType: {}

@@ -1,0 +1,8 @@
+# Name: Idexios-Prime
+# Cette source de connaissances offre les informations de configuration et d'utilisation à propos de la solution
+kind: KnowledgeSourceConfiguration
+source:
+  kind: SharePointSearchSource
+  triggerCondition: true
+  site: https://idexia365.sharepoint.com/sites/Idexios/Prime
+  additionalSearchTerms: FileExtension = "pdf"

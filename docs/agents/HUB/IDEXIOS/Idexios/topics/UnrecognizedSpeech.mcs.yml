@@ -1,0 +1,14 @@
+# Name: Message non reconnu
+# Déclenché lorsque l’entrée orale de l’utilisateur ne peut pas être reconnue.
+kind: AdaptiveDialog
+beginDialog:
+  kind: OnUnrecognizedSpeech
+  id: main
+  actions:
+    - kind: SendActivity
+      id: sendActivity_26sT9O
+      activity:
+        text:
+          - Désolé. Je n’ai pas compris. Pouvez-vous réessayer ?
+        speak:
+          - Désolé. Je n’ai pas compris. Pouvez-vous réessayer ?

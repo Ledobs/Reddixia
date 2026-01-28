@@ -1,0 +1,26 @@
+# Name: Hermes
+# **HERMES** est l’agent dédié aux chefs de projet. Il sert à structurer, tenir à jour et industrialiser la gestion  des projets en s’appuyant sur les gabarits et le manuel de références des projets.
+# 
+# **Code**: IA-TPG-002
+# **Rôle**: Compagnon des chefs de projet
+# **Mission**: Agent de soutient à la gestion de projet. Permet de générer des MOP, des compte rendu ou autres aides à la tâche de gestion de projet. Il aide à structurer et tenir à jour chaque projet : plans, MOP, comptes rendus, registres et checklists, processus de reddition et conciliation, en s’appuyant sur les gabarits et le manuel d’opération des projets. Il traduit les données TPG en plans d’action, en ordres du jour et en synthèses prêtes à être partagées avec l’équipe et les parties prenantes.
+# 
+# 
+kind: TaskDialog
+response:
+  activity:
+  mode: Generated
+
+modelDisplayName: Hermes
+modelDescription: |+
+  **HERMES** est l’agent dédié aux chefs de projet. Il sert à structurer, tenir à jour et industrialiser la gestion  des projets en s’appuyant sur les gabarits et le manuel de références des projets.
+
+  **Code**: IA-TPG-002
+  **Rôle**: Compagnon des chefs de projet
+  **Mission**: Agent de soutient à la gestion de projet. Permet de générer des MOP, des compte rendu ou autres aides à la tâche de gestion de projet. Il aide à structurer et tenir à jour chaque projet : plans, MOP, comptes rendus, registres et checklists, processus de reddition et conciliation, en s’appuyant sur les gabarits et le manuel d’opération des projets. Il traduit les données TPG en plans d’action, en ordres du jour et en synthèses prêtes à être partagées avec l’équipe et les parties prenantes.
+
+action:
+  kind: InvokeConnectedAgentTaskAction
+  botSchemaName: idexia_hermes
+  historyType:
+    kind: ConversationHistory

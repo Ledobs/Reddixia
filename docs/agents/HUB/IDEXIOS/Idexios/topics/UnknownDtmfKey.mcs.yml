@@ -1,0 +1,14 @@
+# Name: Appuyer sur un pavé numérique inconnu
+# Déclenché lorsque la saisie du pavé numérique d’un utilisateur ne correspond à aucun paramètre de pavé numérique existant. Les configurations DTMF globales du pavé numérique sont prises en compte avant que ce déclencheur ne se lance.
+kind: AdaptiveDialog
+beginDialog:
+  kind: OnUnknownDtmfKey
+  id: main
+  actions:
+    - kind: SendActivity
+      id: sendActivity_26sT88
+      activity:
+        text:
+          - Désolé. Je n’ai pas compris. Pouvez-vous réessayer ?
+        speak:
+          - Désolé. Je n’ai pas compris. Pouvez-vous réessayer ?

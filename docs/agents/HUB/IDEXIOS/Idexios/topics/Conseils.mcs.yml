@@ -1,0 +1,136 @@
+# Name: Conseils
+kind: AdaptiveDialog
+beginDialog:
+  kind: OnRecognizedIntent
+  id: main
+  intent:
+    displayName:
+    triggerQueries:
+      - conseils
+      - as-tu des conseils
+      - peux-tu me donner un conseil
+      - j'ai besoin de conseils
+      - donne-moi un conseil
+      - des astuces s'il te plaît
+      - tu as des recommandations
+      - je cherche des suggestions
+      - aide-moi avec des conseils
+
+  actions:
+    - kind: SendActivity
+      id: SendActivity_Zhfe1n
+      activity: |-
+        Bienvenue dans le module Conseils. Ce module s'appuie sur les sources Portfolio, Controls et Finances pour vous aider à :
+        - Bâtir l’ordre du jour des comités (projets à surveiller, décisions à prendre, points bloquants).
+        - Générer des listes de projets à présenter : nouvelles demandes, projets en dérive, projets à arrêter ou à reporter.
+        - Proposer des questions ciblées pour les chefs de projet et les gestionnaires.
+        Selon vos besoins, je peux interroger les assistants experts du domaine de connaissance.
+
+    - kind: Question
+      id: Question_vZ1GrE
+      variable: Topic.AssistantExpert
+      prompt: Quel assistant expert souhaitez-vous consulter ?
+      entity:
+        kind: EmbeddedEntity
+        definition:
+          kind: ClosedListEntity
+          optionSetName: AssistantExpertOptions
+          items:
+            - id: atlas
+              displayName: Atlas – Contrôleur/analyste PCO
+
+            - id: hermes
+              displayName: Hermes – Assistant des chefs de projet
+
+            - id: athena
+              displayName: Athena – Conseiller portefeuille
+
+            - id: themis
+              displayName: Themis – Auditeur de conformité
+
+            - id: iris
+              displayName: Iris – Analyste des risques
+
+            - id: gaia
+              displayName: Gaia – Gardienne des données
+
+            - id: apollo
+              displayName: Apollo – Conseiller adoption
+
+            - id: autres
+              displayName: Autres besoins – Assistance générale
+
+    - kind: ConditionGroup
+      id: ConditionGroup_FYGNLG
+      conditions:
+        - id: ConditionItem_TK5J5L
+          condition: =Topic.AssistantExpert = AssistantExpertOptions.atlas
+          actions:
+            - kind: SendActivity
+              id: SendActivity_4BnsrS
+              activity: Atlas consolide les données d’effort, de coûts, d’échéancier et de risques pour chaque projet et pour le portefeuille. Il vérifie l’intégrité des plans, détecte les anomalies et prépare les rapports d’avancement.
+
+        - id: ConditionItem_KZxZgC
+          condition: =Topic.AssistantExpert = AssistantExpertOptions.hermes
+          actions:
+            - kind: SendActivity
+              id: SendActivity_AeJze1
+              activity: Hermes aide les chefs de projet à structurer et tenir à jour leurs projets, génère ou complète les MOP, comptes rendus, checklists et prépare les ordres du jour et synthèses de réunions.
+
+        - id: ConditionItem_eVFoqE
+          condition: =Topic.AssistantExpert = AssistantExpertOptions.athena
+          actions:
+            - kind: SendActivity
+              id: SendActivity_cktnh8
+              activity: Athena analyse le portefeuille de projets, met en évidence les projets sensibles, prépare des synthèses pour les comités et propose des scénarios de priorisation.
+
+        - id: ConditionItem_BPmTeW
+          condition: =Topic.AssistantExpert = AssistantExpertOptions.themis
+          actions:
+            - kind: SendActivity
+              id: SendActivity_aA74N6
+              activity: Themis surveille les paramètres, configurations et qualité des données, repère les écarts aux procédures et appuie les pilotes systèmes pour réaliser des contrôles de conformité.
+
+        - id: ConditionItem_QeelPH
+          condition: =Topic.AssistantExpert = AssistantExpertOptions.iris
+          actions:
+            - kind: SendActivity
+              id: SendActivity_e65A5R
+              activity: Iris aide à structurer et maintenir les registres de risques, croise les signaux des autres assistants pour identifier les zones de vulnérabilité et propose des plans de réponse.
+
+        - id: ConditionItem_GWyEYd
+          condition: =Topic.AssistantExpert = AssistantExpertOptions.gaia
+          actions:
+            - kind: SendActivity
+              id: SendActivity_jpm6pj
+              activity: Gaia veille à la qualité et à la cohérence des données de référence, compare les référentiels et aide à documenter et faire évoluer le modèle de données.
+
+        - id: ConditionItem_aIFWJl
+          condition: =Topic.AssistantExpert = AssistantExpertOptions.apollo
+          actions:
+            - kind: SendActivity
+              id: SendActivity_3QM1YQ
+              activity: Apollo transforme les décisions d’évolution en plans de changement, construit des plans de communication et de formation, et propose des ajustements progressifs pour l’adoption.
+
+        - id: ConditionItem_TEjCNI
+          condition: =Topic.AssistantExpert = AssistantExpertOptions.autres
+          actions:
+            - kind: Question
+              id: Question_CeaxXL
+              variable: Topic.Projects
+              prompt: Quels sont les projets que vous souhaitez surveiller ou discuter lors du comité ?
+              entity: StringPrebuiltEntity
+
+            - kind: Question
+              id: Question_jzvzVh
+              variable: Topic.Decisions
+              prompt: Y a-t-il des décisions importantes à prendre, points bloquants ou risques à surveiller?
+              entity: StringPrebuiltEntity
+
+      elseActions:
+        - kind: SendActivity
+          id: SendActivity_iZhcGp
+          activity: L'assistant expert sélectionné n'est pas reconnu. Veuillez choisir une option valide.
+
+inputType: {}
+outputType: {}

@@ -1,0 +1,12 @@
+question,expectedResponse,testMethodType,passingScore
+Quelles sont les prochaines actions prioritaires pour les projets du portefeuille TI ?,,GeneralQuality,
+Quels sont les projets les plus critiques pour l’organisation en ce moment ?,,GeneralQuality,
+Quels sont les principaux enjeux et risques à court terme dans mes projets ?,,GeneralQuality,
+Quelles équipes ou ressources semblent les plus sollicitées actuellement ?,,GeneralQuality,
+Prépare la synthèse exécutive pour un comité directeur ?,,GeneralQuality,
+Quels projets pourraient être reportés avec un impact limité ?,,GeneralQuality,
+Quel est l’état d’avancement détaillé de mes projets. ? Résume le tout par projet.,,GeneralQuality,
+Quels projets sont en retard sur l’échéancier ou le budget ?,,GeneralQuality,
+Quels sont les projets qui demandent une attention immédiate et pourquoi?,,GeneralQuality,
+"Donne-moi une vue claire de l’état des projets sélectionnés, des enjeux actuels et des prochaines actions prioritaires.",,GeneralQuality,
+Donne-moi un portrait global de l’état actuel du portefeuille de projets.,,GeneralQuality,

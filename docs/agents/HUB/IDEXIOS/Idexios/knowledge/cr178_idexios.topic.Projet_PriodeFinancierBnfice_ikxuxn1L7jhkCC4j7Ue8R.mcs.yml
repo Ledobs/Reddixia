@@ -1,0 +1,7 @@
+# Name: Finances
+# Regroupe budgets, coûts et bénéfices par projet et par période, en s’appuyant sur la clé Projet croisée avec la clé Période pour les analyses budgétaires. Cette source de connaissance répond aux questions trouvées dans les éléments Dataverse suivants : Projet, Période, Financier, Bénéfice
+kind: KnowledgeSourceConfiguration
+source:
+  kind: DataverseStructuredSearchSource
+  triggerCondition: true
+  skillConfiguration: Projet_PriodeFinancierBnfice_bsBTgpgJnxeX1UfqdPoT0

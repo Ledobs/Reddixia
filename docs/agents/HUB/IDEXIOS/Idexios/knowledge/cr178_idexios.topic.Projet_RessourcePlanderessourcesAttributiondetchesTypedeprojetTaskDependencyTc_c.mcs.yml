@@ -1,0 +1,7 @@
+# Name: Task
+# Contient la structure détaillée des tâches, dépendances et baselines de chaque projet, centrée sur la clé Tâche reliée à la clé Projet. Cette source de connaissance répond aux questions trouvées dans les éléments Dataverse suivants : Projet, Ressource, Plan de ressources, Attribution de tâches, Type de projet, Task Dependency, Tâche, Planning de référence des tâches, Task Bucket, Task Label
+kind: KnowledgeSourceConfiguration
+source:
+  kind: DataverseStructuredSearchSource
+  triggerCondition: true
+  skillConfiguration: Projet_RessourcePlanderessourcesAttributiondetchesTypedeprojetTaskDependencyTc_ivr9Vl56ChJ5R_7FXrHD3
