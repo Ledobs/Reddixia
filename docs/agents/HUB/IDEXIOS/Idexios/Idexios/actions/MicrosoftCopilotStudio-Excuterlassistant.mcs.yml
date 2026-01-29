@@ -1,0 +1,35 @@
+# Name: Microsoft Copilot Studio - Exécuter l’assistant
+kind: TaskDialog
+response:
+  activity:
+  mode: Generated
+
+inputs:
+  - kind: AutomaticTaskInput
+    propertyName: Copilot
+
+modelDisplayName: Exécuter l’assistant
+modelDescription: Permet d’envoyer une requête à l’assistant spécifié pour le traitement
+outputs:
+  - propertyName: ConversationId
+
+action:
+  kind: InvokeConnectorTaskAction
+  connectionReference: cr178_idexios.shared_microsoftcopilotstudio.17564c2e6ad640ea9cdcb7341028f103
+  connectionProperties:
+    usageDescription: |
+      À utiliser pour créer et mettre à jour des documents Word, Excel et PowerPoint à partir des demandes des utilisateurs Idexios. L’agent doit :
+
+      Analyser la demande et clarifier le contexte (objectif, public cible, type de livrable, langue, niveau de détail, gabarit à appliquer) avant de générer le document.
+      ​
+      Générer un premier brouillon de document Word (rapports, comptes rendus, procédures), de classeur Excel (tables, calculs, graphiques) ou de présentation PowerPoint (plan de diapositives, titres, puces) structuré et cohérent avec la demande.
+      ​
+      S’appuyer uniquement sur les informations fournies Idexios et confirmés par l’utilisateur ou autres sources explicitement mentionnées, en respectant les droits d’accès, la confidentialité et les étiquettes de sensibilité de l’organisation.
+      ​
+      Résumer le contenu créé et proposer des pistes d’ajustement (sections à compléter, validations métier, mise en forme finale) pour que l’utilisateur final puisse finaliser le document dans Office par la suite.
+    mode: Invoker
+
+  operationId: ExecuteCopilot
+
+outputMode: All
+triggerCondition: false

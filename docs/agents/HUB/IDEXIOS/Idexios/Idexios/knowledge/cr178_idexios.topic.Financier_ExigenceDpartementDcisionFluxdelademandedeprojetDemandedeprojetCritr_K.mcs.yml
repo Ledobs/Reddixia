@@ -1,0 +1,7 @@
+# Name: Pipeline
+# Couvre le cycle des demandes et approbations de projets, structuré autour de la clé Demande reliée aux drivers d’affaires et, au besoin, à la clé Projet. Cette source de connaissance répond aux questions trouvées dans les éléments Dataverse suivants : Financier, Exigence, Département, Décision, Flux de la demande de projet, Demande de projet, Critère pour le projet, Critère pour la demande de projet, Critère
+kind: KnowledgeSourceConfiguration
+source:
+  kind: DataverseStructuredSearchSource
+  triggerCondition: true
+  skillConfiguration: Financier_ExigenceDpartementDcisionFluxdelademandedeprojetDemandedeprojetCritr_EQbGAhnRdnd2lXZEogNiB

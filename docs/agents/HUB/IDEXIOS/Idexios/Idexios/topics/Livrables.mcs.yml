@@ -1,0 +1,56 @@
+# Name: Livrables
+kind: AdaptiveDialog
+beginDialog:
+  kind: OnRecognizedIntent
+  id: main
+  intent:
+    displayName:
+    triggerQueries:
+      - livrables
+      - quels sont les livrables
+      - liste des livrables
+      - documents à fournir
+      - qu'est-ce qu'on doit remettre
+      - détails des livrables
+      - informations sur les livrables
+      - que dois-je soumettre
+      - présenter les livrables
+
+  actions:
+    - kind: Question
+      id: Question_SSNlCS
+      variable: Topic.TypeLivrable
+      prompt: Quel type de livrable souhaitez-vous générer ?
+      entity:
+        kind: EmbeddedEntity
+        definition:
+          kind: ClosedListEntity
+          optionSetName: TypeLivrableOptions
+          items:
+            - id: resume_executif
+              displayName: Résumé exécutif
+
+            - id: recommandations
+              displayName: Recommandations
+
+            - id: compte_rendu_comite
+              displayName: Compte rendu de comité
+
+            - id: note_de_service
+              displayName: Note de service
+
+    - kind: Question
+      id: Question_9Cxgel
+      variable: Topic.ContexteLivrable
+      prompt: Quel est le contexte du livrable ? (Comité concerné, projets ciblés, période, décisions attendues, etc.)
+      entity: StringPrebuiltEntity
+
+    - kind: SendActivity
+      id: SendActivity_0RpvoC
+      activity:
+        attachments:
+          - kind: AdaptiveCardTemplate
+            cardContent: "={ type: \"AdaptiveCard\", body: [ { type: \"TextBlock\", size: \"Medium\", weight: \"Bolder\", text: \"Livrable généré\" }, { type: \"FactSet\", facts: [ { title: \"Type de livrable\", value: Text(Topic.TypeLivrable) }, { title: \"Contexte\", value: Text(Topic.ContexteLivrable) } ] }, { type: \"TextBlock\", text: \"Résumé ou contenu à définir selon les données disponibles.\" } ], '$schema': \"http://adaptivecards.io/schemas/adaptive-card.json\", version: \"1.5\" }"
+
+inputType: {}
+outputType: {}

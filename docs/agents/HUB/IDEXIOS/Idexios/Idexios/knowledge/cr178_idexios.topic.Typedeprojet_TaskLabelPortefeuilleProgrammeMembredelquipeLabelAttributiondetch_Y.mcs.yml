@@ -1,0 +1,7 @@
+# Name: Capacity
+# Décrit la capacité, les affectations et le temps saisi par ressource et par projet, structurée autour de la clé Ressource liée à la clé Projet et à la clé Période. Cette source de connaissance répond aux questions trouvées dans les éléments Dataverse suivants : Type de projet, Task Label, Portefeuille, Programme, Membre de l'équipe, Label, Attribution de tâches, Disponibilité, Capacité par mois, Département, Période, Projet, Plan de ressources, Ressource, Feuille de temps
+kind: KnowledgeSourceConfiguration
+source:
+  kind: DataverseStructuredSearchSource
+  triggerCondition: true
+  skillConfiguration: Typedeprojet_TaskLabelPortefeuilleProgrammeMembredelquipeLabelAttributiondetch_w1D7NDppmXsdQ0_FAtMKA

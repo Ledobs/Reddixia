@@ -1,0 +1,7 @@
+# Name: Portfolio
+# Cette source de connaissance regroupe la vue d’ensemble des portefeuilles, programmes et projets, centrée sur la clé Projet et ses liens Portefeuille répondent aux questions trouvées dans les éléments Dataverse suivants : Capacité par mois, Changement, Département, Bénéfice, Onglet de type de projet, Exigence, Mise à jour de l'état d'avancement, Partie prenante, Critère, Type de projet, Projet, Programme, Portefeuille, Critère pour le projet, Critère pour la demande de projet
+kind: KnowledgeSourceConfiguration
+source:
+  kind: DataverseStructuredSearchSource
+  triggerCondition: true
+  skillConfiguration: Capacitparmois_ChangementDpartementBnficeOngletdetypedeprojetExigenceMisejou_o5LqUXuxLOxpiIZmaymKs

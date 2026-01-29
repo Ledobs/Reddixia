@@ -1,0 +1,147 @@
+# Name: Scenarios
+kind: AdaptiveDialog
+beginDialog:
+  kind: OnRecognizedIntent
+  id: main
+  intent:
+    displayName:
+    triggerQueries:
+      - show me some scenarios
+      - give me an example scenario
+      - what are possible scenarios
+      - scenario options
+      - can you describe a scenario
+      - list some scenarios
+      - tell me a scenario
+      - provide a sample scenario
+      - walk me through a scenario
+
+  actions:
+    - kind: Question
+      id: Question_IX8PlO
+      variable: Topic.ObjectifComparaison
+      prompt: Quel est l'objectif de votre analyse de scénarios ? (Comparer des projets, Identifier des scénarios, Mesurer les impacts budgétaires ou capacités, Visualiser les délais ?)
+      entity:
+        kind: EmbeddedEntity
+        definition:
+          kind: ClosedListEntity
+          optionSetName: ObjectifComparaisonOptions
+          items:
+            - id: comparer_projets
+              displayName: Comparer des projets
+
+            - id: identifier_scenarios
+              displayName: Identifier des scénarios
+
+            - id: mesurer_impacts
+              displayName: Mesurer les impacts
+
+            - id: visualiser_delais
+              displayName: Visualiser les délais
+
+    - kind: Question
+      id: Question_Y1kP9E
+      variable: Topic.FiltreProjet
+      prompt: "Souhaitez-vous analyser tous les projets ou un sous-ensemble ? (Ex : par portefeuille, programme, priorité, axe stratégique, etc.)"
+      entity: StringPrebuiltEntity
+
+    - kind: Question
+      id: Question_VOxbsm
+      variable: Topic.DimensionsAnalyse
+      prompt: Sur quelles dimensions souhaitez-vous comparer les scénarios ? (Choix multiples possibles)
+      entity:
+        kind: EmbeddedEntity
+        definition:
+          kind: ClosedListEntity
+          optionSetName: DimensionsAnalyseOptions
+          items:
+            - id: budget
+              displayName: Budget
+
+            - id: benefices
+              displayName: Bénéfices
+
+            - id: risques
+              displayName: Risques
+
+            - id: dependances
+              displayName: Dépendances
+
+            - id: capacite
+              displayName: Capacité des ressources
+
+            - id: delais
+              displayName: Délais
+
+            - id: alignement_strategique
+              displayName: Alignement stratégique
+
+    - kind: Question
+      id: Question_V7YTrj
+      variable: Topic.HorizonAnalyse
+      prompt: Sur quel horizon de temps souhaitez-vous projeter les impacts ?
+      entity:
+        kind: EmbeddedEntity
+        definition:
+          kind: ClosedListEntity
+          optionSetName: HorizonAnalyseOptions
+          items:
+            - id: trimestre
+              displayName: Trimestre en cours
+
+            - id: annee
+              displayName: Prochaine année
+
+            - id: cycle_budgetaire
+              displayName: Cycle budgétaire complet
+
+    - kind: Question
+      id: Question_7h6eYO
+      variable: Topic.ActionCiblee
+      prompt: "Souhaitez-vous simuler une action sur certains projets ? (Ex : garder, accélérer, reporter, arrêter)"
+      entity:
+        kind: EmbeddedEntity
+        definition:
+          kind: ClosedListEntity
+          optionSetName: ActionCibleeOptions
+          items:
+            - id: garder
+              displayName: Garder les projets actuels
+
+            - id: accelerer
+              displayName: Accélérer certains projets
+
+            - id: reporter
+              displayName: Reporter des projets non prioritaires
+
+            - id: arreter
+              displayName: Arrêter les projets peu rentables
+
+            - id: neutre
+              displayName: Non, analyse neutre uniquement
+
+    - kind: SendActivity
+      id: SendActivity_4ovnnf
+      activity: |-
+        Pour vous aider à orienter votre réflexion, voici quelques questions que vous pouvez vous poser :
+
+        **Questionnaire de réflexion stratégique**
+        - Quels projets sont essentiels à vos objectifs d'affaires cette année ?
+        - Existe-t-il des projets en cours dont les bénéfices sont incertains ou retardés ?
+        - Avez-vous identifié des conflits de ressources ou des rôles en surcharge persistante ?
+        - Quels projets dépendent d'autres pour livrer leurs résultats ?
+        - Quels projets pourraient être reportés sans impacter la création de valeur ?
+        - Où se situent les plus gros risques de délai ou de coûts non contrôlés ?
+        - Souhaitez-vous libérer de la capacité pour de nouveaux projets ou initiatives stratégiques ?
+
+        Vous pouvez répondre librement ou simplement indiquer les axes qui vous paraissent les plus critiques. Ces réponses permettront d'enrichir l'analyse des scénarios.
+
+    - kind: SendActivity
+      id: SendActivity_BMfLxs
+      activity:
+        attachments:
+          - kind: AdaptiveCardTemplate
+            cardContent: "={ type: \"AdaptiveCard\", body: [ { type: \"TextBlock\", size: \"Medium\", weight: \"Bolder\", text: \"Synthèse de l'analyse de scénarios\" }, { type: \"FactSet\", facts: [ { title: \"Objectif\", value: Text(Topic.ObjectifComparaison) }, { title: \"Filtre projet\", value: Text(Topic.FiltreProjet) }, { title: \"Dimensions\", value: Text(Topic.DimensionsAnalyse) }, { title: \"Horizon\", value: Text(Topic.HorizonAnalyse) }, { title: \"Action simulée\", value: Text(Topic.ActionCiblee) } ] } ], '$schema': \"http://adaptivecards.io/schemas/adaptive-card.json\", version: \"1.5\"}"
+
+inputType: {}
+outputType: {}

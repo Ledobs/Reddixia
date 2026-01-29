@@ -1,0 +1,111 @@
+# Name: Gouvernance
+kind: AdaptiveDialog
+beginDialog:
+  kind: OnRecognizedIntent
+  id: main
+  intent:
+    displayName:
+    triggerQueries:
+      - gouvernance
+      - informations sur la gouvernance
+      - comment fonctionne la gouvernance
+      - structure de gouvernance
+      - qui dirige l'organisation
+      - règles de gouvernance
+      - processus décisionnel
+      - politique de gouvernance
+      - responsabilités des dirigeants
+
+  actions:
+    - kind: Question
+      id: Question_Z8R0VZ
+      variable: Topic.TypeComite
+      prompt: Quel est le type de comité ou de rapport visé ?
+      entity:
+        kind: EmbeddedEntity
+        definition:
+          kind: ClosedListEntity
+          optionSetName: TypeComiteOptions
+          items:
+            - id: portefeuille
+              displayName: Portefeuille
+
+            - id: direction
+              displayName: Direction
+
+            - id: risques
+              displayName: Risques
+
+            - id: architecture
+              displayName: Architecture
+
+            - id: finance
+              displayName: Finance
+
+            - id: rapport
+              displayName: Rapport
+
+            - id: compte_rendu
+              displayName: Compte rendu
+
+    - kind: ConditionGroup
+      id: ConditionGroup_YLd8ZR
+      conditions:
+        - id: ConditionItem_nYQXAJ
+          condition: =Topic.TypeComite = TypeComiteOptions.portefeuille || Topic.TypeComite = TypeComiteOptions.direction || Topic.TypeComite = TypeComiteOptions.risques || Topic.TypeComite = TypeComiteOptions.architecture || Topic.TypeComite = TypeComiteOptions.finance
+          actions:
+            - kind: Question
+              id: Question_rFisSZ
+              variable: Topic.Perimetre
+              prompt: Quel est le périmètre concerné ?
+              entity:
+                kind: EmbeddedEntity
+                definition:
+                  kind: ClosedListEntity
+                  optionSetName: PerimetreOptions
+                  items:
+                    - id: portefeuille
+                      displayName: Portefeuille
+
+                    - id: programme
+                      displayName: Programme
+
+                    - id: projet
+                      displayName: Projet
+
+    - kind: Question
+      id: Question_mGkGO1
+      variable: Topic.Frequence
+      prompt: Quelle est la fréquence de gouvernance visée ?
+      entity:
+        kind: EmbeddedEntity
+        definition:
+          kind: ClosedListEntity
+          optionSetName: FrequenceOptions
+          items:
+            - id: hebdomadaire
+              displayName: Hebdomadaire
+
+            - id: mensuelle
+              displayName: Mensuelle
+
+            - id: trimestrielle
+              displayName: Trimestrielle
+
+    - kind: Question
+      id: Question_EzdWk7
+      variable: Topic.Periode
+      prompt: Pour quelle période ou année souhaitez-vous ce modèle de gouvernance ?
+      entity: StringPrebuiltEntity
+
+    - kind: SendActivity
+      id: SendActivity_fkeijc
+      activity: |-
+        Merci pour vos réponses. Voici le résumé :
+        - Type de comité : {Topic.TypeComite}
+        - Périmètre : {Topic.Perimetre}
+        - Fréquence : {Topic.Frequence}
+        - Période : {Topic.Periode}
+
+inputType: {}
+outputType: {}

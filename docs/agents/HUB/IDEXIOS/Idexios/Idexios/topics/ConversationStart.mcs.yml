@@ -1,0 +1,14 @@
+# Name: Début de la conversation
+# Cette rubrique système se déclenche quand l’assistant reçoit une activité indiquant le début d’une nouvelle conversation. Si vous ne souhaitez pas que l’assistant lance la conversation, désactivez cette rubrique.
+kind: AdaptiveDialog
+beginDialog:
+  kind: OnConversationStart
+  id: main
+  actions:
+    - kind: SendActivity
+      id: sendMessage_M0LuhV
+      activity:
+        text:
+          - Bonjour, je m’appelle {System.Bot.Name}, je suis un assistant virtuel. N’oubliez pas que j’utilise parfois l’IA pour répondre à vos questions. Si vous avez fourni un site Web pendant la création, essayez de me poser des questions à ce sujet ! Essayez ensuite de me donner plus d’informations en configurant l’IA générative.
+        speak:
+          - Bonjour et merci d’avoir appelé {System.Bot.Name}. Notez que certaines réponses sont générées par l’IA et peuvent nécessiter une vérification pour précision. Comment puis-je vous aider aujourd’hui ?

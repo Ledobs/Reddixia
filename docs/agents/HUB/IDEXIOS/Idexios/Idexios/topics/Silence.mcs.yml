@@ -1,0 +1,17 @@
+# Name: Détection du silence
+# Déclenché lorsqu’une durée s’est écoulée sans que l’utilisateur fournisse de message ni d’entrée DTMF. Pour utiliser ce déclencheur, la détection du silence doit être activée dans les paramètres de bot.
+kind: AdaptiveDialog
+beginDialog:
+  kind: OnSilence
+  id: main
+  actions:
+    - kind: SendActivity
+      id: sendActivity_C6pKOo
+      activity:
+        text:
+          - Au revoir !
+        speak:
+          - Au revoir !
+
+    - kind: EndConversation
+      id: Rgrh4i
