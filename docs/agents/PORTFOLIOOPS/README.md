@@ -1,4 +1,4 @@
-﻿# Portfolio Operations (2 agents)
+﻿# Portfolio Operations (3 agents)
 
 Vue d'ensemble des agents du domain pack.
 

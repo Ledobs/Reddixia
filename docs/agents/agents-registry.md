@@ -514,6 +514,36 @@ Vulcain : forge; industrialisation des opérations d’approvisionnement et RFP.
 
 ---
 
+## IA-TPG-020 - MAAT-PORTF (Sélection de portefeuille)
+
+### Étymologie
+
+Maât, déesse de l’équilibre et de la justice : pondération, cohérence et décisions équitables.
+
+### Caractéristiques
+
+- **Code**: IA-TPG-020
+- **Domain Pack**: PortfolioOps
+- **Rubriques**: Portefeuille, Scenarios, Conseils
+- **Rôle**: Analyste de sélection de portefeuille
+- **Mission**: Remplace l’analyseur de portefeuille de Project Online : scoring multicritère (PMI + AHP), contraintes, scénarios et recommandations.
+- **Modèle**: GPT-5 Auto
+- **Statut**: En analyse
+
+### Pré-requis
+
+- Dataverse comme source de vérité : `tpg_project`, `tpg_program`, ressources et coûts.
+- Schéma de données TPG (dbdiagram) utilisé pour le mapping des champs.
+- Contraintes de portefeuille (Capex/Opex, capacité ressources critiques, projets incompressibles).
+- SharePoint Online en appoint pour documents de support.
+- Bibliothèque SPO: `/Idexios-Prime/Procedures/Portefeuille/`.
+
+### Notes
+
+Axes PMI (Valeur Business, Alignement Stratégique, Risques, Conformité) avec échelle 1–5 et priorisation relative (AHP). Scénarios what‑if, visualisations (frontière efficiente, matrice à bulles) et audit trail des décisions. Intégration TPG via Dataverse + Power Automate.
+
+---
+
 ## Tableau récapitulatif
 
 | Code | Nom | Domain Pack | Rubriques | Statut | Modèle |
@@ -537,3 +567,4 @@ Vulcain : forge; industrialisation des opérations d’approvisionnement et RFP.
 | IA-TPG-017 | JUNO-PROC (Intelligence contractuelle) | ProcurementOps | Gouvernance, Livrables, Conseils | Approuvé (à implémenter) | GPT-5 Auto |
 | IA-TPG-018 | CERES-BUDGET (Adhérence budgétaire) | FinanceOps | Portefeuille, Gouvernance, Conseils | Approuvé (à implémenter) | GPT-5 Auto |
 | IA-TPG-019 | VULCAN-DEV (Procurement & RFP Ops) | ProcurementOps | Gouvernance, Livrables, Conseils | Approuvé (à implémenter) | GPT-5 Auto |
+| IA-TPG-020 | MAAT-PORTF (Sélection de portefeuille) | PortfolioOps | Portefeuille, Scenarios, Conseils | En analyse | GPT-5 Auto |
